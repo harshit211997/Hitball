@@ -6,22 +6,31 @@ public class Bat {
 
     private static final int UP = 0;
     private static final int DOWN = 1;
+    private static final int MAX_ROTATION = 10;
+    private static final int MIN_ROTATION = -15;
+    private static final int MAX_W = 150;
+    int direction = UP;
 
+    int handleWidth;
+    int originX, originY;
     boolean isRotating = false;
     int height, width;
     Vector2 position;
-    float rotation = 10;
-    float w = -200;
+    float rotation = MAX_ROTATION;
+    float w = -MAX_W;
 
-    public Bat(int height, int width, Vector2 position) {
+    public Bat(int width, int height, Vector2 position) {
         this.height = height;
         this.width = width;
         this.position = position;
+        originX = (int)position.x + width / 4;
+        originY = (int)position.y + height / 2;
+        handleWidth = (160 * width) / 470;
     }
 
     public void update(float delta) {
         if(isRotating) {
-            rotation += w * delta;
+            rotate(delta);
         }
         /*
         if the bat tries to rotate below its initial position
@@ -29,36 +38,43 @@ public class Bat {
         or if above its maximum rotating position,
         we rotate it in opposite direction
          */
-        if(aboveBounds()) {
-            w = 200;
-        }
-        else if(belowBounds()) {
-            stopRotation();
-        }
     }
 
-    public void onClick() {
-        startRotation(UP);
-    }
-
-    public void startRotation(int direction) {
+    public void onTouchDown() {
         isRotating = true;
-        w = -200;
+        direction = UP;
     }
 
-    public void stopRotation() {
-        isRotating = false;
+    public void onTouchUp() {
+        isRotating = true;
+        direction = DOWN;
+    }
+
+    public void rotate(float delta) {
+        if(direction == UP && !aboveBounds()) {
+            rotation += w * delta;
+        }
+        else if(direction == DOWN && !belowBounds()) {
+            rotation -= w * delta;
+        }
+        else {
+            isRotating = false;
+        }
     }
 
     public boolean belowBounds() {
-        if(rotation > 10) {
+        if(rotation > MAX_ROTATION) {
             return true;
         }
         return false;
     }
 
+    public boolean isRotating() {
+        return isRotating;
+    }
+
     public boolean aboveBounds() {
-        if(rotation < -20) {
+        if(rotation < MIN_ROTATION) {
             return true;
         }
         return false;
@@ -78,5 +94,25 @@ public class Bat {
 
     public Vector2 getPosition() {
         return position;
+    }
+
+    public float getW() {
+        return w;
+    }
+
+    public int getOriginX() {
+        return originX;
+    }
+
+    public int getOriginY() {
+        return originY;
+    }
+
+    public int getWidthWithoutHandle() {
+        return width - handleWidth;
+    }
+
+    public int getHandleWidth() {
+        return handleWidth;
     }
 }

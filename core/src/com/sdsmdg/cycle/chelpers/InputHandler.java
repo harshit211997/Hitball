@@ -2,6 +2,7 @@ package com.sdsmdg.cycle.chelpers;
 
 import com.badlogic.gdx.InputProcessor;
 import com.sdsmdg.cycle.gameworld.GameWorld;
+import com.sdsmdg.cycle.objects.Button;
 
 public class InputHandler implements InputProcessor{
 
@@ -28,13 +29,24 @@ public class InputHandler implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        myWorld.getBat().onClick();
+        if(myWorld.isRunning())
+            myWorld.getBat().onTouchDown();
+        else if(myWorld.isReady()) {
+
+            Button playButton = myWorld.getPlayButton();
+            if(playButton.getRectangle().contains(screenX, screenY)) {
+                playButton.onClick();
+            }
+
+        }
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        if(myWorld.isRunning())
+            myWorld.getBat().onTouchUp();
+        return true;
     }
 
     @Override

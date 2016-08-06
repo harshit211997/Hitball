@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
+import com.sdsmdg.cycle.objects.Button;
 
 public class GameRenderer {
 
@@ -18,7 +20,7 @@ public class GameRenderer {
     private SpriteBatch batcher;
 
     private Bat bat;
-    private Ball ball;
+    private Ball ball1;
 
     private int screenWidth, screenHeight;
 
@@ -30,7 +32,7 @@ public class GameRenderer {
         this.screenHeight = screenHeight;
 
         bat = world.getBat();
-        ball = world.getBall();
+        ball1 = world.getBall(0);
 
         cam = new OrthographicCamera();
         cam.setToOrtho(true, screenWidth, screenHeight);
@@ -56,23 +58,31 @@ public class GameRenderer {
     public void render(float runTime) {
 
         // Fill the entire screen with black, to prevent potential flickering.
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        batcher.begin();
 
-        //draw bat
-        shapeRenderer.setColor(111 / 255.0f, 186 / 255.0f, 45 / 255.0f, 1);
-        shapeRenderer.rect(bat.getPosition().x, bat.getPosition().y,
-                0, 0,
-                bat.getWidth(), bat.getHeight(),
-                1, 1,
-                bat.getRotation());
+        batcher.draw(AssetLoader.backgroundRegion, 0, 0, screenWidth, screenHeight);
 
-        shapeRenderer.setColor(111 / 255.0f, 186 / 255.0f, 45 / 255.0f, 1);
-        shapeRenderer.circle(ball.getPosition().x, ball.getPosition().y, ball.getRadius());
+        if(myWorld.isRunning()) {
+            batcher.draw(AssetLoader.batRegion, bat.getPosition().x, bat.getPosition().y,
+                    bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
+                    bat.getWidth(), bat.getHeight(),
+                    1, 1,
+                    bat.getRotation());
 
-        shapeRenderer.end();
+            batcher.draw(AssetLoader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
+                    0, 0,
+                    ball1.getRadius() * 2, ball1.getRadius() * 2,
+                    1, 1,
+                    0);
+        }else if(myWorld.isReady()) {
+            Button playButton = myWorld.getPlayButton();
+            batcher.draw(playButton.getRegion(), playButton.getPosition().x - playButton.getWidth() / 2 , playButton.getPosition().y - playButton.getHeight() / 2);
+        }
+
+        batcher.end();
 
     }
 }
