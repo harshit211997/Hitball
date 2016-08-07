@@ -1,6 +1,5 @@
 package com.sdsmdg.cycle.objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class Ball {
@@ -38,7 +37,6 @@ public class Ball {
     public void afterCollision(int a, int vBat) {
         velocity.x = (float)getRotatedX(a, 0, 0, (int)velocity.x, (int)velocity.y);
         velocity.y = Math.min(vBat - e * (float)Math.abs(getRotatedY(a, 0, 0, (int)velocity.x, (int)velocity.y)), -600);
-        Gdx.app.log("Ball", velocity.y + " " + vBat);
     }
 
     public double getRotatedX(float a, float originX, float originY, int x, int y) {

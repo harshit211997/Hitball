@@ -23,8 +23,15 @@ public class Button {
         this.myWorld = world;
     }
 
-    public void onClick() {
-        myWorld.setGameStateRunning();
+    public void onClick(int state) {
+        switch (state) {
+            case GameWorld.PLAY:
+                myWorld.setGameStateRunning();
+                break;
+            case GameWorld.REPLAY:
+                myWorld.setGameStateRunning();
+                break;
+        }
     }
 
     public int getHeight() {

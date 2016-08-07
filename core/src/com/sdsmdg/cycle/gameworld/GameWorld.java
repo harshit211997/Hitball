@@ -15,9 +15,12 @@ public class GameWorld {
     private Bat bat;
     private int screenWidth, screenHeight;
     GameState gameState;
-    Button playButton;
+    Button playButton, replayButton;
+    public static final int PLAY = 0;
+    public static final int REPLAY = 1;
+    public static int score = 0;
 
-    private enum GameState{
+    private enum GameState {
         READY, RUNNING, OVER
     }
 
@@ -36,15 +39,15 @@ public class GameWorld {
     public GameWorld(int screenWidth, int screenHeight) {
         Vector2 batPosition = new Vector2(screenWidth / 10, screenHeight / 2 + 100);
         int batHeight = screenWidth / 15;
-        int batWidth = (AssetLoader.batRegion.getRegionWidth() * batHeight ) / AssetLoader.batRegion.getRegionHeight();
+        int batWidth = (AssetLoader.batRegion.getRegionWidth() * batHeight) / AssetLoader.batRegion.getRegionHeight();
         bat = new Bat(batWidth, batHeight, batPosition);
         Ball ball1 = new Ball(screenWidth, screenHeight);
         balls.add(ball1);
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;
         gameState = GameState.READY;
-        playButton = new Button(this, screenWidth / 3, AssetLoader.playRegion, screenWidth / 3, screenWidth / 2, screenHeight / 2);
-
+        playButton = new Button(this, screenWidth / 6, AssetLoader.playRegion, screenWidth / 6, screenWidth / 2, screenHeight / 2);
+        replayButton = new Button(this, screenWidth / 6, AssetLoader.replayRegion, screenWidth / 6, screenWidth / 2, screenHeight / 2);
     }
 
     public void update(float delta) {
@@ -65,7 +68,7 @@ public class GameWorld {
     }
 
     public void updateOver(float delta) {
-        //Agh... Same as above
+
     }
 
     public void updateRunning(float delta) {
@@ -81,21 +84,22 @@ public class GameWorld {
                 setBallOut(ball);
                 int distance = getDistance(ball.getPosition().x, bat.getOriginX(), ball.getPosition().y, bat.getOriginY());
                 int vBat = 0;
-                if(bat.isRotating() && bat.getW() < 0 ) {
+                if (bat.isRotating() && bat.getW() < 0) {
                     vBat = (int) Math.toRadians(bat.getW()) * distance;
                 }
                 ball.afterCollision((int) bat.getRotation(), vBat);
+                score++;
             }
             //To avoid overlap of bat and ball
             if (ball.isBallOffScreen()) {
-                ball.reset();
+                setGameStateOver();
             }
         }
 
     }
 
     public void setBallOut(Ball ball) {
-        ball.getPosition().y = (int)ball.getRotatedY(-bat.getRotation(), bat.getOriginX(), bat.getOriginY(), (int)ball.getPosition().x, (int)bat.getPosition().y - ball.getRadius());
+        ball.getPosition().y = (int) ball.getRotatedY(-bat.getRotation(), bat.getOriginX(), bat.getOriginY(), (int) ball.getPosition().x, (int) bat.getPosition().y - ball.getRadius());
     }
 
     public int getDistance(double x1, double x2, double y1, double y2) {
@@ -142,7 +146,24 @@ public class GameWorld {
         return playButton;
     }
 
+    public Button getReplayButton() {
+        return replayButton;
+    }
+
     public void setGameStateRunning() {
+        for (int i = 0; i < balls.size(); i++) {
+            getBall(i).reset();
+        }
+        score = 0;
         gameState = GameState.RUNNING;
     }
+
+    public void setGameStateOver() {
+        gameState = GameState.OVER;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
 }

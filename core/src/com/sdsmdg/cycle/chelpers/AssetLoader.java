@@ -7,10 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class AssetLoader {
 
     public static Texture bat;
-    public static TextureRegion batRegion, ballRegion, playRegion, backgroundRegion;
+    public static TextureRegion batRegion, ballRegion, playRegion, backgroundRegion, replayRegion;
     public static Texture ball;
     public static Texture play;
     public static Texture background;
+    public static Texture replay;
 
     public static void load() {
         bat = new Texture(Gdx.files.internal("bat.png"));
@@ -23,6 +24,8 @@ public class AssetLoader {
         background = new Texture(Gdx.files.internal("stadium.jpg"));
         backgroundRegion = new TextureRegion(background);
         backgroundRegion.flip(false, true);
+        replay = new Texture(Gdx.files.internal("replay.png"));
+        replayRegion = new TextureRegion(replay);
     }
 
     public static void dispose() {
@@ -30,6 +33,7 @@ public class AssetLoader {
         bat.dispose();
         ball.dispose();
         play.dispose();
+        replay.dispose();
     }
 
 }
