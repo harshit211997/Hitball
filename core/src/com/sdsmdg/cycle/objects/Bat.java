@@ -25,7 +25,7 @@ public class Bat {
         this.position = position;
         originX = (int)position.x + width / 4;
         originY = (int)position.y + height / 2;
-        handleWidth = (160 * width) / 470;
+        handleWidth = (340 * width) / 990;
     }
 
     public void update(float delta) {
@@ -110,6 +110,26 @@ public class Bat {
 
     public int getWidthWithoutHandle() {
         return width - handleWidth;
+    }
+
+    //returns x coordinate of center of body part of the bat
+    public float getCenterBodyX() {
+        return getPosition().x + getHandleWidth() + getWidthWithoutHandle() / 2;
+    }
+
+    //returns x coordinate of center of handle part of the bat
+    public float getCenterHandleX() {
+        return position.x + handleWidth / 2;
+    }
+
+    //returns y coordinate of center of handle part of the bat
+    public float getCenterHandleY() {
+        return position.y + height / 2;
+    }
+
+    //returns y coordinate of center of body part of the bat
+    public float getCenterBodyY() {
+        return getPosition().y + getHeight() / 2;
     }
 
     public int getHandleWidth() {

@@ -10,6 +10,11 @@ public class Ball {
     int radius;
     int screenWidth, screenHeight;
     float e = 0.8f;
+    private boolean isInPlane = true;
+    /*this property of ball determines that after collision with bat handle,
+    the ball will go towards the screen or away from it
+    */
+    private boolean towardsScreen = true;
 
     public Ball(int screenWidth, int screenHeight) {
         this.screenHeight = screenHeight;
@@ -22,6 +27,14 @@ public class Ball {
         position.x += velocity.x * delta;
         velocity.y += acceleration.y * delta;
         position.y += velocity.y * delta;
+
+        if (!isInPlane()) {
+            if (towardsScreen)
+                radius++;
+            else
+                radius -= 0.5;
+        }
+
     }
 
     public int getRadius() {
@@ -34,9 +47,9 @@ public class Ball {
         return position;
     }
 
-    public void afterCollision(int a, int vBat) {
-        velocity.x = (float)getRotatedX(a, 0, 0, (int)velocity.x, (int)velocity.y);
-        velocity.y = Math.min(vBat - e * (float)Math.abs(getRotatedY(a, 0, 0, (int)velocity.x, (int)velocity.y)), -600);
+    public void afterCollisionWithBody(int a, int vBat) {
+        velocity.x = (float) getRotatedX(a, 0, 0, (int) velocity.x, (int) velocity.y);
+        velocity.y = Math.min(vBat - e * (float) Math.abs(getRotatedY(a, 0, 0, (int) velocity.x, (int) velocity.y)), -600);
     }
 
     public double getRotatedX(float a, float originX, float originY, int x, int y) {
@@ -52,13 +65,15 @@ public class Ball {
     }
 
     public boolean isBallOffScreen() {
-        if(position.x < -radius || position.x > screenWidth + radius || position.y >= screenHeight + radius) {
+        if (position.x < -radius || position.x > screenWidth + radius || position.y >= screenHeight + radius) {
             return true;
         }
         return false;
     }
 
     public void reset() {
+        isInPlane = true;
+        radius = screenWidth / 20;
         setVelocity(0, 0);
         setPosition(screenWidth / 2, screenHeight / 3);
     }
@@ -79,5 +94,26 @@ public class Ball {
 
     public double getNextY(float delta) {
         return position.y + (velocity.y + acceleration.y * delta) * delta;
+    }
+
+    public boolean isInPlane() {
+        return isInPlane;
+    }
+
+    /*when the ball goes out of plane, it means that,
+     it must have collided with the bat handle,
+     so its vertical component of velocity must be changed
+     (here I make it zero)
+     */
+    public void setOffPlane() {
+        towardsScreen = getRandomBool();
+        velocity.y = 0;
+        isInPlane = false;
+    }
+
+    //This function return only true currently, because of drawing order of bat and ball
+    //Will be fixed soon
+    public boolean getRandomBool() {
+        return true;
     }
 }

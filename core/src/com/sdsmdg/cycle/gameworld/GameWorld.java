@@ -80,15 +80,17 @@ public class GameWorld {
         bat.update(delta);
         for (int i = 0; i < balls.size(); i++) {
             Ball ball = balls.get(i);
-            if (isColliding(ball, bat, delta)) {
+            if (isColliding(bat, ball, delta) && ball.isInPlane()) {
                 setBallOut(ball);
                 int distance = getDistance(ball.getPosition().x, bat.getOriginX(), ball.getPosition().y, bat.getOriginY());
                 int vBat = 0;
                 if (bat.isRotating() && bat.getW() < 0) {
                     vBat = (int) Math.toRadians(bat.getW()) * distance;
                 }
-                ball.afterCollision((int) bat.getRotation(), vBat);
+                ball.afterCollisionWithBody((int) bat.getRotation(), vBat);
                 score++;
+            } else if(isCollidingHandle(bat, ball, delta) && ball.isInPlane()) {
+                ball.setOffPlane();
             }
             //To avoid overlap of bat and ball
             if (ball.isBallOffScreen()) {
@@ -106,29 +108,63 @@ public class GameWorld {
         return (int) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 
-    public boolean isColliding(Ball ball, Bat bat, float delta) {
+    /*
+    This function checks whether the bat body(bat without the handle) collides with ball or not)
+    For checking collision between bat handle and ball there is isCollidingHandle()
+     */
+    public boolean isColliding(Bat bat, Ball ball, float delta) {
 
-        double rectx = bat.getPosition().x + bat.getHandleWidth() + bat.getWidthWithoutHandle() / 2;
-        double recty = bat.getPosition().y + bat.getHeight() / 2;
+        double rectx = bat.getCenterBodyX();
+        double recty = bat.getCenterBodyY();
 
         double circleDistX = Math.abs(ball.getRotatedX(bat.getRotation(), bat.getOriginX(), bat.getOriginY(), (int) ball.getNextX(delta), (int) ball.getNextY(delta)) - rectx);
         double circleDistY = Math.abs(ball.getRotatedY(bat.getRotation(), bat.getOriginX(), bat.getOriginY(), (int) ball.getNextX(delta), (int) ball.getNextY(delta)) - recty);
 
-        if (circleDistX > ((bat.getWidthWithoutHandle() - ball.getRadius()) / 2 + ball.getRadius())) {
+        //when ball bottom just touches the bat body(bat without handle)
+        if (circleDistX > bat.getWidthWithoutHandle() / 2 + ball.getRadius()) {
             return false;
         }
         if (circleDistY > (bat.getHeight() / 2 + ball.getRadius())) {
             return false;
         }
 
-        if (circleDistX <= ((bat.getWidthWithoutHandle() - ball.getRadius()) / 2)) {
+        if (circleDistX <= (bat.getWidthWithoutHandle() / 2 - ball.getRadius())) {
             return true;
         }
         if (circleDistY <= (bat.getHeight() / 2)) {
             return true;
         }
 
-        double cornerDistanceSq = Math.pow((circleDistX - (bat.getWidthWithoutHandle() - ball.getRadius()) / 2), 2) +
+        double cornerDistanceSq = Math.pow((circleDistX - (bat.getWidthWithoutHandle() / 2 - ball.getRadius()) / 2), 2) +
+                Math.pow((circleDistY - bat.getHeight() / 2), 2);
+
+        return (cornerDistanceSq < Math.pow(ball.getRadius(), 2));
+    }
+
+    public boolean isCollidingHandle(Bat bat, Ball ball, float delta) {
+
+        double rectx = bat.getCenterHandleX();
+        double recty = bat.getCenterHandleY();
+
+        double circleDistX = Math.abs(ball.getRotatedX(bat.getRotation(), bat.getOriginX(), bat.getOriginY(), (int) ball.getNextX(delta), (int) ball.getNextY(delta)) - rectx);
+        double circleDistY = Math.abs(ball.getRotatedY(bat.getRotation(), bat.getOriginX(), bat.getOriginY(), (int) ball.getNextX(delta), (int) ball.getNextY(delta)) - recty);
+
+        //when ball bottom just touches the bat body(bat without handle)
+        if (circleDistX > bat.getHandleWidth() / 2 + ball.getRadius()) {
+            return false;
+        }
+        if (circleDistY > (bat.getHeight() / 2 + ball.getRadius())) {
+            return false;
+        }
+
+        if (circleDistX <= (bat.getHandleWidth() / 2 - ball.getRadius())) {
+            return true;
+        }
+        if (circleDistY <= (bat.getHeight() / 2)) {
+            return true;
+        }
+
+        double cornerDistanceSq = Math.pow((circleDistX - (bat.getHandleWidth() / 2 - ball.getRadius()) / 2), 2) +
                 Math.pow((circleDistY - bat.getHeight() / 2), 2);
 
         return (cornerDistanceSq < Math.pow(ball.getRadius(), 2));
