@@ -114,10 +114,10 @@ public class GameRenderer {
 
             //Draw ball
             batcher.draw(AssetLoader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
-                    0, 0,
+                    ball1.getRadius(), ball1.getRadius(),
                     ball1.getRadius() * 2, ball1.getRadius() * 2,
                     1, 1,
-                    0);
+                    ball1.getRotation());
 
         }else if(myWorld.isReady()) {
             Button playButton = myWorld.getPlayButton();

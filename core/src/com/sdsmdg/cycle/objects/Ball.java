@@ -11,6 +11,10 @@ public class Ball {
     int screenWidth, screenHeight;
     float e = 0.8f;
     private boolean isInPlane = true;
+    private float rotation = 0;
+    private float w = 200;
+    private float re = 0.2f;//Rotation analogy of e(coefficient of restitution
+
     /*this property of ball determines that after collision with bat handle,
     the ball will go towards the screen or away from it
     */
@@ -27,6 +31,7 @@ public class Ball {
         position.x += velocity.x * delta;
         velocity.y += acceleration.y * delta;
         position.y += velocity.y * delta;
+        rotation += w * delta;
 
         if (!isInPlane()) {
             if (towardsScreen)
@@ -48,8 +53,25 @@ public class Ball {
     }
 
     public void afterCollisionWithBody(int a, int vBat) {
+        readjustW();
         velocity.x = (float) getRotatedX(a, 0, 0, (int) velocity.x, (int) velocity.y);
         velocity.y = Math.min(vBat - e * (float) Math.abs(getRotatedY(a, 0, 0, (int) velocity.x, (int) velocity.y)), -600);
+    }
+
+    /* This method adjusts w according to the speed of ball and its direction of
+    movement, although it is not as good as physics in real life, but it looks good enough
+     */
+    public void readjustW() {
+        if(velocity.x < 0) {
+            w = re * getSpeed();
+        }
+        else {
+            w = -re * getSpeed();
+        }
+    }
+
+    public float getSpeed() {
+        return (float)Math.sqrt(Math.pow(velocity.y, 2) + Math.pow(velocity.x, 2));
     }
 
     public double getRotatedX(float a, float originX, float originY, int x, int y) {
@@ -115,5 +137,9 @@ public class Ball {
     //Will be fixed soon
     public boolean getRandomBool() {
         return true;
+    }
+
+    public float getRotation() {
+        return rotation;
     }
 }

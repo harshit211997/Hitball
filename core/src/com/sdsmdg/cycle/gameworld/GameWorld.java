@@ -90,6 +90,7 @@ public class GameWorld {
                 ball.afterCollisionWithBody((int) bat.getRotation(), vBat);
                 score++;
             } else if(isCollidingHandle(bat, ball, delta) && ball.isInPlane()) {
+                setBallOut(ball);
                 ball.setOffPlane();
             }
             //To avoid overlap of bat and ball

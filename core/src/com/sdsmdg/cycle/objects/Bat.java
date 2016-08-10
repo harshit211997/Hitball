@@ -25,7 +25,7 @@ public class Bat {
         this.position = position;
         originX = (int)position.x + width / 4;
         originY = (int)position.y + height / 2;
-        handleWidth = (340 * width) / 990;
+        handleWidth = (310 * width) / 900;
     }
 
     public void update(float delta) {
