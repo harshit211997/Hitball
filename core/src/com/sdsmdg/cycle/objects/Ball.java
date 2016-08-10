@@ -129,7 +129,7 @@ public class Ball {
      */
     public void setOffPlane() {
         towardsScreen = getRandomBool();
-        velocity.y = 0;
+        velocity.y = -100;
         isInPlane = false;
     }
 
