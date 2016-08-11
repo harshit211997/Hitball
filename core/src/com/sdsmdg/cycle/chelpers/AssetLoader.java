@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
-    public static Texture bat, ball, play, replay, cloud, grassLeft, grassRight, sun, parachute;
-    public static TextureRegion batRegion, ballRegion, playRegion, replayRegion, cloudRegion, grassLeftRegion, grassRightRegion, sunRegion, parachuteRegion;
+    public static Texture bat, ball, play, replay, cloud, sun, background;
+    public static TextureRegion batRegion, ballRegion, playRegion, replayRegion, cloudRegion, sunRegion, backgroundRegion;
 
 
     public static void load() {
@@ -24,19 +24,12 @@ public class AssetLoader {
         cloudRegion = new TextureRegion(cloud);
         cloudRegion.flip(false, true);
 
-        grassLeft = new Texture(Gdx.files.internal("grass_left.png"));
-        grassLeftRegion = new TextureRegion(grassLeft);
-        grassLeftRegion.flip(false, true);
-
-        grassRight = new Texture(Gdx.files.internal("grass_right.png"));
-        grassRightRegion = new TextureRegion(grassRight);
-        grassRightRegion.flip(false, true);
-
-        parachute = new Texture(Gdx.files.internal("parachute.png"));
-        parachuteRegion = new TextureRegion(parachute);
-
         sun = new Texture(Gdx.files.internal("sun.png"));
         sunRegion = new TextureRegion(sun);
+
+        background = new Texture(Gdx.files.internal("background.png"));
+        backgroundRegion = new TextureRegion(background);
+        backgroundRegion.flip(false, true);
 
     }
 
@@ -46,6 +39,8 @@ public class AssetLoader {
         ball.dispose();
         play.dispose();
         replay.dispose();
+        sun.dispose();
+        background.dispose();
     }
 
 }

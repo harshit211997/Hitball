@@ -1,5 +1,7 @@
 package com.sdsmdg.cycle.gameworld;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
@@ -15,10 +17,11 @@ public class GameWorld {
     private Bat bat;
     private int screenWidth, screenHeight;
     GameState gameState;
-    Button playButton, replayButton;
+    Button playButton;
     public static final int PLAY = 0;
     public static final int REPLAY = 1;
     public static int score = 0;
+    Preferences prefs;
 
     private enum GameState {
         READY, RUNNING, OVER
@@ -47,7 +50,8 @@ public class GameWorld {
         this.screenWidth = screenWidth;
         gameState = GameState.READY;
         playButton = new Button(this, screenWidth / 6, AssetLoader.playRegion, screenWidth / 6, screenWidth / 2, screenHeight / 2);
-        replayButton = new Button(this, screenWidth / 6, AssetLoader.replayRegion, screenWidth / 6, screenWidth / 2, screenHeight / 2);
+
+        prefs = Gdx.app.getPreferences("Highscore");
     }
 
     public void update(float delta) {
@@ -61,6 +65,15 @@ public class GameWorld {
             default:
                 updateRunning(delta);
         }
+    }
+
+    public void setHighScore(int score) {
+        prefs.putInteger("highscore", score);
+        prefs.flush();
+    }
+
+    public int getHighScore() {
+        return prefs.getInteger("highscore");
     }
 
     public void updateReady(float delta) {
@@ -88,8 +101,8 @@ public class GameWorld {
                     vBat = (int) Math.toRadians(bat.getW()) * distance;
                 }
                 ball.afterCollisionWithBody((int) bat.getRotation(), vBat);
-                score++;
-            } else if(isCollidingHandle(bat, ball, delta) && ball.isInPlane()) {
+                updateScore();
+            } else if (isCollidingHandle(bat, ball, delta) && ball.isInPlane()) {
                 setBallOut(ball);
                 ball.setOffPlane();
             }
@@ -101,6 +114,14 @@ public class GameWorld {
             }
         }
 
+    }
+
+    public void updateScore() {
+        score++;
+        Gdx.app.log("Highscore:", getHighScore() + " " + score);
+        if (score > getHighScore()) {
+            setHighScore(score);
+        }
     }
 
     public void setBallOut(Ball ball) {
@@ -183,10 +204,6 @@ public class GameWorld {
 
     public Button getPlayButton() {
         return playButton;
-    }
-
-    public Button getReplayButton() {
-        return replayButton;
     }
 
     public void setGameStateRunning() {

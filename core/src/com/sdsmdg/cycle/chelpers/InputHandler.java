@@ -38,10 +38,7 @@ public class InputHandler implements InputProcessor {
                 playButton.onClick(GameWorld.PLAY);
             }
         } else {
-            Button replayButton = myWorld.getReplayButton();
-            if (replayButton.getRectangle().contains(screenX, screenY)) {
-                replayButton.onClick(GameWorld.REPLAY);
-            }
+            myWorld.setGameStateRunning();
         }
         return true;
     }
