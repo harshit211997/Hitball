@@ -66,58 +66,58 @@ public class GameRenderer {
 
         batcher.begin();
 
+        //Draw grass
+        batcher.draw(AssetLoader.grassLeftRegion, 0, screenHeight - screenWidth / 3,
+                0, 0,
+                2 * screenWidth / 3, screenWidth / 3,
+                1, 1,
+                0);
+
+        batcher.draw(AssetLoader.grassRightRegion, screenWidth / 3, screenHeight - screenWidth / 3,
+                0, 0,
+                2 * screenWidth / 3, screenWidth / 3,
+                1, 1,
+                0);
+
+        //Draw sun
+        TextureRegion sunRegion = AssetLoader.sunRegion;
+        batcher.draw(sunRegion, screenWidth * 2 / 3f, screenHeight / 4,
+                0, 0,
+                screenWidth / 4, screenWidth / 4,
+                1, 1,
+                0);
+
+        //Draw clouds
+        batcher.draw(AssetLoader.cloudRegion, screenWidth / 3, screenHeight / 5,
+                0, 0,
+                screenWidth / 6, screenWidth / 8,
+                1, 1,
+                0);
+
+        batcher.draw(AssetLoader.cloudRegion, screenWidth * 3 / 4, screenHeight / 2,
+                0, 0,
+                screenWidth / 6, screenWidth / 8,
+                1, 1,
+                0);
+
+        //Draw bat
+        batcher.draw(AssetLoader.batRegion, bat.getPosition().x, bat.getPosition().y,
+                bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
+                bat.getWidth(), bat.getHeight(),
+                1, 1,
+                bat.getRotation());
+
+        //Draw ball
+        batcher.draw(AssetLoader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
+                ball1.getRadius(), ball1.getRadius(),
+                ball1.getRadius() * 2, ball1.getRadius() * 2,
+                1, 1,
+                ball1.getRotation());
+
         if(myWorld.isRunning()) {
-
-            //Draw grass
-            batcher.draw(AssetLoader.grassLeftRegion, 0, screenHeight - screenWidth / 3,
-                    0, 0,
-                    2 * screenWidth / 3, screenWidth / 3,
-                    1, 1,
-                    0);
-
-            batcher.draw(AssetLoader.grassRightRegion, screenWidth / 3, screenHeight - screenWidth / 3,
-                    0, 0,
-                    2 * screenWidth / 3, screenWidth / 3,
-                    1, 1,
-                    0);
-
-            //Draw sun
-            TextureRegion sunRegion = AssetLoader.sunRegion;
-            batcher.draw(sunRegion, screenWidth * 2 / 3f, screenHeight / 4,
-                    0, 0,
-                    screenWidth / 4, screenWidth / 4,
-                    1, 1,
-                    0);
-
-            //Draw clouds
-            batcher.draw(AssetLoader.cloudRegion, screenWidth / 3, screenHeight / 5,
-                    0, 0,
-                    screenWidth / 6, screenWidth / 8,
-                    1, 1,
-                    0);
-
-            batcher.draw(AssetLoader.cloudRegion, screenWidth * 3 / 4, screenHeight / 2,
-                    0, 0,
-                    screenWidth / 6, screenWidth / 8,
-                    1, 1,
-                    0);
 
             //Draw score while running
             font.draw(batcher, String.valueOf(myWorld.getScore()), 10, 10);
-
-            //Draw bat
-            batcher.draw(AssetLoader.batRegion, bat.getPosition().x, bat.getPosition().y,
-                    bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
-                    bat.getWidth(), bat.getHeight(),
-                    1, 1,
-                    bat.getRotation());
-
-            //Draw ball
-            batcher.draw(AssetLoader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
-                    ball1.getRadius(), ball1.getRadius(),
-                    ball1.getRadius() * 2, ball1.getRadius() * 2,
-                    1, 1,
-                    ball1.getRotation());
 
         }else if(myWorld.isReady()) {
             Button playButton = myWorld.getPlayButton();

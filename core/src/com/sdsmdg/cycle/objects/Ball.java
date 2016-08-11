@@ -97,7 +97,6 @@ public class Ball {
         isInPlane = true;
         radius = screenWidth / 20;
         setVelocity(0, 0);
-        setPosition(screenWidth / 2, screenHeight / 3);
     }
 
     public void setPosition(int x, int y) {
@@ -141,5 +140,9 @@ public class Ball {
 
     public float getRotation() {
         return rotation;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
     }
 }

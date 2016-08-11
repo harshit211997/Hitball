@@ -64,11 +64,11 @@ public class GameWorld {
     }
 
     public void updateReady(float delta) {
-        //To be filled soon enough
+        bat.update(delta);
     }
 
     public void updateOver(float delta) {
-
+        bat.update(delta);
     }
 
     public void updateRunning(float delta) {
@@ -95,6 +95,8 @@ public class GameWorld {
             }
             //To avoid overlap of bat and ball
             if (ball.isBallOffScreen()) {
+                ball.setPosition(screenWidth / 2, screenHeight / 3);
+                ball.setRadius(screenWidth / 20);
                 setGameStateOver();
             }
         }
@@ -196,6 +198,7 @@ public class GameWorld {
     }
 
     public void setGameStateOver() {
+        bat.onTouchUp();
         gameState = GameState.OVER;
     }
 
