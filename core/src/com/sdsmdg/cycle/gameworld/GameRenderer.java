@@ -50,6 +50,7 @@ public class GameRenderer {
         initAssets();
         initGameObjects();
 
+        //Check max size of image that can be used
         IntBuffer buf = BufferUtils.newIntBuffer(16);
         Gdx.gl.glGetIntegerv(Gdx.gl.GL_MAX_TEXTURE_SIZE, buf);
         int maxSize = buf.get();

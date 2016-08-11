@@ -118,7 +118,6 @@ public class GameWorld {
 
     public void updateScore() {
         score++;
-        Gdx.app.log("Highscore:", getHighScore() + " " + score);
         if (score > getHighScore()) {
             setHighScore(score);
         }
