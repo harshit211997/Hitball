@@ -228,4 +228,11 @@ public class GameWorld {
         return score;
     }
 
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
 }

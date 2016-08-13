@@ -3,15 +3,16 @@ package com.sdsmdg.cycle.gameworld;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
+import com.sdsmdg.cycle.objects.Board;
 
 import java.nio.IntBuffer;
 
@@ -29,8 +30,9 @@ public class GameRenderer {
 
     private int screenWidth, screenHeight;
 
-    public static Texture texture;
     GlyphLayout glyphLayout;
+
+    Board board;
 
     public GameRenderer(GameWorld world, int screenWidth, int screenHeight) {
         myWorld = world;
@@ -49,6 +51,14 @@ public class GameRenderer {
         batcher.setProjectionMatrix(cam.combined);
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
+
+        int boardWidth = screenWidth / 2;
+        int boardHeight = screenWidth / 2;
+        board = new Board(
+                world,
+                screenWidth / 2, screenWidth / 2,
+                new Vector2((screenWidth - boardWidth) / 2, (screenHeight - boardHeight) / 2)
+        );
 
         initAssets();
         initGameObjects();
@@ -101,7 +111,7 @@ public class GameRenderer {
             glyphLayout.setText(font80, text);
             float w = glyphLayout.width;
             float h = glyphLayout.height;
-            font80.draw(batcher, text, (screenWidth - w) / 2, (screenHeight - h) / 2);
+            font80.draw(batcher, text, (screenWidth - w) / 2, (screenHeight / 4 - h / 2));
         }
 
         //Draw bat
@@ -118,20 +128,25 @@ public class GameRenderer {
                 1, 1,
                 ball1.getRotation());
 
+        batcher.end();
+
         if (myWorld.isReady()) {
+            batcher.begin();
             String text = "Click here to play";
             glyphLayout.setText(font40, text);
             float w = glyphLayout.width;
             font40.draw(batcher, text, (screenWidth - w) / 2, screenHeight / 2);
+            batcher.end();
         } else if (myWorld.isOver()) {
-            String text = "Best Score\n" + String.valueOf(myWorld.getHighScore()) + "\nScore\n" + String.valueOf(myWorld.getScore());
-            glyphLayout.setText(font40, text);
-            float w = glyphLayout.width;
-            float h = glyphLayout.height;
-            font40.draw(batcher, text, (screenWidth - w) / 2, (screenHeight - h) / 2);
+//            String text = "Best Score\n" + String.valueOf(myWorld.getHighScore()) + "\nScore\n" + String.valueOf(myWorld.getScore());
+//            glyphLayout.setText(font40, text);
+//            float w = glyphLayout.width;
+//            float h = glyphLayout.height;
+//            font40.draw(batcher, text, (screenWidth - w) / 2, (screenHeight - h) / 2);
+
+            board.onDraw(batcher, shapeRenderer);
 
         }
-        batcher.end();
 
     }
 }
