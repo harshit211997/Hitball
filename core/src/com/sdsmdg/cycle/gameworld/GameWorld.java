@@ -13,6 +13,10 @@ import java.util.List;
 
 public class GameWorld {
 
+    //This TAG will be used while logging in the app(for debugging purposes)
+    //The TAG will be the class name, BTW
+    private final String TAG = GameWorld.class.getSimpleName();
+
     private List<Ball> balls = new ArrayList<Ball>();
     private Bat bat;
     private int screenWidth, screenHeight;
@@ -51,6 +55,7 @@ public class GameWorld {
         gameState = GameState.READY;
         playButton = new Button(this, screenWidth / 6, AssetLoader.playRegion, screenWidth / 6, screenWidth / 2, screenHeight / 2);
 
+        Gdx.app.log(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
         prefs = Gdx.app.getPreferences("Highscore");
     }
 

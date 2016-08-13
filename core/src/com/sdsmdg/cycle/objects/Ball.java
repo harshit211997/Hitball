@@ -6,7 +6,7 @@ public class Ball {
 
     private Vector2 position;
     private Vector2 velocity = new Vector2(0, 0);
-    private Vector2 acceleration = new Vector2(0, 1500);
+    private Vector2 acceleration;
     int radius;
     int screenWidth, screenHeight;
     float e = 0.8f;
@@ -25,6 +25,8 @@ public class Ball {
         this.screenWidth = screenWidth;
         position = new Vector2(screenWidth / 2, screenHeight / 3);
         radius = screenWidth / 20;
+
+        acceleration = new Vector2(0, screenHeight * 2);
     }
 
     public void update(float delta) {
