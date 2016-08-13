@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
-import com.sdsmdg.cycle.objects.Button;
 
 import java.nio.IntBuffer;
 
@@ -60,7 +60,8 @@ public class GameRenderer {
     private void initGameObjects() {
         //the parameter true ensures that text is displayed not flipped
         font = new BitmapFont(true);
-        font.getData().setScale(3);
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        font.getData().setScale(3f);
     }
 
 
@@ -106,20 +107,25 @@ public class GameRenderer {
                 1, 1,
                 ball1.getRotation());
 
-        if(myWorld.isRunning()) {
+        if (myWorld.isRunning()) {
 
             //Draw score while running
             font.draw(batcher, String.valueOf(myWorld.getScore()), 10, 10);
 
-        }else if(myWorld.isReady()) {
-            Button playButton = myWorld.getPlayButton();
-            batcher.draw(playButton.getRegion(), playButton.getPosition().x - playButton.getWidth() / 2 , playButton.getPosition().y - playButton.getHeight() / 2);
-        }else if(myWorld.isOver()) {
-
-            font.draw(batcher, "Best Score\n" + String.valueOf(myWorld.getHighScore()) + "\nScore\n" + String.valueOf(myWorld.getScore()), screenWidth / 2, screenHeight / 2);
+        } else if (myWorld.isReady()) {
+            GlyphLayout glyphLayout = new GlyphLayout();
+            String text = "Click here to play";
+            glyphLayout.setText(font, text);
+            float w = glyphLayout.width;
+            font.draw(batcher, text, screenWidth / 2 - w / 2, screenHeight / 2);
+        } else if (myWorld.isOver()) {
+            GlyphLayout glyphLayout = new GlyphLayout();
+            String text = "Best Score\n" + String.valueOf(myWorld.getHighScore()) + "\nScore\n" + String.valueOf(myWorld.getScore());
+            glyphLayout.setText(font, text);
+            float w = glyphLayout.width;
+            font.draw(batcher, text, screenWidth / 2 - w / 2, screenHeight / 2);
 
         }
-
         batcher.end();
 
     }

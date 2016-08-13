@@ -2,16 +2,18 @@ package com.sdsmdg.cycle.chelpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
+    public static BitmapFont font15, font22;
     public static Texture bat, ball, play, replay, cloud, sun, background;
     public static TextureRegion batRegion, ballRegion, playRegion, replayRegion, cloudRegion, sunRegion, backgroundRegion;
 
-
     public static void load() {
         bat = new Texture(Gdx.files.internal("bat.png"));
+        bat.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         batRegion = new TextureRegion(bat);
         ball = new Texture(Gdx.files.internal("ball.png"));
         ballRegion = new TextureRegion(ball);

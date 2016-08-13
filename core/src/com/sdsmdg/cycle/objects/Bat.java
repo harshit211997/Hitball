@@ -1,5 +1,6 @@
 package com.sdsmdg.cycle.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bat {
@@ -43,6 +44,7 @@ public class Bat {
     public void onTouchDown() {
         isRotating = true;
         direction = UP;
+        Gdx.app.log("Bat", "onTouchDown() called");
     }
 
     public void onTouchUp() {
@@ -63,7 +65,7 @@ public class Bat {
     }
 
     public boolean belowBounds() {
-        if(rotation > MAX_ROTATION) {
+        if(rotation >= MAX_ROTATION) {
             return true;
         }
         return false;
@@ -74,7 +76,7 @@ public class Bat {
     }
 
     public boolean aboveBounds() {
-        if(rotation < MIN_ROTATION) {
+        if(rotation <= MIN_ROTATION) {
             return true;
         }
         return false;
