@@ -94,6 +94,7 @@ public class GameWorld {
         for (int i = 0; i < balls.size(); i++) {
             Ball ball = balls.get(i);
             if (isColliding(bat, ball, delta) && ball.isInPlane()) {
+                playHitSound();
                 setBallOut(ball);
                 int distance = getDistance(ball.getPosition().x, bat.getOriginX(), ball.getPosition().y, bat.getOriginY());
                 int vBat = 0;
@@ -103,6 +104,7 @@ public class GameWorld {
                 ball.afterCollisionWithBody((int) bat.getRotation(), vBat);
                 updateScore();
             } else if (isCollidingHandle(bat, ball, delta) && ball.isInPlane()) {
+                playHitSound();
                 setBallOut(ball);
                 ball.setOffPlane();
             }
@@ -114,6 +116,10 @@ public class GameWorld {
             }
         }
 
+    }
+
+    public void playHitSound() {
+        AssetLoader.sound.play();//Play the hit sound when the ball hits the bat body and the handle
     }
 
     public void updateScore() {

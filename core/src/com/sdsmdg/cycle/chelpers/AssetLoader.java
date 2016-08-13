@@ -1,6 +1,7 @@
 package com.sdsmdg.cycle.chelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class AssetLoader {
 
+    public static Sound sound;
     public static BitmapFont font40, font80;
     public static Texture bat, ball, play, replay, cloud, sun, background, mdgLogo;
     public static TextureRegion batRegion, ballRegion, playRegion, replayRegion, cloudRegion, sunRegion, backgroundRegion, mdgLogoRegion;
@@ -41,6 +43,8 @@ public class AssetLoader {
 
         createFont();
 
+        loadSounds();
+
     }
 
     private static void createFont() {
@@ -56,6 +60,10 @@ public class AssetLoader {
         generator.dispose();
     }
 
+    private static void loadSounds() {
+        sound = Gdx.audio.newSound(Gdx.files.internal("hit.mp3"));
+    }
+
     public static void dispose() {
         // We must dispose of the texture when we are finished.
         bat.dispose();
@@ -64,6 +72,7 @@ public class AssetLoader {
         replay.dispose();
         sun.dispose();
         background.dispose();
+        sound.dispose();
     }
 
 }
