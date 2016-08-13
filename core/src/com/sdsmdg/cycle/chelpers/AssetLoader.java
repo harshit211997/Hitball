@@ -4,12 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class AssetLoader {
 
-    public static BitmapFont font15, font22;
-    public static Texture bat, ball, play, replay, cloud, sun, background;
-    public static TextureRegion batRegion, ballRegion, playRegion, replayRegion, cloudRegion, sunRegion, backgroundRegion;
+    public static BitmapFont font40, font80;
+    public static Texture bat, ball, play, replay, cloud, sun, background, mdgLogo;
+    public static TextureRegion batRegion, ballRegion, playRegion, replayRegion, cloudRegion, sunRegion, backgroundRegion, mdgLogoRegion;
 
     public static void load() {
         bat = new Texture(Gdx.files.internal("bat.png"));
@@ -33,6 +34,26 @@ public class AssetLoader {
         backgroundRegion = new TextureRegion(background);
         backgroundRegion.flip(false, true);
 
+        mdgLogo = new Texture(Gdx.files.internal("mdg_logo.png"));
+        mdgLogo.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        mdgLogoRegion = new TextureRegion(mdgLogo);
+        mdgLogoRegion.flip(false, true);
+
+        createFont();
+
+    }
+
+    private static void createFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 40;
+        parameter.flip = true;
+        font40 = generator.generateFont(parameter);
+
+        parameter.size = 80;
+        font80 = generator.generateFont(parameter);
+
+        generator.dispose();
     }
 
     public static void dispose() {

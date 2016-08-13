@@ -1,6 +1,5 @@
 package com.sdsmdg.cycle.objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bat {
@@ -44,7 +43,6 @@ public class Bat {
     public void onTouchDown() {
         isRotating = true;
         direction = UP;
-        Gdx.app.log("Bat", "onTouchDown() called");
     }
 
     public void onTouchUp() {

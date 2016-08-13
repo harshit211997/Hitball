@@ -20,7 +20,7 @@ public class GameRenderer {
     private GameWorld myWorld;
     private OrthographicCamera cam;
     private ShapeRenderer shapeRenderer;
-    private BitmapFont font;
+    private BitmapFont font40, font80;
 
     private SpriteBatch batcher;
 
@@ -30,11 +30,14 @@ public class GameRenderer {
     private int screenWidth, screenHeight;
 
     public static Texture texture;
+    GlyphLayout glyphLayout;
 
     public GameRenderer(GameWorld world, int screenWidth, int screenHeight) {
         myWorld = world;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+
+        glyphLayout = new GlyphLayout();
 
         bat = world.getBat();
         ball1 = world.getBall(0);
@@ -59,9 +62,8 @@ public class GameRenderer {
 
     private void initGameObjects() {
         //the parameter true ensures that text is displayed not flipped
-        font = new BitmapFont(true);
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        font.getData().setScale(3f);
+        font40 = AssetLoader.font40;
+        font80 = AssetLoader.font80;
     }
 
 
@@ -93,6 +95,15 @@ public class GameRenderer {
                 1, 1,
                 0);
 
+        if (myWorld.isRunning()) {
+            //Draw score while running
+            String text = String.valueOf(myWorld.getScore());
+            glyphLayout.setText(font80, text);
+            float w = glyphLayout.width;
+            float h = glyphLayout.height;
+            font80.draw(batcher, text, (screenWidth - w) / 2, (screenHeight - h) / 2);
+        }
+
         //Draw bat
         batcher.draw(AssetLoader.batRegion, bat.getPosition().x, bat.getPosition().y,
                 bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
@@ -107,23 +118,17 @@ public class GameRenderer {
                 1, 1,
                 ball1.getRotation());
 
-        if (myWorld.isRunning()) {
-
-            //Draw score while running
-            font.draw(batcher, String.valueOf(myWorld.getScore()), 10, 10);
-
-        } else if (myWorld.isReady()) {
-            GlyphLayout glyphLayout = new GlyphLayout();
+        if (myWorld.isReady()) {
             String text = "Click here to play";
-            glyphLayout.setText(font, text);
+            glyphLayout.setText(font40, text);
             float w = glyphLayout.width;
-            font.draw(batcher, text, screenWidth / 2 - w / 2, screenHeight / 2);
+            font40.draw(batcher, text, (screenWidth - w) / 2, screenHeight / 2);
         } else if (myWorld.isOver()) {
-            GlyphLayout glyphLayout = new GlyphLayout();
             String text = "Best Score\n" + String.valueOf(myWorld.getHighScore()) + "\nScore\n" + String.valueOf(myWorld.getScore());
-            glyphLayout.setText(font, text);
+            glyphLayout.setText(font40, text);
             float w = glyphLayout.width;
-            font.draw(batcher, text, screenWidth / 2 - w / 2, screenHeight / 2);
+            float h = glyphLayout.height;
+            font40.draw(batcher, text, (screenWidth - w) / 2, (screenHeight - h) / 2);
 
         }
         batcher.end();

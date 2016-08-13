@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.sdsmdg.cycle.CGame;
+import com.sdsmdg.cycle.chelpers.AssetLoader;
 
 public class SplashScreen implements Screen {
 
@@ -13,14 +15,20 @@ public class SplashScreen implements Screen {
     private OrthographicCamera camera;
     private CGame game;
     private long startTime;
+    private final long DURATION = 2000;
+    private SpriteBatch batcher;
+    private float screenWidth, screenHeight;
 
     public SplashScreen(CGame game) {
 
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
+        this.screenWidth = Gdx.graphics.getWidth();
+        this.screenHeight = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(true, screenWidth / 2, screenHeight / 2);
+        camera.setToOrtho(true, screenWidth, screenHeight);
+
+        batcher = new SpriteBatch();
+        batcher.setProjectionMatrix(camera.combined);
 
         this.game = game;
     }
@@ -39,7 +47,21 @@ public class SplashScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if(TimeUtils.millis() >= startTime + 5000) {
+
+        batcher.begin();
+
+        float logoWidth = screenWidth / 4;
+        float logoHeight = 146 * logoWidth / 94;
+        batcher.draw(AssetLoader.mdgLogoRegion,
+                (screenWidth - logoWidth) / 2, (screenHeight - logoHeight) / 2,
+                0, 0,
+                logoWidth, logoHeight,
+                1, 1,
+                0);
+
+        batcher.end();
+
+        if (TimeUtils.millis() >= startTime + DURATION) {
             game.setScreen(new GameScreen());
         }
     }
