@@ -13,8 +13,10 @@ import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Board;
+import com.sdsmdg.cycle.objects.Cloud;
 
 import java.nio.IntBuffer;
+import java.util.List;
 
 public class GameRenderer {
 
@@ -94,18 +96,15 @@ public class GameRenderer {
         batcher.draw(AssetLoader.backgroundRegion, 0, 0,
                 screenWidth, screenHeight);
 
-        //Draw clouds
-        batcher.draw(AssetLoader.cloudRegion, screenWidth / 3, screenHeight / 5,
-                0, 0,
-                screenWidth / 6, screenWidth / 8,
-                1, 1,
-                0);
+        batcher.end();
 
-        batcher.draw(AssetLoader.cloudRegion, screenWidth * 3 / 4, screenHeight / 2,
-                0, 0,
-                screenWidth / 6, screenWidth / 8,
-                1, 1,
-                0);
+        //Draw clouds
+        List<Cloud> clouds = myWorld.getClouds();
+        for(int i=0;i<clouds.size();i++) {
+            clouds.get(i).onDraw(batcher);
+        }
+
+        batcher.begin();
 
         if (myWorld.isRunning()) {
             //Draw score while running

@@ -11,8 +11,8 @@ public class AssetLoader {
 
     public static Sound sound;
     public static BitmapFont font40, font80;
-    public static Texture bat, ball, play, replayOn, replayOff, cloud, sun, background, mdgLogo;
-    public static Sprite batRegion, ballRegion, playRegion, replayRegionOn, replayRegionOff, cloudRegion, sunRegion, backgroundRegion, mdgLogoRegion;
+    public static Texture bat, ball, play, replayOn, replayOff, cloud, cloud1, sun, background, mdgLogo;
+    public static Sprite batRegion, ballRegion, playRegion, replayRegionOn, replayRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion;
 
     public static void load(int screenWidth) {
         bat = new Texture(Gdx.files.internal("bat.png"));
@@ -42,6 +42,14 @@ public class AssetLoader {
         mdgLogo.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         mdgLogoRegion = new Sprite(mdgLogo);
         mdgLogoRegion.flip(false, true);
+
+        cloud = new Texture(Gdx.files.internal("cloud.png"));
+        cloudRegion = new Sprite(cloud);
+        cloudRegion.flip(false, true);
+
+        cloud1 = new Texture(Gdx.files.internal("cloud1.png"));
+        cloud1Region = new Sprite(cloud1);
+        cloud1Region.flip(false, true);
 
         createFont(screenWidth);
 

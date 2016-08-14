@@ -7,6 +7,7 @@ import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Button;
+import com.sdsmdg.cycle.objects.Cloud;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class GameWorld {
     public static final int REPLAY = 1;
     public static int score = 0;
     Preferences prefs;
+    private List<Cloud> clouds = new ArrayList<Cloud>();
 
     private enum GameState {
         READY, RUNNING, OVER
@@ -60,6 +62,20 @@ public class GameWorld {
                 replayWidth, replayHeight,
                 AssetLoader.replayRegionOn, AssetLoader.replayRegionOff);
 
+        float cloudWidth = screenWidth / 3;
+        float cloudHeight = (cloudWidth * 121) / 232;
+        clouds.add(new Cloud(this, cloudWidth, cloudHeight,
+                new Vector2(screenWidth / 10, screenHeight / 20),//cloud's positions
+                new Vector2(screenWidth / 2000f, 0),//cloud's velocity
+                AssetLoader.cloudRegion));
+
+        cloudWidth /= 2;
+        cloudHeight /= 2;
+        clouds.add(new Cloud(this, cloudWidth, cloudHeight,
+                new Vector2(screenWidth - cloudWidth, cloudHeight / 2),
+                new Vector2(screenWidth / 1500f, 0),
+                AssetLoader.cloud1Region));
+
         Gdx.app.log(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
         prefs = Gdx.app.getPreferences("Highscore");
     }
@@ -87,10 +103,16 @@ public class GameWorld {
     }
 
     public void updateReady(float delta) {
+        for (int i = 0; i < clouds.size(); i++) {
+            clouds.get(i).update(delta);
+        }
         bat.update(delta);
     }
 
     public void updateOver(float delta) {
+        for (int i = 0; i < clouds.size(); i++) {
+            clouds.get(i).update(delta);
+        }
         bat.update(delta);
     }
 
@@ -98,6 +120,9 @@ public class GameWorld {
         //Update all balls positions on screen
         for (int i = 0; i < balls.size(); i++) {
             balls.get(i).update(delta);
+        }
+        for (int i = 0; i < clouds.size(); i++) {
+            clouds.get(i).update(delta);
         }
         //Update the bat rotations
         bat.update(delta);
@@ -244,5 +269,9 @@ public class GameWorld {
 
     public int getScreenHeight() {
         return screenHeight;
+    }
+
+    public List<Cloud> getClouds() {
+        return clouds;
     }
 }
