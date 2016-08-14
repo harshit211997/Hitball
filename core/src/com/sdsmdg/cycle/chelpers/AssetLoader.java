@@ -4,57 +4,59 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class AssetLoader {
 
     public static Sound sound;
     public static BitmapFont font40, font80;
-    public static Texture bat, ball, play, replay, cloud, sun, background, mdgLogo;
-    public static TextureRegion batRegion, ballRegion, playRegion, replayRegion, cloudRegion, sunRegion, backgroundRegion, mdgLogoRegion;
+    public static Texture bat, ball, play, replayOn, replayOff, cloud, sun, background, mdgLogo;
+    public static Sprite batRegion, ballRegion, playRegion, replayRegionOn, replayRegionOff, cloudRegion, sunRegion, backgroundRegion, mdgLogoRegion;
 
-    public static void load() {
+    public static void load(int screenWidth) {
         bat = new Texture(Gdx.files.internal("bat.png"));
         bat.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-        batRegion = new TextureRegion(bat);
+        batRegion = new Sprite(bat);
         ball = new Texture(Gdx.files.internal("ball.png"));
-        ballRegion = new TextureRegion(ball);
-        play = new Texture(Gdx.files.internal("play.png"));
-        playRegion = new TextureRegion(play);
-        replay = new Texture(Gdx.files.internal("replay.png"));
-        replayRegion = new TextureRegion(replay);
+        ballRegion = new Sprite(ball);
+
+        replayOn = new Texture(Gdx.files.internal("retrydim.png"));
+        replayRegionOn = new Sprite(replayOn);
+
+        replayOff = new Texture(Gdx.files.internal("retry.png"));
+        replayRegionOff = new Sprite(replayOff);
 
         cloud = new Texture(Gdx.files.internal("cloud.png"));
-        cloudRegion = new TextureRegion(cloud);
+        cloudRegion = new Sprite(cloud);
         cloudRegion.flip(false, true);
 
         sun = new Texture(Gdx.files.internal("sun.png"));
-        sunRegion = new TextureRegion(sun);
+        sunRegion = new Sprite(sun);
 
         background = new Texture(Gdx.files.internal("background.png"));
-        backgroundRegion = new TextureRegion(background);
+        backgroundRegion = new Sprite(background);
         backgroundRegion.flip(false, true);
 
         mdgLogo = new Texture(Gdx.files.internal("mdg_logo.png"));
         mdgLogo.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        mdgLogoRegion = new TextureRegion(mdgLogo);
+        mdgLogoRegion = new Sprite(mdgLogo);
         mdgLogoRegion.flip(false, true);
 
-        createFont();
+        createFont(screenWidth);
 
         loadSounds();
 
     }
 
-    private static void createFont() {
+    private static void createFont(int screenWidth) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 40;
+        parameter.size = (40 * screenWidth) / 480;//Scaling it according to the screenWidth
         parameter.flip = true;
         font40 = generator.generateFont(parameter);
 
-        parameter.size = 80;
+        parameter.size = (80 * screenWidth) / 480;//Scaling it according to the screenWidth
         font80 = generator.generateFont(parameter);
 
         generator.dispose();
@@ -69,10 +71,18 @@ public class AssetLoader {
         bat.dispose();
         ball.dispose();
         play.dispose();
-        replay.dispose();
+        replayOn.dispose();
+        replayOff.dispose();
         sun.dispose();
         background.dispose();
         sound.dispose();
+    }
+
+    public static void setBackgroundAlpha(float opacity) {
+        backgroundRegion.setAlpha(opacity);
+        batRegion.setAlpha(opacity);
+        ballRegion.setAlpha(opacity);
+        cloudRegion.setAlpha(opacity);
     }
 
 }

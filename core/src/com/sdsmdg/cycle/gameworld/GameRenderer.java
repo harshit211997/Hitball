@@ -34,6 +34,8 @@ public class GameRenderer {
 
     Board board;
 
+    float opacityBackground = 0f;
+
     public GameRenderer(GameWorld world, int screenWidth, int screenHeight) {
         myWorld = world;
         this.screenWidth = screenWidth;
@@ -138,14 +140,9 @@ public class GameRenderer {
             font40.draw(batcher, text, (screenWidth - w) / 2, screenHeight / 2);
             batcher.end();
         } else if (myWorld.isOver()) {
-//            String text = "Best Score\n" + String.valueOf(myWorld.getHighScore()) + "\nScore\n" + String.valueOf(myWorld.getScore());
-//            glyphLayout.setText(font40, text);
-//            float w = glyphLayout.width;
-//            float h = glyphLayout.height;
-//            font40.draw(batcher, text, (screenWidth - w) / 2, (screenHeight - h) / 2);
-
+            AssetLoader.setBackgroundAlpha(opacityBackground);
             board.onDraw(batcher, shapeRenderer);
-
+            myWorld.getReplayButton().onDraw(batcher);
         }
 
     }

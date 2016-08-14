@@ -57,7 +57,7 @@ public class Ball {
     public void afterCollisionWithBody(int a, int vBat) {
         readjustW();
         velocity.x = (float) getRotatedX(a, 0, 0, (int) velocity.x, (int) velocity.y);
-        velocity.y = Math.min(vBat - e * (float) Math.abs(getRotatedY(a, 0, 0, (int) velocity.x, (int) velocity.y)), -600);
+        velocity.y = Math.min(vBat - e * (float) Math.abs(getRotatedY(a, 0, 0, (int) velocity.x, (int) velocity.y)), -screenWidth * 1.5f);
     }
 
     /* This method adjusts w according to the speed of ball and its direction of
@@ -130,7 +130,7 @@ public class Ball {
      */
     public void setOffPlane() {
         towardsScreen = getRandomBool();
-        velocity.y = -100;
+        velocity.y = -screenWidth / 5;
         isInPlane = false;
     }
 

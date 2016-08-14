@@ -49,17 +49,17 @@ public class Board {
 
         drawText("Score",
                 batch,
-                position.x + width / 2, position.y + 40,
+                position.x + width / 2, position.y + (40 * screenWidth) / 480,
                 AssetLoader.font80);
 
         drawText("Best Score",
                 batch,
-                position.x + width / 2, position.y + height - 60,
+                position.x + width / 2, position.y + height - (60 * screenWidth) / 480,
                 AssetLoader.font40);
 
         drawText(String.valueOf(myWorld.getHighScore()),
                 batch,
-                position.x + width / 2, position.y + height - 30,
+                position.x + width / 2, position.y + height - (30 * screenWidth) / 480,
                 AssetLoader.font40);
 
         batch.end();

@@ -31,8 +31,12 @@ public class InputHandler implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (myWorld.isRunning()) {
             myWorld.getBat().onTouchDown();
-        } else {
+        } else if(myWorld.isReady()){
             myWorld.setGameStateRunning();
+        } else if(myWorld.isOver()) {
+            if(myWorld.getReplayButton().isTouched(screenX, screenY)) {
+                myWorld.getReplayButton().onTouchDown();
+            }
         }
         return true;
     }
@@ -41,11 +45,23 @@ public class InputHandler implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (myWorld.isRunning())
             myWorld.getBat().onTouchUp();
+        else if(myWorld.isOver()) {
+            if(myWorld.getReplayButton().isTouched(screenX, screenY)) {
+                myWorld.getReplayButton().onTouchUp();
+            }
+        }
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if(myWorld.isOver()) {
+            if(!myWorld.getReplayButton().isTouched(screenX, screenY)) {
+                myWorld.getReplayButton().onRemoveTouch();
+            }else {
+                myWorld.getReplayButton().onTouchDown();
+            }
+        }
         return false;
     }
 

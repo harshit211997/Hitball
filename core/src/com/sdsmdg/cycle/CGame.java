@@ -12,7 +12,7 @@ public class CGame extends Game{
     @Override
     public void create() {
         Gdx.app.log(TAG, "created");
-        AssetLoader.load();
+        AssetLoader.load(Gdx.graphics.getWidth());
         setScreen(new SplashScreen(this));
     }
 

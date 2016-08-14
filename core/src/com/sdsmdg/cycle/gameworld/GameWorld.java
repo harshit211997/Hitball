@@ -21,7 +21,7 @@ public class GameWorld {
     private Bat bat;
     private int screenWidth, screenHeight;
     GameState gameState;
-    Button playButton;
+    Button replayButton;
     public static final int PLAY = 0;
     public static final int REPLAY = 1;
     public static int score = 0;
@@ -53,7 +53,12 @@ public class GameWorld {
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;
         gameState = GameState.READY;
-        playButton = new Button(this, screenWidth / 6, AssetLoader.playRegion, screenWidth / 6, screenWidth / 2, screenHeight / 2);
+
+        int replayWidth = screenWidth / 4;
+        int replayHeight = screenWidth / 4;
+        replayButton = new Button(this, (screenWidth - replayWidth) / 2, 0.75f * screenHeight - replayHeight / 2,
+                replayWidth, replayHeight,
+                AssetLoader.replayRegionOn, AssetLoader.replayRegionOff);
 
         Gdx.app.log(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
         prefs = Gdx.app.getPreferences("Highscore");
@@ -212,8 +217,8 @@ public class GameWorld {
         return bat;
     }
 
-    public Button getPlayButton() {
-        return playButton;
+    public Button getReplayButton() {
+        return replayButton;
     }
 
     public void setGameStateRunning() {

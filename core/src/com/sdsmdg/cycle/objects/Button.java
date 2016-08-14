@@ -1,5 +1,6 @@
 package com.sdsmdg.cycle.objects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -7,42 +8,57 @@ import com.sdsmdg.cycle.gameworld.GameWorld;
 
 public class Button {
 
-    TextureRegion region;
-    int width, height;
+    float width, height;
     Vector2 position = new Vector2();
     Rectangle rectangle;
     GameWorld myWorld;
+    TextureRegion regionOn, regionOff, current;
 
-    public Button(GameWorld world, int height, TextureRegion region, int width, int x, int y) {
+    public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff) {
         this.height = height;
-        this.region = region;
+        this.regionOn = regionOn;
+        this.regionOff = regionOff;
         this.width = width;
         this.position.x = x;
         this.position.y = y;
-        this.rectangle = new Rectangle(x - width / 2, y - height / 2, x + width / 2, y + height / 2);
+        this.rectangle = new Rectangle(x, y, width, height);
         this.myWorld = world;
+
+        current = regionOff;
     }
 
-    public void onClick(int state) {
-        switch (state) {
-            case GameWorld.PLAY:
-                myWorld.setGameStateRunning();
-                break;
-            case GameWorld.REPLAY:
-                myWorld.setGameStateRunning();
-                break;
-        }
+    public boolean isTouched(int x, int y) {
+        return rectangle.contains(x, y);
     }
 
-    public int getHeight() {
+    public void onDraw(SpriteBatch batcher) {
+        batcher.begin();
+        batcher.draw(current, position.x, position.y, width, height);
+        batcher.end();
+    }
+
+    public void onTouchDown() {
+        current = regionOn;
+    }
+
+    public void onTouchUp() {
+        current = regionOff;
+        myWorld.setGameStateRunning();
+    }
+
+    public void onRemoveTouch() {
+        current = regionOff;
+    }
+
+    public float getHeight() {
         return height;
     }
 
     public TextureRegion getRegion() {
-        return region;
+        return current;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
