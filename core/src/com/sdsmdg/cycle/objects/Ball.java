@@ -65,10 +65,10 @@ public class Ball {
      */
     public void readjustW() {
         if(velocity.x < 0) {
-            w = re * getSpeed();
+            w = re * getSpeed() / 480f * screenWidth;
         }
         else {
-            w = -re * getSpeed();
+            w = -re * getSpeed() / 480f * screenWidth;
         }
     }
 

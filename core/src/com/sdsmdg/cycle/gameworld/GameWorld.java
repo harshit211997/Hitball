@@ -8,6 +8,7 @@ import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Button;
 import com.sdsmdg.cycle.objects.Cloud;
+import com.sdsmdg.cycle.objects.Fan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class GameWorld {
     public static int score = 0;
     Preferences prefs;
     private List<Cloud> clouds = new ArrayList<Cloud>();
+    private Fan fan;
 
     private enum GameState {
         READY, RUNNING, OVER
@@ -76,6 +78,11 @@ public class GameWorld {
                 new Vector2(screenWidth / 1500f, 0),
                 AssetLoader.cloud1Region));
 
+        fan = new Fan(this,
+                screenWidth / 10, screenWidth / 10,
+                new Vector2(screenWidth / 7.5f, screenHeight / 3),
+                AssetLoader.fanRegion);
+
         Gdx.app.log(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
         prefs = Gdx.app.getPreferences("Highscore");
     }
@@ -107,12 +114,14 @@ public class GameWorld {
             clouds.get(i).update(delta);
         }
         bat.update(delta);
+        fan.update(delta);
     }
 
     public void updateOver(float delta) {
         for (int i = 0; i < clouds.size(); i++) {
             clouds.get(i).update(delta);
         }
+        fan.update(delta);
         bat.update(delta);
     }
 
@@ -126,6 +135,8 @@ public class GameWorld {
         }
         //Update the bat rotations
         bat.update(delta);
+        //Update the fan of the windmill
+        fan.update(delta);
         for (int i = 0; i < balls.size(); i++) {
             Ball ball = balls.get(i);
             if (isColliding(bat, ball, delta) && ball.isInPlane()) {
@@ -273,5 +284,9 @@ public class GameWorld {
 
     public List<Cloud> getClouds() {
         return clouds;
+    }
+
+    public Fan getFan() {
+        return fan;
     }
 }

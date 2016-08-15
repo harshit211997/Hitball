@@ -11,8 +11,8 @@ public class AssetLoader {
 
     public static Sound sound;
     public static BitmapFont font40, font80;
-    public static Texture bat, ball, play, replayOn, replayOff, cloud, cloud1, sun, background, mdgLogo;
-    public static Sprite batRegion, ballRegion, playRegion, replayRegionOn, replayRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion;
+    public static Texture bat, ball, play, replayOn, replayOff, cloud, cloud1, sun, background, mdgLogo, fan;
+    public static Sprite batRegion, ballRegion, playRegion, replayRegionOn, replayRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion;
 
     public static void load(int screenWidth) {
         bat = new Texture(Gdx.files.internal("bat.png"));
@@ -21,10 +21,10 @@ public class AssetLoader {
         ball = new Texture(Gdx.files.internal("ball.png"));
         ballRegion = new Sprite(ball);
 
-        replayOn = new Texture(Gdx.files.internal("retrydim.png"));
+        replayOn = new Texture(Gdx.files.internal("play_press.png"));
         replayRegionOn = new Sprite(replayOn);
 
-        replayOff = new Texture(Gdx.files.internal("retry.png"));
+        replayOff = new Texture(Gdx.files.internal("play.png"));
         replayRegionOff = new Sprite(replayOff);
 
         cloud = new Texture(Gdx.files.internal("cloud.png"));
@@ -50,6 +50,9 @@ public class AssetLoader {
         cloud1 = new Texture(Gdx.files.internal("cloud1.png"));
         cloud1Region = new Sprite(cloud1);
         cloud1Region.flip(false, true);
+
+        fan = new Texture(Gdx.files.internal("fan.png"));
+        fanRegion = new Sprite(fan);
 
         createFont(screenWidth);
 

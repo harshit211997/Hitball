@@ -14,6 +14,7 @@ import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Board;
 import com.sdsmdg.cycle.objects.Cloud;
+import com.sdsmdg.cycle.objects.Fan;
 
 import java.nio.IntBuffer;
 import java.util.List;
@@ -87,14 +88,16 @@ public class GameRenderer {
     public void render(float runTime) {
 
         // Fill the entire screen with black, to prevent potential flickering.
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(51/255f, 204/255f, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batcher.begin();
 
         //draw background
-        batcher.draw(AssetLoader.backgroundRegion, 0, 0,
-                screenWidth, screenHeight);
+        float backgroundWidth = screenWidth;
+        float backgroundHeight = backgroundWidth * 1748 / 1476f;
+        batcher.draw(AssetLoader.backgroundRegion, 0, screenHeight - backgroundHeight,
+                backgroundWidth, backgroundHeight);
 
         batcher.end();
 
@@ -103,6 +106,9 @@ public class GameRenderer {
         for(int i=0;i<clouds.size();i++) {
             clouds.get(i).onDraw(batcher);
         }
+
+        Fan fan = myWorld.getFan();
+        fan.onDraw(batcher);
 
         batcher.begin();
 
