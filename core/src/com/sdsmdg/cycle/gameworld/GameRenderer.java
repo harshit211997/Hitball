@@ -101,6 +101,9 @@ public class GameRenderer {
 
         batcher.end();
 
+        //Draw sun
+        myWorld.getSun().onDraw(batcher);
+
         //Draw clouds
         List<Cloud> clouds = myWorld.getClouds();
         for(int i=0;i<clouds.size();i++) {

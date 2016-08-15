@@ -9,6 +9,7 @@ import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Button;
 import com.sdsmdg.cycle.objects.Cloud;
 import com.sdsmdg.cycle.objects.Fan;
+import com.sdsmdg.cycle.objects.Sun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class GameWorld {
     Preferences prefs;
     private List<Cloud> clouds = new ArrayList<Cloud>();
     private Fan fan;
+    private Sun sun;
 
     private enum GameState {
         READY, RUNNING, OVER
@@ -83,11 +85,35 @@ public class GameWorld {
                 new Vector2(screenWidth / 7.5f, screenHeight / 3),
                 AssetLoader.fanRegion);
 
+        sun = new Sun(this,
+                new Vector2(screenWidth * 0.75f, screenHeight / 3),
+                AssetLoader.sunRegion);
+
         Gdx.app.log(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
         prefs = Gdx.app.getPreferences("Highscore");
     }
 
+    public void setHighScore(int score) {
+        prefs.putInteger("highscore", score);
+        prefs.flush();
+    }
+
     public void update(float delta) {
+
+        /*
+        These are the objects that need to be updated in every state of the game
+         */
+        sun.update(delta);
+
+        for (int i = 0; i < clouds.size(); i++) {
+            clouds.get(i).update(delta);
+        }
+        bat.update(delta);
+        fan.update(delta);
+
+        /*
+        While some other objects need to be updated at a certain state of the game
+         */
         switch (gameState) {
             case READY:
                 updateReady(delta);
@@ -100,29 +126,16 @@ public class GameWorld {
         }
     }
 
-    public void setHighScore(int score) {
-        prefs.putInteger("highscore", score);
-        prefs.flush();
-    }
-
     public int getHighScore() {
         return prefs.getInteger("highscore");
     }
 
     public void updateReady(float delta) {
-        for (int i = 0; i < clouds.size(); i++) {
-            clouds.get(i).update(delta);
-        }
-        bat.update(delta);
-        fan.update(delta);
+
     }
 
     public void updateOver(float delta) {
-        for (int i = 0; i < clouds.size(); i++) {
-            clouds.get(i).update(delta);
-        }
-        fan.update(delta);
-        bat.update(delta);
+
     }
 
     public void updateRunning(float delta) {
@@ -130,13 +143,7 @@ public class GameWorld {
         for (int i = 0; i < balls.size(); i++) {
             balls.get(i).update(delta);
         }
-        for (int i = 0; i < clouds.size(); i++) {
-            clouds.get(i).update(delta);
-        }
-        //Update the bat rotations
-        bat.update(delta);
-        //Update the fan of the windmill
-        fan.update(delta);
+
         for (int i = 0; i < balls.size(); i++) {
             Ball ball = balls.get(i);
             if (isColliding(bat, ball, delta) && ball.isInPlane()) {
@@ -288,5 +295,9 @@ public class GameWorld {
 
     public Fan getFan() {
         return fan;
+    }
+
+    public Sun getSun() {
+        return sun;
     }
 }
