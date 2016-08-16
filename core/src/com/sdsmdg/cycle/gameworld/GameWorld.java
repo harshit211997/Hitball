@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
+import com.sdsmdg.cycle.objects.Board;
 import com.sdsmdg.cycle.objects.Button;
 import com.sdsmdg.cycle.objects.Cloud;
 import com.sdsmdg.cycle.objects.Fan;
@@ -32,6 +33,7 @@ public class GameWorld {
     private List<Cloud> clouds = new ArrayList<Cloud>();
     private Fan fan;
     private Sun sun;
+    private Board board;
 
     private enum GameState {
         READY, RUNNING, OVER
@@ -60,9 +62,9 @@ public class GameWorld {
         this.screenWidth = screenWidth;
         gameState = GameState.READY;
 
-        int replayWidth = screenWidth / 4;
-        int replayHeight = screenWidth / 4;
-        replayButton = new Button(this, (screenWidth - replayWidth) / 2, 0.75f * screenHeight - replayHeight / 2,
+        int replayWidth = screenWidth / 5;
+        int replayHeight = screenWidth / 5;
+        replayButton = new Button(this, (screenWidth - replayWidth) / 2, 0.8f * screenHeight - replayHeight / 2,
                 replayWidth, replayHeight,
                 AssetLoader.replayRegionOn, AssetLoader.replayRegionOff);
 
@@ -82,14 +84,19 @@ public class GameWorld {
 
         fan = new Fan(this,
                 screenWidth / 10, screenWidth / 10,
-                new Vector2(screenWidth / 7.5f, screenHeight / 3),
+                new Vector2(screenWidth / 7.5f, screenHeight - screenWidth * 1.1f),
                 AssetLoader.fanRegion);
 
         sun = new Sun(this,
                 new Vector2(screenWidth * 0.75f, screenHeight / 3),
                 AssetLoader.sunRegion);
 
-        Gdx.app.log(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
+        board = new Board(
+                this,
+                screenWidth / 2, screenWidth / 2,
+                new Vector2(screenWidth / 2, screenHeight / 2)
+        );
+
         prefs = Gdx.app.getPreferences("Highscore");
     }
 
@@ -172,7 +179,7 @@ public class GameWorld {
     }
 
     public void playHitSound() {
-        AssetLoader.sound.play();//Play the hit sound when the ball hits the bat body and the handle
+        AssetLoader.hit.play();//Play the hit sound when the ball hits the bat body and the handle
     }
 
     public void updateScore() {
@@ -274,6 +281,7 @@ public class GameWorld {
 
     public void setGameStateOver() {
         bat.onTouchUp();
+        AssetLoader.gameOver.play();
         gameState = GameState.OVER;
     }
 
@@ -299,5 +307,9 @@ public class GameWorld {
 
     public Sun getSun() {
         return sun;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }

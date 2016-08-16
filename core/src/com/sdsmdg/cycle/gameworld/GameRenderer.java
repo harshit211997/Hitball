@@ -7,12 +7,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
-import com.sdsmdg.cycle.objects.Board;
 import com.sdsmdg.cycle.objects.Cloud;
 import com.sdsmdg.cycle.objects.Fan;
 
@@ -35,10 +33,6 @@ public class GameRenderer {
 
     GlyphLayout glyphLayout;
 
-    Board board;
-
-    float opacityBackground = 0f;
-
     public GameRenderer(GameWorld world, int screenWidth, int screenHeight) {
         myWorld = world;
         this.screenWidth = screenWidth;
@@ -56,14 +50,6 @@ public class GameRenderer {
         batcher.setProjectionMatrix(cam.combined);
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
-
-        int boardWidth = screenWidth / 2;
-        int boardHeight = screenWidth / 2;
-        board = new Board(
-                world,
-                screenWidth / 2, screenWidth / 2,
-                new Vector2((screenWidth - boardWidth) / 2, (screenHeight - boardHeight) / 2)
-        );
 
         initAssets();
         initGameObjects();
@@ -116,40 +102,56 @@ public class GameRenderer {
         batcher.begin();
 
         if (myWorld.isRunning()) {
+
             //Draw score while running
             String text = String.valueOf(myWorld.getScore());
             glyphLayout.setText(font80, text);
             float w = glyphLayout.width;
             float h = glyphLayout.height;
             font80.draw(batcher, text, (screenWidth - w) / 2, (screenHeight / 4 - h / 2));
+
+            //Draw bat
+            batcher.draw(AssetLoader.batRegion, bat.getPosition().x, bat.getPosition().y,
+                    bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
+                    bat.getWidth(), bat.getHeight(),
+                    1, 1,
+                    bat.getRotation());
+
+            //Draw ball
+            batcher.draw(AssetLoader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
+                    ball1.getRadius(), ball1.getRadius(),
+                    ball1.getRadius() * 2, ball1.getRadius() * 2,
+                    1, 1,
+                    ball1.getRotation());
+
         }
-
-        //Draw bat
-        batcher.draw(AssetLoader.batRegion, bat.getPosition().x, bat.getPosition().y,
-                bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
-                bat.getWidth(), bat.getHeight(),
-                1, 1,
-                bat.getRotation());
-
-        //Draw ball
-        batcher.draw(AssetLoader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
-                ball1.getRadius(), ball1.getRadius(),
-                ball1.getRadius() * 2, ball1.getRadius() * 2,
-                1, 1,
-                ball1.getRotation());
 
         batcher.end();
 
         if (myWorld.isReady()) {
             batcher.begin();
+
+            //Draw bat
+            batcher.draw(AssetLoader.batRegion, bat.getPosition().x, bat.getPosition().y,
+                    bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
+                    bat.getWidth(), bat.getHeight(),
+                    1, 1,
+                    bat.getRotation());
+
+            //Draw ball
+            batcher.draw(AssetLoader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
+                    ball1.getRadius(), ball1.getRadius(),
+                    ball1.getRadius() * 2, ball1.getRadius() * 2,
+                    1, 1,
+                    ball1.getRotation());
+
             String text = "Click here to play";
             glyphLayout.setText(font40, text);
             float w = glyphLayout.width;
             font40.draw(batcher, text, (screenWidth - w) / 2, screenHeight / 2);
             batcher.end();
         } else if (myWorld.isOver()) {
-            AssetLoader.setBackgroundAlpha(opacityBackground);
-            board.onDraw(batcher, shapeRenderer);
+            myWorld.getBoard().onDraw(batcher, shapeRenderer);
             myWorld.getReplayButton().onDraw(batcher);
         }
 

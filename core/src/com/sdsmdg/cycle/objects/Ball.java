@@ -12,7 +12,7 @@ public class Ball {
     float e = 0.8f;
     private boolean isInPlane = true;
     private float rotation = 0;
-    private float w = 200;
+    private float w = 100;
     private float re = 0.2f;//Rotation analogy of e(coefficient of restitution
 
     /*this property of ball determines that after collision with bat handle,
@@ -26,7 +26,7 @@ public class Ball {
         position = new Vector2(screenWidth / 2, screenHeight / 3);
         radius = screenWidth / 20;
 
-        acceleration = new Vector2(0, screenHeight * 2);
+        acceleration = new Vector2(0, screenWidth * 3.5f);
     }
 
     public void update(float delta) {
@@ -65,10 +65,10 @@ public class Ball {
      */
     public void readjustW() {
         if(velocity.x < 0) {
-            w = re * getSpeed() / 480f * screenWidth;
+            w = re * getSpeed();
         }
         else {
-            w = -re * getSpeed() / 480f * screenWidth;
+            w = -re * getSpeed();
         }
     }
 
