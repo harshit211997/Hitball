@@ -11,8 +11,8 @@ public class AssetLoader {
 
     public static Sound sound, hit, gameOver;
     public static BitmapFont font40, font80, font120;
-    public static Texture bat, ball, play, replayOn, replayOff, cloud, cloud1, sun, background, mdgLogo, fan;
-    public static Sprite batRegion, ballRegion, playRegion, replayRegionOn, replayRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion;
+    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan;
+    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion;
 
     public static void load(int screenWidth) {
         bat = new Texture(Gdx.files.internal("bat.png"));
@@ -21,11 +21,11 @@ public class AssetLoader {
         ball = new Texture(Gdx.files.internal("ball.png"));
         ballRegion = new Sprite(ball);
 
-        replayOn = new Texture(Gdx.files.internal("play_press.png"));
-        replayRegionOn = new Sprite(replayOn);
+        playOn = new Texture(Gdx.files.internal("play_press.png"));
+        playRegionOn = new Sprite(playOn);
 
-        replayOff = new Texture(Gdx.files.internal("play.png"));
-        replayRegionOff = new Sprite(replayOff);
+        playOff = new Texture(Gdx.files.internal("play.png"));
+        playRegionOff = new Sprite(playOff);
 
         cloud = new Texture(Gdx.files.internal("cloud.png"));
         cloudRegion = new Sprite(cloud);
@@ -86,11 +86,8 @@ public class AssetLoader {
         // We must dispose of the texture when we are finished.
         bat.dispose();
         ball.dispose();
-        if(play!=null) {
-            play.dispose();
-        }
-        replayOn.dispose();
-        replayOff.dispose();
+        playOn.dispose();
+        playOff.dispose();
         sun.dispose();
         background.dispose();
         sound.dispose();

@@ -32,10 +32,12 @@ public class InputHandler implements InputProcessor {
         if (myWorld.isRunning()) {
             myWorld.getBat().onTouchDown();
         } else if(myWorld.isReady()){
-            myWorld.setGameStateRunning();
+            if(myWorld.getPlayReady().isTouched(screenX, screenY)) {
+                myWorld.getPlayReady().onTouchDown();
+            }
         } else if(myWorld.isOver()) {
-            if(myWorld.getReplayButton().isTouched(screenX, screenY)) {
-                myWorld.getReplayButton().onTouchDown();
+            if(myWorld.getPlayButton().isTouched(screenX, screenY)) {
+                myWorld.getPlayButton().onTouchDown();
             }
         }
         return true;
@@ -46,8 +48,12 @@ public class InputHandler implements InputProcessor {
         if (myWorld.isRunning())
             myWorld.getBat().onTouchUp();
         else if(myWorld.isOver()) {
-            if(myWorld.getReplayButton().isTouched(screenX, screenY)) {
-                myWorld.getReplayButton().onTouchUp();
+            if(myWorld.getPlayButton().isTouched(screenX, screenY)) {
+                myWorld.getPlayButton().onTouchUp();
+            }
+        } else if(myWorld.isReady()) {
+            if(myWorld.getPlayReady().isTouched(screenX, screenY)) {
+                myWorld.getPlayReady().onTouchUp();
             }
         }
         return true;
@@ -56,10 +62,16 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if(myWorld.isOver()) {
-            if(!myWorld.getReplayButton().isTouched(screenX, screenY)) {
-                myWorld.getReplayButton().onRemoveTouch();
+            if(!myWorld.getPlayButton().isTouched(screenX, screenY)) {
+                myWorld.getPlayButton().onRemoveTouch();
             }else {
-                myWorld.getReplayButton().onTouchDown();
+                myWorld.getPlayButton().onTouchDown();
+            }
+        } else if(myWorld.isReady()) {
+            if(!myWorld.getPlayReady().isTouched(screenX, screenY)) {
+                myWorld.getPlayReady().onRemoveTouch();
+            }else {
+                myWorld.getPlayReady().onTouchDown();
             }
         }
         return false;

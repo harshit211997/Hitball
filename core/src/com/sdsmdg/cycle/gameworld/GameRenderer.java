@@ -129,30 +129,10 @@ public class GameRenderer {
         batcher.end();
 
         if (myWorld.isReady()) {
-            batcher.begin();
-
-            //Draw bat
-            batcher.draw(AssetLoader.batRegion, bat.getPosition().x, bat.getPosition().y,
-                    bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
-                    bat.getWidth(), bat.getHeight(),
-                    1, 1,
-                    bat.getRotation());
-
-            //Draw ball
-            batcher.draw(AssetLoader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
-                    ball1.getRadius(), ball1.getRadius(),
-                    ball1.getRadius() * 2, ball1.getRadius() * 2,
-                    1, 1,
-                    ball1.getRotation());
-
-            String text = "Click here to play";
-            glyphLayout.setText(font40, text);
-            float w = glyphLayout.width;
-            font40.draw(batcher, text, (screenWidth - w) / 2, screenHeight / 2);
-            batcher.end();
+            myWorld.getPlayReady().onDraw(batcher);
         } else if (myWorld.isOver()) {
             myWorld.getBoard().onDraw(batcher, shapeRenderer);
-            myWorld.getReplayButton().onDraw(batcher);
+            myWorld.getPlayButton().onDraw(batcher);
         }
 
     }

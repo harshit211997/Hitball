@@ -25,15 +25,14 @@ public class GameWorld {
     private Bat bat;
     private int screenWidth, screenHeight;
     GameState gameState;
-    Button replayButton;
-    public static final int PLAY = 0;
-    public static final int REPLAY = 1;
+    Button playButton;
     public static int score = 0;
     Preferences prefs;
     private List<Cloud> clouds = new ArrayList<Cloud>();
     private Fan fan;
     private Sun sun;
     private Board board;
+    private Button playReady;
 
     private enum GameState {
         READY, RUNNING, OVER
@@ -62,11 +61,23 @@ public class GameWorld {
         this.screenWidth = screenWidth;
         gameState = GameState.READY;
 
+        /*
+        This play button is used when the game is over
+         */
         int replayWidth = screenWidth / 5;
         int replayHeight = screenWidth / 5;
-        replayButton = new Button(this, (screenWidth - replayWidth) / 2, 0.8f * screenHeight - replayHeight / 2,
+        playButton = new Button(this, (screenWidth - replayWidth) / 2, 0.8f * screenHeight - replayHeight / 2,
                 replayWidth, replayHeight,
-                AssetLoader.replayRegionOn, AssetLoader.replayRegionOff);
+                AssetLoader.playRegionOn, AssetLoader.playRegionOff);
+
+        /*
+        This play button is used when game starts at the beginning
+         */
+        float playWidth = screenWidth / 3, playHeight = screenWidth / 3;
+        playReady = new Button(this, (screenWidth - playWidth) / 2, (screenHeight - playHeight) / 2,
+                playWidth, playHeight,
+                AssetLoader.playRegionOn,
+                AssetLoader.playRegionOff);
 
         float cloudWidth = screenWidth / 3;
         float cloudHeight = (cloudWidth * 121) / 232;
@@ -267,8 +278,8 @@ public class GameWorld {
         return bat;
     }
 
-    public Button getReplayButton() {
-        return replayButton;
+    public Button getPlayButton() {
+        return playButton;
     }
 
     public void setGameStateRunning() {
@@ -311,5 +322,9 @@ public class GameWorld {
 
     public Board getBoard() {
         return board;
+    }
+
+    public Button getPlayReady() {
+        return playReady;
     }
 }
