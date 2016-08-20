@@ -31,6 +31,8 @@ public class SplashScreen implements Screen {
         batcher.setProjectionMatrix(camera.combined);
 
         this.game = game;
+
+        game.playServices.signIn();
     }
 
     @Override
