@@ -1,5 +1,6 @@
 package com.sdsmdg.cycle.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -13,8 +14,9 @@ public class Button {
     Rectangle rectangle;
     GameWorld myWorld;
     TextureRegion regionOn, regionOff, current;
+    int id;//This determines which type of button is it
 
-    public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff) {
+    public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
         this.height = height;
         this.regionOn = regionOn;
         this.regionOff = regionOff;
@@ -23,6 +25,7 @@ public class Button {
         this.position.y = y;
         this.rectangle = new Rectangle(x, y, width, height);
         this.myWorld = world;
+        this.id = id;
 
         current = regionOff;
     }
@@ -43,7 +46,15 @@ public class Button {
 
     public void onTouchUp() {
         current = regionOff;
-        myWorld.setGameStateRunning();
+        //id == 0 means it is a play button
+        if(id == 0) {
+            myWorld.setGameStateRunning();
+        }
+        //id == 1 means it is an achievement button
+        else if(id == 1) {
+            myWorld.getGame().playServices.showAchievement();
+            Gdx.app.log("Button", "onTouchDown() for achievement called");
+        }
     }
 
     public void onRemoveTouch() {

@@ -27,6 +27,13 @@ android {
         minSdkVersion 9
         targetSdkVersion 24
     }
+    buildTypes {
+        debug {
+        }
+        release {
+            signingConfig signingConfigs.config
+        }
+    }
 }
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders

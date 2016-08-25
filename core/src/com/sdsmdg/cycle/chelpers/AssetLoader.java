@@ -11,8 +11,8 @@ public class AssetLoader {
 
     public static Sound sound, hit, gameOver;
     public static BitmapFont font40, font80, font120;
-    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan;
-    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion;
+    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement;
+    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion;
 
     public static void load(int screenWidth) {
         bat = new Texture(Gdx.files.internal("bat.png"));
@@ -54,6 +54,10 @@ public class AssetLoader {
         fan = new Texture(Gdx.files.internal("fan.png"));
         fanRegion = new Sprite(fan);
 
+        achievement = new Texture(Gdx.files.internal("achievement.png"));
+        achievementRegion = new Sprite(achievement);
+        achievementRegion.flip(false, true);
+
         createFont(screenWidth);
 
         loadSounds();
@@ -92,6 +96,7 @@ public class AssetLoader {
         background.dispose();
         sound.dispose();
         hit.dispose();
+        achievement.dispose();
     }
     
 }

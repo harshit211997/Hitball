@@ -8,7 +8,7 @@ import com.sdsmdg.cycle.screens.SplashScreen;
 public class CGame extends Game{
 
     private static final String TAG = CGame.class.getSimpleName();
-    public static PlayServices playServices;
+    public PlayServices playServices;
 
     public CGame(PlayServices playServices) {
         this.playServices = playServices;

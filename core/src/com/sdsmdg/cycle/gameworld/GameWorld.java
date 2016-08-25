@@ -3,6 +3,7 @@ package com.sdsmdg.cycle.gameworld;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
+import com.sdsmdg.cycle.CGame;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
@@ -32,7 +33,11 @@ public class GameWorld {
     private Fan fan;
     private Sun sun;
     private Board board;
-    private Button playReady;
+    private Button playReady, achievement;
+    int hitCount = 0;//This int counts the total no. of hits the bat(or ball) experiences(Including the hit on handle of bat)
+
+    //This reference is just used to call the playServices methods to unlock Achievements
+    private CGame game;
 
     private enum GameState {
         READY, RUNNING, OVER
@@ -50,7 +55,7 @@ public class GameWorld {
         return gameState == GameState.OVER;
     }
 
-    public GameWorld(int screenWidth, int screenHeight) {
+    public GameWorld(CGame game, int screenWidth, int screenHeight) {
         Vector2 batPosition = new Vector2(screenWidth / 10, screenHeight / 2 + 100);
         int batHeight = screenWidth / 15;
         int batWidth = (AssetLoader.batRegion.getRegionWidth() * batHeight) / AssetLoader.batRegion.getRegionHeight();
@@ -64,11 +69,12 @@ public class GameWorld {
         /*
         This play button is used when the game is over
          */
-        int replayWidth = screenWidth / 5;
-        int replayHeight = screenWidth / 5;
+        int replayWidth = screenWidth / 4;
+        int replayHeight = screenWidth / 4;
         playButton = new Button(this, (screenWidth - replayWidth) / 2, 0.8f * screenHeight - replayHeight / 2,
                 replayWidth, replayHeight,
-                AssetLoader.playRegionOn, AssetLoader.playRegionOff);
+                AssetLoader.playRegionOn, AssetLoader.playRegionOff,
+                0);
 
         /*
         This play button is used when game starts at the beginning
@@ -77,7 +83,16 @@ public class GameWorld {
         playReady = new Button(this, (screenWidth - playWidth) / 2, (screenHeight - playHeight) / 2,
                 playWidth, playHeight,
                 AssetLoader.playRegionOn,
-                AssetLoader.playRegionOff);
+                AssetLoader.playRegionOff,
+                0);
+
+        //This button is used to show all the achievements of the user
+        float achievementWidth = screenWidth / 5, achievementHeight = screenWidth / 5;
+        achievement = new Button(this, screenWidth / 4 - achievementWidth / 2, screenHeight * 0.75f - achievementHeight / 2,
+                achievementWidth, achievementHeight,
+                AssetLoader.achievementRegion,
+                AssetLoader.achievementRegion,
+                1);
 
         float cloudWidth = screenWidth / 3;
         float cloudHeight = (cloudWidth * 121) / 232;
@@ -109,6 +124,8 @@ public class GameWorld {
         );
 
         prefs = Gdx.app.getPreferences("Highscore");
+
+        this.game = game;
     }
 
     public void setHighScore(int score) {
@@ -116,8 +133,39 @@ public class GameWorld {
         prefs.flush();
     }
 
+    //This function is used to increase the count of no of games the user has played(This info is useful for unlocking achievement)
+    public void incrementGamesPlayed() {
+        prefs.putInteger("no_of_times_played", getGamesPlayed() + 1);
+        prefs.flush();
+    }
+
+    public int getGamesPlayed() {
+        return prefs.getInteger("no_of_times_played", 0);
+    }
+
+    public boolean isBeginnerComplete() {
+        if(getGamesPlayed() == 10) {
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean isBoredComplete() {
+        if(getGamesPlayed() == 100) {
+            return true;
+        }
+        else return false;
+    }
+
     public void update(float delta) {
 
+        if(isBeginnerComplete()) {
+            game.playServices.unlockAchievementBeginner();
+        }
+
+        if(isBoredComplete()) {
+            game.playServices.unlockAchievementBored();
+        }
         /*
         These are the objects that need to be updated in every state of the game
          */
@@ -174,10 +222,12 @@ public class GameWorld {
                 }
                 ball.afterCollisionWithBody((int) bat.getRotation(), vBat);
                 updateScore();
+                increaseHitCount();
             } else if (isCollidingHandle(bat, ball, delta) && ball.isInPlane()) {
                 playHitSound();
                 setBallOut(ball);
                 ball.setOffPlane();
+                increaseHitCount();
             }
             //To avoid overlap of bat and ball
             if (ball.isBallOffScreen()) {
@@ -187,6 +237,14 @@ public class GameWorld {
             }
         }
 
+    }
+
+    public void increaseHitCount() {
+        hitCount ++;
+    }
+
+    public void resetHitCount() {
+        hitCount = 0;
     }
 
     public void playHitSound() {
@@ -294,6 +352,18 @@ public class GameWorld {
         bat.onTouchUp();
         AssetLoader.gameOver.play();
         gameState = GameState.OVER;
+        incrementGamesPlayed();
+        if(score == 2) {
+            game.playServices.unlockAchievement2();
+        } else if(score == 100) {
+            game.playServices.unlockAchievementCentury();
+        } else if(score == 50) {
+            game.playServices.unlockAchievementHalfCentury();
+        }
+        if(hitCount == 1) {
+            game.playServices.unlockAchievementTrickyOne();
+        }
+        resetHitCount();
     }
 
     public int getScore() {
@@ -326,5 +396,13 @@ public class GameWorld {
 
     public Button getPlayReady() {
         return playReady;
+    }
+
+    public Button getAchievementButton() {
+        return achievement;
+    }
+
+    public CGame getGame() {
+        return game;
     }
 }

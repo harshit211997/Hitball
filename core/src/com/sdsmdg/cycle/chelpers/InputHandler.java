@@ -39,6 +39,9 @@ public class InputHandler implements InputProcessor {
             if(myWorld.getPlayButton().isTouched(screenX, screenY)) {
                 myWorld.getPlayButton().onTouchDown();
             }
+            if(myWorld.getAchievementButton().isTouched(screenX, screenY)) {
+                myWorld.getAchievementButton().onTouchDown();
+            }
         }
         return true;
     }
@@ -50,6 +53,9 @@ public class InputHandler implements InputProcessor {
         else if(myWorld.isOver()) {
             if(myWorld.getPlayButton().isTouched(screenX, screenY)) {
                 myWorld.getPlayButton().onTouchUp();
+            }
+            if(myWorld.getAchievementButton().isTouched(screenX, screenY)) {
+                myWorld.getAchievementButton().onTouchUp();
             }
         } else if(myWorld.isReady()) {
             if(myWorld.getPlayReady().isTouched(screenX, screenY)) {
@@ -66,6 +72,12 @@ public class InputHandler implements InputProcessor {
                 myWorld.getPlayButton().onRemoveTouch();
             }else {
                 myWorld.getPlayButton().onTouchDown();
+            }
+            if(!myWorld.getAchievementButton().isTouched(screenX, screenY)) {
+                myWorld.getAchievementButton().onRemoveTouch();
+            }
+            else {
+                myWorld.getAchievementButton().onTouchDown();
             }
         } else if(myWorld.isReady()) {
             if(!myWorld.getPlayReady().isTouched(screenX, screenY)) {

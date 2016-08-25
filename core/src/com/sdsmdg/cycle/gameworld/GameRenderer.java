@@ -133,6 +133,7 @@ public class GameRenderer {
         } else if (myWorld.isOver()) {
             myWorld.getBoard().onDraw(batcher, shapeRenderer);
             myWorld.getPlayButton().onDraw(batcher);
+            myWorld.getAchievementButton().onDraw(batcher);
         }
 
     }

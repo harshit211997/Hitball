@@ -7,5 +7,9 @@ Save this file as res/values/games-ids.xml in your project.
     <string name="app_id">573772814063</string>
     <string name="package_name">com.sdsmdg.cycle</string>
     <string name="achievement_beginner">CgkI762ZvNkQEAIQAg</string>
+    <string name="achievement_welcome_to_the_2_group">CgkI762ZvNkQEAIQBg</string>
+    <string name="achievement_the_tricky_one">CgkI762ZvNkQEAIQBw</string>
+    <string name="achievement_century">CgkI762ZvNkQEAIQCA</string>
+    <string name="achievement_half_century">CgkI762ZvNkQEAIQCQ</string>
     <string name="leaderboard_leaderboard">CgkI762ZvNkQEAIQAQ</string>
 </resources>

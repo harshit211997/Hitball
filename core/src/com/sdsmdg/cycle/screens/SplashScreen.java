@@ -32,7 +32,9 @@ public class SplashScreen implements Screen {
 
         this.game = game;
 
-        game.playServices.signIn();
+        if (!game.playServices.isSignedIn())
+            game.playServices.signIn();
+
     }
 
     @Override
@@ -64,7 +66,7 @@ public class SplashScreen implements Screen {
         batcher.end();
 
         if (TimeUtils.millis() >= startTime + DURATION) {
-            game.setScreen(new GameScreen());
+            game.setScreen(new GameScreen(game));
         }
     }
 

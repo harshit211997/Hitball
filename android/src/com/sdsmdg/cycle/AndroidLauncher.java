@@ -9,6 +9,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.GameHelper;
+import com.sdsmdg.ball.R;
 
 
 public class AndroidLauncher extends AndroidApplication implements PlayServices {
@@ -23,7 +24,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
 		initialize(new CGame(this), config);
 
         gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
-        gameHelper.enableDebugLog(false);
+        gameHelper.enableDebugLog(true);
 
         GameHelper.GameHelperListener gameHelperListener = new GameHelper.GameHelperListener()
         {
@@ -110,10 +111,44 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
     }
 
     @Override
-    public void unlockAchievement()
+    public void unlockAchievementBeginner()
     {
+        //This achievement is named Beginner, for playing 10 games
+        Games.Achievements.unlock(gameHelper.getApiClient(),
+                getString(R.string.achievement_beginner));
+    }
+
+    @Override
+    public void unlockAchievement2() {
+        //This gets unlocked on making a score of 2
+        Games.Achievements.unlock(gameHelper.getApiClient(),
+                getString(R.string.achievement_welcome_to_the_2_group));
+    }
+
+    @Override
+    public void unlockAchievementTrickyOne() {
+        //This gets unlocked when the ball hits the bat only once in a game
+        Games.Achievements.unlock(gameHelper.getApiClient(),
+                getString(R.string.achievement_the_tricky_one));
+    }
+
+    @Override
+    public void unlockAchievementCentury() {
+        Games.Achievements.unlock(gameHelper.getApiClient(),
+                getString(R.string.achievement_century));
+    }
+
+    @Override
+    public void unlockAchievementHalfCentury() {
+        Games.Achievements.unlock(gameHelper.getApiClient(),
+                getString(R.string.achievement_half_century));
+    }
+
+    @Override
+    public void unlockAchievementBored() {
+        //Play 100 games to unlock this achievement
 //        Games.Achievements.unlock(gameHelper.getApiClient(),
-//                getString(R.string.achievement_dum_dum));
+//                getString(R.string.achievement_bored));
     }
 
     @Override
@@ -131,8 +166,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
     {
         if (isSignedIn() == true)
         {
-//            startActivityForResult(Games.Achievements.getAchievementsIntent(gameHelper.getApiClient(),
-//                    getString(R.string.achievement_dum_dum)), requestCode);
+            startActivityForResult(Games.Achievements.getAchievementsIntent(gameHelper.getApiClient()), requestCode);
         }
         else
         {

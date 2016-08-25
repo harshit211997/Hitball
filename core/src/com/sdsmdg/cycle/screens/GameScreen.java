@@ -2,6 +2,7 @@ package com.sdsmdg.cycle.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.sdsmdg.cycle.CGame;
 import com.sdsmdg.cycle.chelpers.InputHandler;
 import com.sdsmdg.cycle.gameworld.GameRenderer;
 import com.sdsmdg.cycle.gameworld.GameWorld;
@@ -12,13 +13,15 @@ public class GameScreen implements Screen{
     private GameWorld world;
     private GameRenderer renderer;
     private float runTime = 0;
+    private CGame game;
 
-    public GameScreen() {
+    public GameScreen(CGame game) {
         Gdx.app.log(TAG, "Attached");
+        this.game = game;
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
 
-        world = new GameWorld((int)screenWidth, (int)screenHeight); // initialize world
+        world = new GameWorld(game, (int)screenWidth, (int)screenHeight); // initialize world
         renderer = new GameRenderer(world, (int)screenWidth, (int)screenHeight); // initialize renderer
 
         Gdx.input.setInputProcessor(new InputHandler(world));
