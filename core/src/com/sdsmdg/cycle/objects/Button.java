@@ -10,11 +10,13 @@ import com.sdsmdg.cycle.gameworld.GameWorld;
 public class Button {
 
     float width, height;
+    float MAX_WIDTH, MAX_HEIGHT;
     Vector2 position = new Vector2();
     Rectangle rectangle;
     GameWorld myWorld;
     TextureRegion regionOn, regionOff, current;
     int id;//This determines which type of button is it
+    float theta = 0;
 
     public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
         this.height = height;
@@ -23,9 +25,12 @@ public class Button {
         this.width = width;
         this.position.x = x;
         this.position.y = y;
-        this.rectangle = new Rectangle(x, y, width, height);
+        this.rectangle = new Rectangle(x - width / 2, y - height / 2, width, height);
         this.myWorld = world;
         this.id = id;
+
+        MAX_HEIGHT = height;//Initial height is the maximum height
+        MAX_WIDTH = width;//Similarly, the width
 
         current = regionOff;
     }
@@ -34,9 +39,15 @@ public class Button {
         return rectangle.contains(x, y);
     }
 
+    public void update(float delta) {
+        theta += delta;
+        width = MAX_WIDTH / 50 * (float)Math.sin(4 * theta) + 49 * MAX_WIDTH / 50;
+        height = MAX_HEIGHT / 50 * (float)Math.sin(4 * theta) + 49 * MAX_HEIGHT / 50;
+    }
+
     public void onDraw(SpriteBatch batcher) {
         batcher.begin();
-        batcher.draw(current, position.x, position.y, width, height);
+        batcher.draw(current, position.x - width / 2, position.y - height / 2, width, height);
         batcher.end();
     }
 

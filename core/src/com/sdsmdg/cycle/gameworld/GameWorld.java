@@ -71,7 +71,7 @@ public class GameWorld {
          */
         int replayWidth = screenWidth / 4;
         int replayHeight = screenWidth / 4;
-        playButton = new Button(this, (screenWidth - replayWidth) / 2, 0.8f * screenHeight - replayHeight / 2,
+        playButton = new Button(this, (screenWidth) / 2, 0.8f * screenHeight,
                 replayWidth, replayHeight,
                 AssetLoader.playRegionOn, AssetLoader.playRegionOff,
                 0);
@@ -80,7 +80,7 @@ public class GameWorld {
         This play button is used when game starts at the beginning
          */
         float playWidth = screenWidth / 3, playHeight = screenWidth / 3;
-        playReady = new Button(this, (screenWidth - playWidth) / 2, (screenHeight - playHeight) / 2,
+        playReady = new Button(this, (screenWidth) / 2, (screenHeight) / 2,
                 playWidth, playHeight,
                 AssetLoader.playRegionOn,
                 AssetLoader.playRegionOff,
@@ -88,7 +88,7 @@ public class GameWorld {
 
         //This button is used to show all the achievements of the user
         float achievementWidth = screenWidth / 5, achievementHeight = screenWidth / 5;
-        achievement = new Button(this, screenWidth / 4 - achievementWidth / 2, screenHeight * 0.75f - achievementHeight / 2,
+        achievement = new Button(this, screenWidth / 4, screenHeight * 0.75f,
                 achievementWidth, achievementHeight,
                 AssetLoader.achievementRegion,
                 AssetLoader.achievementRegion,
@@ -176,6 +176,10 @@ public class GameWorld {
         }
         bat.update(delta);
         fan.update(delta);
+
+        playButton.update(delta);
+        playReady.update(delta);
+        achievement.update(delta);
 
         /*
         While some other objects need to be updated at a certain state of the game
