@@ -19,7 +19,7 @@ dependencies {
         ext.support_library_version = '20.0.+'
     }
     if (!project.hasProperty('gms_library_version')) {
-        ext.gms_library_version = '8.1.0'
+        ext.gms_library_version = '9.4.0'
     }
 
     compile "com.android.support:appcompat-v7:${appcompat_library_version}"

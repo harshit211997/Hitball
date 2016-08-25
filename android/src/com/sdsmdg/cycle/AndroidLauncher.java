@@ -156,7 +156,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
     {
         if (isSignedIn() == true)
         {
-//            Games.Leaderboards.submitScore(gameHelper.getApiClient(), highScore);
+            Games.Leaderboards.submitScore(gameHelper.getApiClient(),
+                    getString(R.string.leaderboard_leaderboard), highScore);
         }
     }
 
@@ -178,8 +179,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
     {
         if (isSignedIn() == true)
         {
-//            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(),
-//                    getString(R.string.leaderboard_highest)), requestCode);
+            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(),
+                    getString(R.string.leaderboard_leaderboard)), requestCode);
         }
         else
         {

@@ -134,6 +134,7 @@ public class GameRenderer {
             myWorld.getBoard().onDraw(batcher, shapeRenderer);
             myWorld.getPlayButton().onDraw(batcher);
             myWorld.getAchievementButton().onDraw(batcher);
+            myWorld.getLeaderBoardButton().onDraw(batcher);
         }
 
     }

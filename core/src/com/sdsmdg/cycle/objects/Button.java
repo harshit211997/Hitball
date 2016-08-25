@@ -41,8 +41,8 @@ public class Button {
 
     public void update(float delta) {
         theta += delta;
-        width = MAX_WIDTH / 50 * (float)Math.sin(4 * theta) + 49 * MAX_WIDTH / 50;
-        height = MAX_HEIGHT / 50 * (float)Math.sin(4 * theta) + 49 * MAX_HEIGHT / 50;
+        width = MAX_WIDTH / 50 * (float) Math.sin(4 * theta) + 49 * MAX_WIDTH / 50;
+        height = MAX_HEIGHT / 50 * (float) Math.sin(4 * theta) + 49 * MAX_HEIGHT / 50;
     }
 
     public void onDraw(SpriteBatch batcher) {
@@ -58,16 +58,26 @@ public class Button {
     public void onTouchUp() {
         current = regionOff;
         //id == 0 means it is a play button
-        if(id == 0) {
+        if (id == 0) {
             myWorld.setGameStateRunning();
         }
         //id == 1 means it is an achievement button
-        else if(id == 1) {
+        else if (id == 1) {
             myWorld.getGame().playServices.showAchievement();
-            Gdx.app.log("Button", "onTouchDown() for achievement called");
+        }
+
+        //id == 2 means it is a leaderboard button
+        else if (id == 2) {
+            myWorld.getGame().playServices.showScore();
+            Gdx.app.log("BUtton", "showScore() called");
         }
     }
 
+    /*
+    This function is used by input handler,
+    it is used for the case when the user touches down the button, and drags it away,
+    this method helps input handler to make the button "unpressed" at that time
+    */
     public void onRemoveTouch() {
         current = regionOff;
     }

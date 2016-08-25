@@ -33,7 +33,7 @@ public class GameWorld {
     private Fan fan;
     private Sun sun;
     private Board board;
-    private Button playReady, achievement;
+    private Button playReady, achievement, leaderBoardButton;
     int hitCount = 0;//This int counts the total no. of hits the bat(or ball) experiences(Including the hit on handle of bat)
 
     //This reference is just used to call the playServices methods to unlock Achievements
@@ -94,6 +94,13 @@ public class GameWorld {
                 AssetLoader.achievementRegion,
                 1);
 
+        float leaderWidth = screenWidth / 5, leaderHeight = screenWidth / 5;
+        leaderBoardButton = new Button(this, 3 * screenWidth / 4, screenHeight * 0.75f,
+                leaderWidth, leaderHeight,
+                AssetLoader.leaderboardRegion,
+                AssetLoader.leaderboardRegion,
+                2);
+
         float cloudWidth = screenWidth / 3;
         float cloudHeight = (cloudWidth * 121) / 232;
         clouds.add(new Cloud(this, cloudWidth, cloudHeight,
@@ -129,6 +136,7 @@ public class GameWorld {
     }
 
     public void setHighScore(int score) {
+        game.playServices.submitScore(score);
         prefs.putInteger("highscore", score);
         prefs.flush();
     }
@@ -408,5 +416,9 @@ public class GameWorld {
 
     public CGame getGame() {
         return game;
+    }
+
+    public Button getLeaderBoardButton() {
+        return leaderBoardButton;
     }
 }
