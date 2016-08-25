@@ -147,8 +147,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
     @Override
     public void unlockAchievementBored() {
         //Play 100 games to unlock this achievement
-//        Games.Achievements.unlock(gameHelper.getApiClient(),
-//                getString(R.string.achievement_bored));
+        Games.Achievements.unlock(gameHelper.getApiClient(),
+                getString(R.string.achievement_bored));
     }
 
     @Override
@@ -156,8 +156,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
     {
         if (isSignedIn() == true)
         {
-//            Games.Leaderboards.submitScore(gameHelper.getApiClient(),
-//                    getString(R.string.leaderboard_highest), highScore);
+//            Games.Leaderboards.submitScore(gameHelper.getApiClient(), highScore);
         }
     }
 

@@ -11,5 +11,6 @@ Save this file as res/values/games-ids.xml in your project.
     <string name="achievement_the_tricky_one">CgkI762ZvNkQEAIQBw</string>
     <string name="achievement_century">CgkI762ZvNkQEAIQCA</string>
     <string name="achievement_half_century">CgkI762ZvNkQEAIQCQ</string>
+    <string name="achievement_bored">CgkI762ZvNkQEAIQCg</string>
     <string name="leaderboard_leaderboard">CgkI762ZvNkQEAIQAQ</string>
 </resources>
