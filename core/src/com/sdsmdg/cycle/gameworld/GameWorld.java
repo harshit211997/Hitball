@@ -152,14 +152,14 @@ public class GameWorld {
     }
 
     public boolean isBeginnerComplete() {
-        if(getGamesPlayed() == 10) {
+        if(getGamesPlayed() >= 10) {
             return true;
         }
         else return false;
     }
 
     public boolean isBoredComplete() {
-        if(getGamesPlayed() == 100) {
+        if(getGamesPlayed() >= 100) {
             return true;
         }
         else return false;

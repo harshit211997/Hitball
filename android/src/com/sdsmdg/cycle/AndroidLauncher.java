@@ -114,40 +114,46 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
     public void unlockAchievementBeginner()
     {
         //This achievement is named Beginner, for playing 10 games
-        Games.Achievements.unlock(gameHelper.getApiClient(),
+        if(gameHelper.isSignedIn())
+            Games.Achievements.unlock(gameHelper.getApiClient(),
                 getString(R.string.achievement_beginner));
     }
 
     @Override
     public void unlockAchievement2() {
         //This gets unlocked on making a score of 2
-        Games.Achievements.unlock(gameHelper.getApiClient(),
+        if(gameHelper.isSignedIn())
+            Games.Achievements.unlock(gameHelper.getApiClient(),
                 getString(R.string.achievement_welcome_to_the_2_group));
     }
 
     @Override
     public void unlockAchievementTrickyOne() {
         //This gets unlocked when the ball hits the bat only once in a game
-        Games.Achievements.unlock(gameHelper.getApiClient(),
+        if(gameHelper.isSignedIn())
+            Games.Achievements.unlock(gameHelper.getApiClient(),
                 getString(R.string.achievement_the_tricky_one));
     }
 
     @Override
     public void unlockAchievementCentury() {
-        Games.Achievements.unlock(gameHelper.getApiClient(),
+        if(gameHelper.isSignedIn())
+            Games.Achievements.unlock(gameHelper.getApiClient(),
                 getString(R.string.achievement_century));
     }
 
     @Override
     public void unlockAchievementHalfCentury() {
-        Games.Achievements.unlock(gameHelper.getApiClient(),
+        if(gameHelper.isSignedIn())
+            Games.Achievements.unlock(gameHelper.getApiClient(),
                 getString(R.string.achievement_half_century));
     }
 
     @Override
     public void unlockAchievementBored() {
         //Play 100 games to unlock this achievement
-        Games.Achievements.unlock(gameHelper.getApiClient(),
+        if(gameHelper.isSignedIn())
+            Games.Achievements.unlock(gameHelper.getApiClient(),
                 getString(R.string.achievement_bored));
     }
 
