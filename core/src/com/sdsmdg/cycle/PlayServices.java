@@ -11,6 +11,8 @@ public interface PlayServices {
     public void unlockAchievementCentury();
     public void unlockAchievementHalfCentury();
     public void unlockAchievementBored();
+    public void unlockAchievementIntoHeavens();
+    public void unlockAchievementYouAreGod();
     public void submitScore(int highScore);
     public void showAchievement();
     public void showScore();

@@ -39,6 +39,16 @@ public class GameWorld {
     //This reference is just used to call the playServices methods to unlock Achievements
     private CGame game;
 
+    /*
+    This flag plays a very interesting role in the achievement "Into the Heavens",
+    it is true after a collision, but when ball goes above the screen, it becomes false, and the countHeaven value increases
+    by 1, then if the value is false in the next collision, collision makes it true, but if it is not,
+    then the countHeaven resets.
+    Interesting stuff huh!
+     */
+    boolean flag = false;
+    int countHeaven = 0;
+
     private enum GameState {
         READY, RUNNING, OVER
     }
@@ -216,16 +226,47 @@ public class GameWorld {
 
     }
 
+    public boolean ballAboveScreen(Ball ball) {
+        if(ball.getPosition().y <= 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public void incrementCountHeaven() {
+        countHeaven ++;
+        flag = false;
+        if(countHeaven == 3) {
+            game.playServices.unlockAchievementIntoHeavens();
+        } else if(countHeaven == 4) {
+            game.playServices.unlockAchievementYouAreGod();
+        }
+    }
+
     public void updateRunning(float delta) {
         //Update all balls positions on screen
         for (int i = 0; i < balls.size(); i++) {
             balls.get(i).update(delta);
         }
 
+        //There is just one ball therefore balls.get(0) is used
+        if(ballAboveScreen(balls.get(0))) {
+            if(flag == true) {
+                incrementCountHeaven();
+            }
+        }
+
         for (int i = 0; i < balls.size(); i++) {
             Ball ball = balls.get(i);
             if (isColliding(bat, ball, delta) && ball.isInPlane()) {
                 playHitSound();
+
+                if(!flag) {
+                    flag = true;
+                } else {
+                    countHeaven = 0;
+                }
+
                 setBallOut(ball);
                 int distance = getDistance(ball.getPosition().x, bat.getOriginX(), ball.getPosition().y, bat.getOriginY());
                 int vBat = 0;

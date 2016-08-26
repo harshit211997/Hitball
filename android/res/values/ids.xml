@@ -12,5 +12,7 @@ Save this file as res/values/games-ids.xml in your project.
     <string name="achievement_century">CgkI762ZvNkQEAIQCA</string>
     <string name="achievement_half_century">CgkI762ZvNkQEAIQCQ</string>
     <string name="achievement_bored">CgkI762ZvNkQEAIQCg</string>
+    <string name="achievement_into_the_heavens">CgkI762ZvNkQEAIQCw</string>
+    <string name="achievement_you_are_the_god">CgkI762ZvNkQEAIQDA</string>
     <string name="leaderboard_leaderboard">CgkI762ZvNkQEAIQAQ</string>
 </resources>

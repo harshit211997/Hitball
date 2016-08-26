@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.gameworld.GameWorld;
 
 public class Button {
@@ -16,7 +17,7 @@ public class Button {
     GameWorld myWorld;
     TextureRegion regionOn, regionOff, current;
     int id;//This determines which type of button is it
-    float theta = 0;
+    float theta;
 
     public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
         this.height = height;
@@ -28,6 +29,8 @@ public class Button {
         this.rectangle = new Rectangle(x - width / 2, y - height / 2, width, height);
         this.myWorld = world;
         this.id = id;
+
+        this.theta = 90 * (float)Math.random();
 
         MAX_HEIGHT = height;//Initial height is the maximum height
         MAX_WIDTH = width;//Similarly, the width
@@ -56,6 +59,7 @@ public class Button {
     }
 
     public void onTouchUp() {
+        AssetLoader.buttonClick.play();
         current = regionOff;
         //id == 0 means it is a play button
         if (id == 0) {

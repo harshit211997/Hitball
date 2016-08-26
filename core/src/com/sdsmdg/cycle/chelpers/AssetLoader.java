@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class AssetLoader {
 
-    public static Sound sound, hit, gameOver;
+    public static Sound sound, hit, gameOver, buttonClick;
     public static BitmapFont font40, font80, font120;
     public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, leaderboard;
     public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, leaderboardRegion;
@@ -87,7 +87,8 @@ public class AssetLoader {
     private static void loadSounds() {
         sound = Gdx.audio.newSound(Gdx.files.internal("hit.mp3"));
         hit = Gdx.audio.newSound(Gdx.files.internal("pop.mp3"));
-        gameOver = Gdx.audio.newSound(Gdx.files.internal("sound.wav"));
+        gameOver = Gdx.audio.newSound(Gdx.files.internal("game_over.wav"));
+        buttonClick = Gdx.audio.newSound(Gdx.files.internal("button_click.mp3"));
     }
 
     public static void dispose() {
