@@ -37,9 +37,9 @@ public class Ball {
 
         if (!isInPlane()) {
             if (towardsScreen)
-                radius++;
+                radius+=screenWidth / 480;
             else
-                radius -= 0.5;
+                radius -= screenWidth / 960;
         }
 
     }
