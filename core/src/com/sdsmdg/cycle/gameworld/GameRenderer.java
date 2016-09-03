@@ -81,7 +81,7 @@ public class GameRenderer {
 
         //draw background
         float backgroundWidth = screenWidth;
-        float backgroundHeight = backgroundWidth * 1748 / 1476f;
+        float backgroundHeight = backgroundWidth * 1081 / 1242;
         batcher.draw(AssetLoader.backgroundRegion, 0, screenHeight - backgroundHeight,
                 backgroundWidth, backgroundHeight);
 
@@ -130,6 +130,8 @@ public class GameRenderer {
 
         if (myWorld.isReady()) {
             myWorld.getPlayReady().onDraw(batcher);
+            myWorld.getAchievementButton().onDraw(batcher);
+            myWorld.getLeaderBoardButton().onDraw(batcher);
         } else if (myWorld.isOver()) {
             myWorld.getBoard().onDraw(batcher, shapeRenderer);
             myWorld.getPlayButton().onDraw(batcher);

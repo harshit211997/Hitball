@@ -127,7 +127,7 @@ public class GameWorld {
 
         fan = new Fan(this,
                 screenWidth / 10, screenWidth / 10,
-                new Vector2(screenWidth / 7.5f, screenHeight - screenWidth * 1.1f),
+                new Vector2(screenWidth / 6.9f, screenHeight - screenWidth * 0.86f),
                 AssetLoader.fanRegion);
 
         sun = new Sun(this,
@@ -192,12 +192,8 @@ public class GameWorld {
         for (int i = 0; i < clouds.size(); i++) {
             clouds.get(i).update(delta);
         }
-        bat.update(delta);
-        fan.update(delta);
 
-        playButton.update(delta);
-        playReady.update(delta);
-        achievement.update(delta);
+        fan.update(delta);
 
         /*
         While some other objects need to be updated at a certain state of the game
@@ -219,11 +215,15 @@ public class GameWorld {
     }
 
     public void updateReady(float delta) {
-
+        playReady.update(delta);
+        achievement.update(delta);
+        leaderBoardButton.update(delta);
     }
 
     public void updateOver(float delta) {
-
+        playButton.update(delta);
+        achievement.update(delta);
+        leaderBoardButton.update(delta);
     }
 
     public boolean ballAboveScreen(Ball ball) {
@@ -244,6 +244,9 @@ public class GameWorld {
     }
 
     public void updateRunning(float delta) {
+
+        bat.update(delta);
+
         //Update all balls positions on screen
         for (int i = 0; i < balls.size(); i++) {
             balls.get(i).update(delta);

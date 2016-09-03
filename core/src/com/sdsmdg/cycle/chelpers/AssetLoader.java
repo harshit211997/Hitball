@@ -11,25 +11,24 @@ public class AssetLoader {
 
     public static Sound sound, hit, gameOver, buttonClick;
     public static BitmapFont font40, font80, font120;
-    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, leaderboard;
-    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, leaderboardRegion;
+    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, leaderboard, scorecard;
+    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, leaderboardRegion, scorecardRegion;
 
     public static void load(int screenWidth) {
         bat = new Texture(Gdx.files.internal("bat.png"));
-        bat.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        bat.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         batRegion = new Sprite(bat);
+
         ball = new Texture(Gdx.files.internal("ball.png"));
         ballRegion = new Sprite(ball);
 
         playOn = new Texture(Gdx.files.internal("play_press.png"));
         playRegionOn = new Sprite(playOn);
+        playRegionOn.flip(false, true);
 
         playOff = new Texture(Gdx.files.internal("play.png"));
         playRegionOff = new Sprite(playOff);
-
-        cloud = new Texture(Gdx.files.internal("cloud.png"));
-        cloudRegion = new Sprite(cloud);
-        cloudRegion.flip(false, true);
+        playRegionOff.flip(false, true);
 
         sun = new Texture(Gdx.files.internal("sun.png"));
         sunRegion = new Sprite(sun);
@@ -61,6 +60,10 @@ public class AssetLoader {
         leaderboard = new Texture(Gdx.files.internal("leaderboard.png"));
         leaderboardRegion = new Sprite(leaderboard);
         leaderboardRegion.flip(false, true);
+
+        scorecard = new Texture(Gdx.files.internal("scorecard.png"));
+        scorecardRegion = new Sprite(scorecard);
+        scorecardRegion.flip(false, true);
 
         createFont(screenWidth);
 

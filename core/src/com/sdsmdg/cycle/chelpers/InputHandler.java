@@ -35,6 +35,12 @@ public class InputHandler implements InputProcessor {
             if(myWorld.getPlayReady().isTouched(screenX, screenY)) {
                 myWorld.getPlayReady().onTouchDown();
             }
+            if(myWorld.getAchievementButton().isTouched(screenX, screenY)) {
+                myWorld.getAchievementButton().onTouchDown();
+            }
+            if(myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
+                myWorld.getLeaderBoardButton().onTouchDown();
+            }
         } else if(myWorld.isOver()) {
             if(myWorld.getPlayButton().isTouched(screenX, screenY)) {
                 myWorld.getPlayButton().onTouchDown();
@@ -67,6 +73,12 @@ public class InputHandler implements InputProcessor {
             if(myWorld.getPlayReady().isTouched(screenX, screenY)) {
                 myWorld.getPlayReady().onTouchUp();
             }
+            if(myWorld.getAchievementButton().isTouched(screenX, screenY)) {
+                myWorld.getAchievementButton().onTouchUp();
+            }
+            if(myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
+                myWorld.getLeaderBoardButton().onTouchUp();
+            }
         }
         return true;
     }
@@ -96,6 +108,18 @@ public class InputHandler implements InputProcessor {
                 myWorld.getPlayReady().onRemoveTouch();
             }else {
                 myWorld.getPlayReady().onTouchDown();
+            }
+            if(!myWorld.getAchievementButton().isTouched(screenX, screenY)) {
+                myWorld.getAchievementButton().onRemoveTouch();
+            }
+            else {
+                myWorld.getAchievementButton().onTouchDown();
+            }
+            if(!myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
+                myWorld.getLeaderBoardButton().onRemoveTouch();
+            }
+            else {
+                myWorld.getLeaderBoardButton().onTouchDown();
             }
         }
         return false;
