@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.CGame;
-import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Board;
@@ -66,9 +65,9 @@ public class GameWorld {
     }
 
     public GameWorld(CGame game, int screenWidth, int screenHeight) {
-        Vector2 batPosition = new Vector2(screenWidth / 10, screenHeight / 2 + 100);
+        Vector2 batPosition = new Vector2(screenWidth / 10, 520f / 854 * screenHeight);
         int batHeight = screenWidth / 15;
-        int batWidth = (AssetLoader.batRegion.getRegionWidth() * batHeight) / AssetLoader.batRegion.getRegionHeight();
+        int batWidth = (game.loader.batRegion.getRegionWidth() * batHeight) / game.loader.batRegion.getRegionHeight();
         bat = new Bat(batWidth, batHeight, batPosition);
         Ball ball1 = new Ball(screenWidth, screenHeight);
         balls.add(ball1);
@@ -81,34 +80,37 @@ public class GameWorld {
          */
         int replayWidth = screenWidth / 4;
         int replayHeight = screenWidth / 4;
-        playButton = new Button(this, (screenWidth) / 2, 0.8f * screenHeight,
+        playButton = new Button(game.loader, this, (screenWidth) / 2, 0.8f * screenHeight,
                 replayWidth, replayHeight,
-                AssetLoader.playRegionOn, AssetLoader.playRegionOff,
+                game.loader.playRegionOn, game.loader.playRegionOff,
                 0);
 
         /*
         This play button is used when game starts at the beginning
          */
         float playWidth = screenWidth / 3, playHeight = screenWidth / 3;
-        playReady = new Button(this, (screenWidth) / 2, (screenHeight) / 2,
+        playReady = new Button(game.loader,
+                this, (screenWidth) / 2, (screenHeight) / 2,
                 playWidth, playHeight,
-                AssetLoader.playRegionOn,
-                AssetLoader.playRegionOff,
+                game.loader.playRegionOn,
+                game.loader.playRegionOff,
                 0);
 
         //This button is used to show all the achievements of the user
         float achievementWidth = screenWidth / 5, achievementHeight = screenWidth / 5;
-        achievement = new Button(this, screenWidth / 4, screenHeight * 0.75f,
+        achievement = new Button(game.loader,
+                this, screenWidth / 4, screenHeight * 0.75f,
                 achievementWidth, achievementHeight,
-                AssetLoader.achievementRegion,
-                AssetLoader.achievementRegion,
+                game.loader.achievementPressedRegion,
+                game.loader.achievementRegion,
                 1);
 
         float leaderWidth = screenWidth / 5, leaderHeight = screenWidth / 5;
-        leaderBoardButton = new Button(this, 3 * screenWidth / 4, screenHeight * 0.75f,
+        leaderBoardButton = new Button(game.loader,
+                this, 3 * screenWidth / 4, screenHeight * 0.75f,
                 leaderWidth, leaderHeight,
-                AssetLoader.leaderboardRegion,
-                AssetLoader.leaderboardRegion,
+                game.loader.leaderboardPressedRegion,
+                game.loader.leaderboardRegion,
                 2);
 
         float cloudWidth = screenWidth / 3;
@@ -116,25 +118,26 @@ public class GameWorld {
         clouds.add(new Cloud(this, cloudWidth, cloudHeight,
                 new Vector2(screenWidth / 10, screenHeight / 20),//cloud's positions
                 new Vector2(screenWidth / 2000f, 0),//cloud's velocity
-                AssetLoader.cloudRegion));
+                game.loader.cloudRegion));
 
         cloudWidth /= 2;
         cloudHeight /= 2;
         clouds.add(new Cloud(this, cloudWidth, cloudHeight,
                 new Vector2(screenWidth - cloudWidth, cloudHeight / 2),
                 new Vector2(screenWidth / 1500f, 0),
-                AssetLoader.cloud1Region));
+                game.loader.cloud1Region));
 
         fan = new Fan(this,
                 screenWidth / 10, screenWidth / 10,
-                new Vector2(screenWidth / 6.9f, screenHeight - screenWidth * 0.86f),
-                AssetLoader.fanRegion);
+                new Vector2(screenWidth / 6.8f, screenHeight - screenWidth * 0.86f),
+                game.loader.fanRegion);
 
         sun = new Sun(this,
                 new Vector2(screenWidth * 0.75f, screenHeight / 3),
-                AssetLoader.sunRegion);
+                game.loader.sunRegion);
 
         board = new Board(
+                game.loader,
                 this,
                 screenWidth / 2, screenWidth / 2,
                 new Vector2(screenWidth / 2, screenHeight / 2)
@@ -162,17 +165,11 @@ public class GameWorld {
     }
 
     public boolean isBeginnerComplete() {
-        if(getGamesPlayed() >= 10) {
-            return true;
-        }
-        else return false;
+        return getGamesPlayed()==10;
     }
 
     public boolean isBoredComplete() {
-        if(getGamesPlayed() >= 100) {
-            return true;
-        }
-        else return false;
+        return getGamesPlayed()==100;
     }
 
     public void update(float delta) {
@@ -227,10 +224,7 @@ public class GameWorld {
     }
 
     public boolean ballAboveScreen(Ball ball) {
-        if(ball.getPosition().y <= 0) {
-            return true;
-        }
-        return false;
+        return ball.getPosition().y <= 0;
     }
 
     public void incrementCountHeaven() {
@@ -254,7 +248,7 @@ public class GameWorld {
 
         //There is just one ball therefore balls.get(0) is used
         if(ballAboveScreen(balls.get(0))) {
-            if(flag == true) {
+            if(flag) {
                 incrementCountHeaven();
             }
         }
@@ -304,7 +298,7 @@ public class GameWorld {
     }
 
     public void playHitSound() {
-        AssetLoader.hit.play();//Play the hit sound when the ball hits the bat body and the handle
+        game.loader.hit.play();//Play the hit sound when the ball hits the bat body and the handle
     }
 
     public void updateScore() {
@@ -406,7 +400,7 @@ public class GameWorld {
 
     public void setGameStateOver() {
         bat.onTouchUp();
-        AssetLoader.gameOver.play();
+        Gdx.input.vibrate(300);
         gameState = GameState.OVER;
         incrementGamesPlayed();
         if(score == 2) {

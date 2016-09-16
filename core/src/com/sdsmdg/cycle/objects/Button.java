@@ -18,8 +18,9 @@ public class Button {
     TextureRegion regionOn, regionOff, current;
     int id;//This determines which type of button is it
     float theta;
+    AssetLoader loader;
 
-    public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
+    public Button(AssetLoader loader, GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
         this.height = height;
         this.regionOn = regionOn;
         this.regionOff = regionOff;
@@ -31,6 +32,8 @@ public class Button {
         this.id = id;
 
         this.theta = 90 * (float)Math.random();
+
+        this.loader = loader;
 
         MAX_HEIGHT = height;//Initial height is the maximum height
         MAX_WIDTH = width;//Similarly, the width
@@ -59,7 +62,7 @@ public class Button {
     }
 
     public void onTouchUp() {
-        AssetLoader.buttonClick.play();
+        loader.buttonClick.play();
         current = regionOff;
         //id == 0 means it is a play button
         if (id == 0) {
@@ -73,7 +76,7 @@ public class Button {
         //id == 2 means it is a leaderboard button
         else if (id == 2) {
             myWorld.getGame().playServices.showScore();
-            Gdx.app.log("BUtton", "showScore() called");
+            Gdx.app.log("Button", "showScore() called");
         }
     }
 

@@ -111,18 +111,16 @@ public class InputHandler implements InputProcessor {
             }
             if(!myWorld.getAchievementButton().isTouched(screenX, screenY)) {
                 myWorld.getAchievementButton().onRemoveTouch();
-            }
-            else {
+            }else{
                 myWorld.getAchievementButton().onTouchDown();
             }
             if(!myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
                 myWorld.getLeaderBoardButton().onRemoveTouch();
-            }
-            else {
+            }else {
                 myWorld.getLeaderBoardButton().onTouchDown();
             }
         }
-        return false;
+        return true;
     }
 
     @Override

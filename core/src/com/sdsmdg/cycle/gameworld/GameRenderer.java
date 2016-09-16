@@ -31,12 +31,14 @@ public class GameRenderer {
 
     private int screenWidth, screenHeight;
 
+    AssetLoader loader;
     GlyphLayout glyphLayout;
 
-    public GameRenderer(GameWorld world, int screenWidth, int screenHeight) {
+    public GameRenderer(GameWorld world, int screenWidth, int screenHeight, AssetLoader loader) {
         myWorld = world;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.loader = loader;
 
         glyphLayout = new GlyphLayout();
 
@@ -63,8 +65,8 @@ public class GameRenderer {
 
     private void initGameObjects() {
         //the parameter true ensures that text is displayed not flipped
-        font40 = AssetLoader.font40;
-        font80 = AssetLoader.font80;
+        font40 = loader.font40;
+        font80 = loader.font80;
     }
 
 
@@ -82,7 +84,7 @@ public class GameRenderer {
         //draw background
         float backgroundWidth = screenWidth;
         float backgroundHeight = backgroundWidth * 1081 / 1242;
-        batcher.draw(AssetLoader.backgroundRegion, 0, screenHeight - backgroundHeight,
+        batcher.draw(loader.backgroundRegion, 0, screenHeight - backgroundHeight,
                 backgroundWidth, backgroundHeight);
 
         batcher.end();
@@ -111,14 +113,14 @@ public class GameRenderer {
             font80.draw(batcher, text, (screenWidth - w) / 2, (screenHeight / 4 - h / 2));
 
             //Draw bat
-            batcher.draw(AssetLoader.batRegion, bat.getPosition().x, bat.getPosition().y,
+            batcher.draw(loader.batRegion, bat.getPosition().x, bat.getPosition().y,
                     bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
                     bat.getWidth(), bat.getHeight(),
                     1, 1,
                     bat.getRotation());
 
             //Draw ball
-            batcher.draw(AssetLoader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
+            batcher.draw(loader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
                     ball1.getRadius(), ball1.getRadius(),
                     ball1.getRadius() * 2, ball1.getRadius() * 2,
                     1, 1,

@@ -13,16 +13,14 @@ public class GameScreen implements Screen{
     private GameWorld world;
     private GameRenderer renderer;
     private float runTime = 0;
-    private CGame game;
 
     public GameScreen(CGame game) {
         Gdx.app.log(TAG, "Attached");
-        this.game = game;
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
 
         world = new GameWorld(game, (int)screenWidth, (int)screenHeight); // initialize world
-        renderer = new GameRenderer(world, (int)screenWidth, (int)screenHeight); // initialize renderer
+        renderer = new GameRenderer(world, (int)screenWidth, (int)screenHeight, game.loader); // initialize renderer
 
         Gdx.input.setInputProcessor(new InputHandler(world));
     }

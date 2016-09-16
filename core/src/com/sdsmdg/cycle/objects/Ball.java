@@ -42,6 +42,11 @@ public class Ball {
                 radius -= screenWidth / 960;
         }
 
+        //reset the rotation value after one rotation
+        if(rotation >= 360) {
+            rotation = 0;
+        }
+
     }
 
     public int getRadius() {
@@ -65,10 +70,10 @@ public class Ball {
      */
     public void readjustW() {
         if(velocity.x < 0) {
-            w = re * getSpeed();
+            w = re * getSpeed() / screenWidth * 480;
         }
         else {
-            w = -re * getSpeed();
+            w = -re * getSpeed() / screenWidth * 480;
         }
     }
 

@@ -9,12 +9,13 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class AssetLoader {
 
-    public static Sound sound, hit, gameOver, buttonClick;
-    public static BitmapFont font40, font80, font120;
-    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, leaderboard, scorecard;
-    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, leaderboardRegion, scorecardRegion;
+    public Sound hit, buttonClick;
+    public BitmapFont font40, font80, font120;
+    public Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, achievementPressed, leaderboard, leaderboardPressed, scorecard;
+    public Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, achievementPressedRegion, leaderboardRegion, scorecardRegion, leaderboardPressedRegion, volumeOnRegion, volumeOffRegion;
 
-    public static void load(int screenWidth) {
+    public void load(int screenWidth) {
+
         bat = new Texture(Gdx.files.internal("bat.png"));
         bat.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         batRegion = new Sprite(bat);
@@ -65,13 +66,21 @@ public class AssetLoader {
         scorecardRegion = new Sprite(scorecard);
         scorecardRegion.flip(false, true);
 
+        leaderboardPressed = new Texture(Gdx.files.internal("leaderboard_pressed.png"));
+        leaderboardPressedRegion = new Sprite(leaderboardPressed);
+        leaderboardPressedRegion.flip(false, true);
+
+        achievementPressed = new Texture(Gdx.files.internal("achievement_pressed.png"));
+        achievementPressedRegion = new Sprite(achievementPressed);
+        achievementPressedRegion.flip(false, true);
+
         createFont(screenWidth);
 
         loadSounds();
 
     }
 
-    private static void createFont(int screenWidth) {
+    private void createFont(int screenWidth) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (40 * screenWidth) / 480;//Scaling it according to the screenWidth
@@ -87,25 +96,41 @@ public class AssetLoader {
         generator.dispose();
     }
 
-    private static void loadSounds() {
-        sound = Gdx.audio.newSound(Gdx.files.internal("hit.mp3"));
+    private void loadSounds() {
         hit = Gdx.audio.newSound(Gdx.files.internal("pop.mp3"));
-        gameOver = Gdx.audio.newSound(Gdx.files.internal("game_over.wav"));
         buttonClick = Gdx.audio.newSound(Gdx.files.internal("button_click.mp3"));
     }
 
-    public static void dispose() {
+    public void dispose() {
         // We must dispose of the texture when we are finished.
         bat.dispose();
         ball.dispose();
         playOn.dispose();
         playOff.dispose();
-        sun.dispose();
+        cloud.dispose();
+        cloud1.dispose();
         background.dispose();
-        sound.dispose();
-        hit.dispose();
+        mdgLogo.dispose();
+        fan.dispose();
+        sun.dispose();
         achievement.dispose();
+        achievementPressed.dispose();
         leaderboard.dispose();
+        leaderboardPressed.dispose();
+        scorecard.dispose();
+
+        //dispose the audio files
+        disposeAudio();
+
+        //dispose fonts
+        font40.dispose();
+        font80.dispose();
+        font120.dispose();
+    }
+
+    public void disposeAudio() {
+        hit.dispose();
+        buttonClick.dispose();
     }
     
 }

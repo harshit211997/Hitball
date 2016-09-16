@@ -7,8 +7,9 @@ import com.sdsmdg.cycle.screens.SplashScreen;
 
 public class CGame extends Game{
 
-    private static final String TAG = CGame.class.getSimpleName();
+    private final String TAG = CGame.class.getSimpleName();
     public PlayServices playServices;
+    public AssetLoader loader;
 
     public CGame(PlayServices playServices) {
         this.playServices = playServices;
@@ -17,13 +18,14 @@ public class CGame extends Game{
     @Override
     public void create() {
         Gdx.app.log(TAG, "created");
-        AssetLoader.load(Gdx.graphics.getWidth());
-        setScreen(new SplashScreen(this));
+        loader = new AssetLoader();
+        loader.load(Gdx.graphics.getWidth());
+        setScreen(new SplashScreen(this, loader));
     }
 
     @Override
     public void dispose() {
-        AssetLoader.dispose();
+        loader.dispose();
         super.dispose();
     }
 }

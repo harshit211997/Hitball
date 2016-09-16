@@ -19,7 +19,7 @@ public class Sun {
         this.sprite = sprite;
         this.world = world;
 
-        w = world.getScreenWidth() / 40;
+        w = 12;
     }
 
     public void update(float delta) {

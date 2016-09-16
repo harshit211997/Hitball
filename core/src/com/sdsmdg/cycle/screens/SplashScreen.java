@@ -19,7 +19,7 @@ public class SplashScreen implements Screen {
     private SpriteBatch batcher;
     private float screenWidth, screenHeight;
 
-    public SplashScreen(CGame game) {
+    public SplashScreen(CGame game, AssetLoader loader) {
 
         this.screenWidth = Gdx.graphics.getWidth();
         this.screenHeight = Gdx.graphics.getHeight();
@@ -38,9 +38,7 @@ public class SplashScreen implements Screen {
     }
 
     @Override
-    public void dispose() {
-
-    }
+    public void dispose() { }
 
     @Override
     public void show() {
@@ -56,7 +54,7 @@ public class SplashScreen implements Screen {
 
         float logoWidth = screenWidth / 4;
         float logoHeight = 146 * logoWidth / 94;
-        batcher.draw(AssetLoader.mdgLogoRegion,
+        batcher.draw(game.loader.mdgLogoRegion,
                 (screenWidth - logoWidth) / 2, (screenHeight - logoHeight) / 2,
                 0, 0,
                 logoWidth, logoHeight,

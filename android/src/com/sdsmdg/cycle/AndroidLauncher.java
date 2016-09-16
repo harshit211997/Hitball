@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -12,20 +16,34 @@ import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.example.games.basegameutils.GameHelper;
 import com.sdsmdg.ball.R;
 
-
 public class AndroidLauncher extends AndroidApplication implements PlayServices {
 
+    private static String TAG = AndroidLauncher.class.getSimpleName();
     private GameHelper gameHelper;
     private final static int requestCode = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        RelativeLayout layout = new RelativeLayout(this);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().clearFlags(
+                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN
+        );
+
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        initialize(new CGame(this), config);
+
+        //Game View
+        View gameView = initializeForView(new CGame(this), config);
+        layout.addView(gameView);
+
+        setContentView(layout);
 
         gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
-        gameHelper.enableDebugLog(true);
 
         GameHelper.GameHelperListener gameHelperListener = new GameHelper.GameHelperListener() {
             @Override
@@ -40,11 +58,13 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
         };
 
         gameHelper.setup(gameHelperListener);
+        gameHelper.setMaxAutoSignInAttempts(0);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i(TAG, "onStart() called");
         gameHelper.onStart(this);
     }
 
@@ -52,6 +72,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
     protected void onStop() {
         super.onStop();
         gameHelper.onStop();
+        Log.i(TAG, "onStop: called");
     }
 
     @Override
@@ -61,42 +82,29 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
 
         if (resultCode == GamesActivityResultCodes.RESULT_RECONNECT_REQUIRED){
             // force a disconnect to sync up state, ensuring that mClient reports "not connected"
-            gameHelper.getApiClient().disconnect();
+            gameHelper.disconnect();
         }
+
+        Log.i(TAG, "onActivityResult: called");
     }
 
     @Override
     public void signIn() {
-        try {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    gameHelper.beginUserInitiatedSignIn();
-                }
-            });
-        } catch (Exception e) {
-            Log.i("MainActivity", "Log in failed: " + e.getMessage() + ".");
-        }
+        Log.i(TAG, "signIn: called");
+        gameHelper.beginUserInitiatedSignIn();
     }
 
     @Override
     public void signOut() {
-        try {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    gameHelper.signOut();
-                }
-            });
-        } catch (Exception e) {
-            Log.i("MainActivity", "Log out failed: " + e.getMessage() + ".");
-        }
+        gameHelper.signOut();
+        Log.i(TAG, "signOut: called");
     }
 
     @Override
     public void rateGame() {
         String str = "Your PlayStore Link";
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
+        Log.i(TAG, "rateGame: called");
     }
 
     @Override
@@ -105,6 +113,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
         if (gameHelper.isSignedIn())
             Games.Achievements.unlock(gameHelper.getApiClient(),
                     getString(R.string.achievement_beginner));
+
+        Log.i(TAG, "unlockAchievementBeginner: called");
     }
 
     @Override
@@ -113,6 +123,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
         if (gameHelper.isSignedIn())
             Games.Achievements.unlock(gameHelper.getApiClient(),
                     getString(R.string.achievement_welcome_to_the_2_group));
+
+        Log.i(TAG, "unlockAchievement2: called");
     }
 
     @Override
@@ -121,6 +133,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
         if (gameHelper.isSignedIn())
             Games.Achievements.unlock(gameHelper.getApiClient(),
                     getString(R.string.achievement_the_tricky_one));
+
+        Log.i(TAG, "unlockAchievementTrickyOne: called");
     }
 
     @Override
@@ -128,6 +142,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
         if (gameHelper.isSignedIn())
             Games.Achievements.unlock(gameHelper.getApiClient(),
                     getString(R.string.achievement_century));
+
+        Log.i(TAG, "unlockAchievementCentury: called");
     }
 
     @Override
@@ -135,6 +151,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
         if (gameHelper.isSignedIn())
             Games.Achievements.unlock(gameHelper.getApiClient(),
                     getString(R.string.achievement_half_century));
+
+        Log.i(TAG, "unlockAchievementHalfCentury: called");
     }
 
     @Override
@@ -143,6 +161,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
         if (gameHelper.isSignedIn())
             Games.Achievements.unlock(gameHelper.getApiClient(),
                     getString(R.string.achievement_bored));
+
+        Log.i(TAG, "unlockAchievementBored: called");
     }
 
     @Override
@@ -153,6 +173,8 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
                     getString(R.string.achievement_into_the_heavens));
         }
 
+        Log.i(TAG, "unlockAchievementIntoHeavens: called");
+
     }
 
     @Override
@@ -162,37 +184,46 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
             Games.Achievements.unlock(gameHelper.getApiClient(),
                     getString(R.string.achievement_you_are_the_god));
         }
+
+        Log.i(TAG, "unlockAchievementYouAreGod: ");
     }
 
     @Override
     public void submitScore(int highScore) {
-        if (isSignedIn() == true) {
+        if (isSignedIn()) {
             Games.Leaderboards.submitScore(gameHelper.getApiClient(),
                     getString(R.string.leaderboard_leaderboard), highScore);
         }
+
+        Log.i(TAG, "submitScore: ");
     }
 
     @Override
     public void showAchievement() {
-        if (isSignedIn() == true) {
+        if (isSignedIn()) {
             startActivityForResult(Games.Achievements.getAchievementsIntent(gameHelper.getApiClient()), requestCode);
         } else {
             signIn();
         }
+
+        Log.i(TAG, "showAchievement: ");
     }
 
     @Override
     public void showScore() {
-        if (isSignedIn() == true) {
+        if (isSignedIn()) {
             startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(),
-                    getString(R.string.leaderboard_leaderboard)), requestCode);
+                    getString(R.string.leaderboard_leaderboard)), requestCode + 1);
         } else {
             signIn();
         }
+
+        Log.i(TAG, "showScore: ");
     }
 
     @Override
     public boolean isSignedIn() {
+        Log.i(TAG, "isSignedIn: ");
         return gameHelper.isSignedIn();
     }
 

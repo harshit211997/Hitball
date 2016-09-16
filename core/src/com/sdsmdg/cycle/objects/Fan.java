@@ -21,7 +21,7 @@ public class Fan {
         this.width = width;
         this.height = height;
 
-        w = world.getScreenWidth() / 5;
+        w = 96;
     }
 
     public void update(float delta) {

@@ -59,6 +59,9 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
+        debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+        releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+        testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
         compile 'com.android.support:support-v4:18.+'
         compile project(':BaseGameUtils')
     }

@@ -3,10 +3,12 @@ package com.sdsmdg.cycle.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.gameworld.GameWorld;
 
 public class Board {
@@ -19,8 +21,10 @@ public class Board {
     private GameWorld myWorld;
     private int screenWidth, screenHeight;
     private BitmapFont font40, font120;
+    private Sprite sprite;
+    AssetLoader loader;
 
-    public Board(GameWorld world, float width, float height, Vector2 position) {
+    public Board(AssetLoader loader, GameWorld world, float width, float height, Vector2 position) {
         this.height = height;
         this.position = position;
         this.width = width;
@@ -32,6 +36,15 @@ public class Board {
         glyphLayout = new GlyphLayout();
 
         generateFont();
+
+        float boardWidth = 0.8f * screenWidth;
+        float boardHeight = 0.5f * screenWidth;
+
+        sprite = new Sprite(loader.scorecardRegion);
+        sprite.setSize(boardWidth, boardHeight);
+        sprite.setPosition((screenWidth - boardWidth) / 2, (screenHeight - boardHeight) / 2);
+
+        this.loader = loader;
     }
 
     public void generateFont() {
@@ -47,43 +60,28 @@ public class Board {
         generator.dispose();
     }
 
-    public void onDraw(SpriteBatch batch, ShapeRenderer renderer) {
+    public void onDraw(SpriteBatch batcher, ShapeRenderer renderer) {
 
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        //renderer.setColor(34/255f, 126/255f, 200/255f, 1f);
-        renderer.setColor(204/255f, 0/255f, 0, 1);
-        renderer.rect(
-                position.x - width / 2, position.y - height / 2,
-                width, height
-        );
-        renderer.end();
+        batcher.begin();
 
-        renderer.begin(ShapeRenderer.ShapeType.Line);
-        renderer.rect(
-                position.x - width / 2, position.y - height / 2,
-                width, height
-        );
-        renderer.end();
-
-
-        batch.begin();
+        sprite.draw(batcher);
 
         drawText(String.valueOf(myWorld.getScore()),
-                batch,
+                batcher,
                 position.x, position.y - height / 5,
                 font120);
 
         drawText("Best Score",
-                batch,
+                batcher,
                 position.x, position.y + height / 2 - (60 * screenWidth) / 480,
                 font40);
 
         drawText(String.valueOf(myWorld.getHighScore()),
-                batch,
+                batcher,
                 position.x, position.y + height / 2 - (30 * screenWidth) / 480,
                 font40);
 
-        batch.end();
+        batcher.end();
     }
 
     private void drawText(String text, SpriteBatch batch, float x, float y, BitmapFont font) {
