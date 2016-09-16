@@ -64,6 +64,7 @@ project(":android") {
         testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
         compile 'com.android.support:support-v4:18.+'
         compile project(':BaseGameUtils')
+        compile fileTree(dir: '../libs', include: '*.jar')
     }
 }
 
@@ -106,6 +107,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        compile fileTree(dir: '../libs', include: '*.jar')
     }
 }
 

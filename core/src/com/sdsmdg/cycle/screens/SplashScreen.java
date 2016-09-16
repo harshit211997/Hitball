@@ -4,20 +4,27 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.sdsmdg.cycle.CGame;
+import com.sdsmdg.cycle.TweenAccessors.SpriteAccessor;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
+
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
 
 public class SplashScreen implements Screen {
 
     private final String TAG = SplashScreen.class.getSimpleName();
     private OrthographicCamera camera;
     private CGame game;
-    private long startTime;
-    private final long DURATION = 2000;
     private SpriteBatch batcher;
     private float screenWidth, screenHeight;
+    private TweenManager manager;
+    private Sprite sprite;
 
     public SplashScreen(CGame game, AssetLoader loader) {
 
@@ -35,37 +42,51 @@ public class SplashScreen implements Screen {
         if (!game.playServices.isSignedIn())
             game.playServices.signIn();
 
+        float logoWidth = screenWidth / 4;
+        float logoHeight = 146 * logoWidth / 94;
+
+        sprite = loader.mdgLogoRegion;
+        sprite.setColor(1, 1, 1, 0f);
+        sprite.setPosition((screenWidth - logoWidth) / 2, (screenHeight - logoHeight) / 2);
+        sprite.setSize(logoWidth, logoHeight);
+
+        setupTween();
+
+    }
+
+    private void setupTween() {
+        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
+        manager = new TweenManager();
+
+        TweenCallback cb = new TweenCallback() {
+            @Override
+            public void onEvent(int type, BaseTween<?> source) {
+                game.setScreen(new GameScreen(game));
+            }
+        };
+
+        Tween.to(sprite, SpriteAccessor.ALPHA, 1.5f).target(1)
+                .ease(TweenEquations.easeInOutQuad).repeatYoyo(1, 0.75f)
+                .setCallback(cb).setCallbackTriggers(TweenCallback.COMPLETE)
+                .start(manager);
     }
 
     @Override
-    public void dispose() { }
+    public void dispose() {
+    }
 
     @Override
     public void show() {
-        startTime = TimeUtils.millis();
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        manager.update(delta);
         batcher.begin();
-
-        float logoWidth = screenWidth / 4;
-        float logoHeight = 146 * logoWidth / 94;
-        batcher.draw(game.loader.mdgLogoRegion,
-                (screenWidth - logoWidth) / 2, (screenHeight - logoHeight) / 2,
-                0, 0,
-                logoWidth, logoHeight,
-                1, 1,
-                0);
-
+        sprite.draw(batcher);
         batcher.end();
-
-        if (TimeUtils.millis() >= startTime + DURATION) {
-            game.setScreen(new GameScreen(game));
-        }
     }
 
     @Override
