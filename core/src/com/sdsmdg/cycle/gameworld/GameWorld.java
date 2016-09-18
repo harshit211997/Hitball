@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.CGame;
+import com.sdsmdg.cycle.TweenAccessors.VectorAccessor;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Board;
@@ -14,6 +15,10 @@ import com.sdsmdg.cycle.objects.Sun;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
 
 public class GameWorld {
 
@@ -37,6 +42,8 @@ public class GameWorld {
 
     //This reference is just used to call the playServices methods to unlock Achievements
     private CGame game;
+
+    TweenManager manager;//manages position of play button
 
     /*
     This flag plays a very interesting role in the achievement "Into the Heavens",
@@ -74,13 +81,14 @@ public class GameWorld {
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;
         gameState = GameState.READY;
+        manager = new TweenManager();
 
         /*
         This play button is used when the game is over
          */
         int replayWidth = screenWidth / 4;
         int replayHeight = screenWidth / 4;
-        playButton = new Button(game.loader, this, (screenWidth) / 2, 0.8f * screenHeight,
+        playButton = new Button(game.loader, this, (screenWidth) / 2, screenHeight + replayHeight / 2,
                 replayWidth, replayHeight,
                 game.loader.playRegionOn, game.loader.playRegionOff,
                 0);
@@ -173,6 +181,7 @@ public class GameWorld {
     }
 
     public void update(float delta) {
+        manager.update(delta);
 
         if(isBeginnerComplete()) {
             game.playServices.unlockAchievementBeginner();
@@ -391,6 +400,10 @@ public class GameWorld {
     }
 
     public void setGameStateRunning() {
+        achievement.reset();
+        leaderBoardButton.reset();
+        playButton.reset();//So that it goes to its initial position for reanimating it
+
         for (int i = 0; i < balls.size(); i++) {
             getBall(i).reset();
         }
@@ -399,6 +412,25 @@ public class GameWorld {
     }
 
     public void setGameStateOver() {
+        //To animate play button at game over screen
+        Tween.registerAccessor(Vector2.class, new VectorAccessor());
+
+        Tween.to(playButton.getPosition(), VectorAccessor.Y, 0.3f).target(screenHeight * 0.8f)
+                .ease(TweenEquations.easeInOutExpo)
+                .start(manager);
+
+        //To animate achievement button
+        achievement.setPosition(screenWidth / 4, screenHeight + achievement.getWidth() / 2);
+        Tween.to(achievement.getPosition(), VectorAccessor.Y, 0.3f).target(screenHeight * 0.75f)
+                .ease(TweenEquations.easeInOutExpo)
+                .start(manager);
+
+        //To animate leaderboard button
+        leaderBoardButton.setPosition(3 * screenWidth / 4, screenHeight + achievement.getWidth() / 2);
+        Tween.to(leaderBoardButton.getPosition(), VectorAccessor.Y, 0.3f).target(screenHeight * 0.75f)
+                .ease(TweenEquations.easeInOutExpo)
+                .start(manager);
+
         bat.onTouchUp();
         Gdx.input.vibrate(300);
         gameState = GameState.OVER;

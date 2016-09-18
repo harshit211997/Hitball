@@ -6,15 +6,24 @@ import aurelienribon.tweenengine.TweenAccessor;
 
 public class VectorAccessor implements TweenAccessor<Vector2> {
 
+    public static int X = 0, Y = 1;
+
     @Override
     public int getValues(Vector2 target, int tweenType, float[] returnValues) {
-        returnValues[0] = target.x;
-        returnValues[1] = target.y;
+        if(tweenType == X) {
+            returnValues[0] = target.x;
+        } else if(tweenType == Y) {
+            returnValues[0] = target.y;
+        }
         return 1;
     }
 
     @Override
     public void setValues(Vector2 target, int tweenType, float[] newValues) {
-        target.set(newValues[0], newValues[1]);
+        if(tweenType == X) {
+            target.set(newValues[0], target.y);
+        } else if(tweenType == Y) {
+            target.set(target.x, newValues[0]);
+        }
     }
 }

@@ -19,6 +19,7 @@ public class Button {
     int id;//This determines which type of button is it
     float theta;
     AssetLoader loader;
+    Vector2 initialPos = new Vector2();
 
     public Button(AssetLoader loader, GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
         this.height = height;
@@ -27,7 +28,7 @@ public class Button {
         this.width = width;
         this.position.x = x;
         this.position.y = y;
-        this.rectangle = new Rectangle(x - width / 2, y - height / 2, width, height);
+        this.rectangle = new Rectangle(position.x - width / 2, position.y - height / 2, width, height);
         this.myWorld = world;
         this.id = id;
 
@@ -39,9 +40,11 @@ public class Button {
         MAX_WIDTH = width;//Similarly, the width
 
         current = regionOff;
+        initialPos.set(x, y);
     }
 
     public boolean isTouched(int x, int y) {
+        rectangle.set(position.x - width / 2, position.y - height / 2, width, height);
         return rectangle.contains(x, y);
     }
 
@@ -107,5 +110,13 @@ public class Button {
 
     public Rectangle getRectangle() {
         return rectangle;
+    }
+
+    public void reset() {
+        position.set(initialPos.x, initialPos.y);
+    }
+
+    public void setPosition(float x, float y) {
+        this.position.set(x, y);
     }
 }
