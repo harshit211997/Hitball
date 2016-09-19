@@ -36,6 +36,8 @@ android {
         applicationId "com.sdsmdg.cycle"
         minSdkVersion 9
         targetSdkVersion 24
+        versionCode 1
+        versionName "0.01"
     }
     buildTypes {
         debug {
