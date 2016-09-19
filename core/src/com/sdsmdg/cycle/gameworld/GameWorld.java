@@ -5,12 +5,14 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.CGame;
 import com.sdsmdg.cycle.TweenAccessors.VectorAccessor;
+import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Board;
 import com.sdsmdg.cycle.objects.Button;
 import com.sdsmdg.cycle.objects.Cloud;
 import com.sdsmdg.cycle.objects.Fan;
+import com.sdsmdg.cycle.objects.Moon;
 import com.sdsmdg.cycle.objects.Sun;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class GameWorld {
     private List<Cloud> clouds = new ArrayList<Cloud>();
     private Fan fan;
     private Sun sun;
+    private Moon moon;
     private Board board;
     private Button playReady, achievement, leaderBoardButton;
     int hitCount = 0;//This int counts the total no. of hits the bat(or ball) experiences(Including the hit on handle of bat)
@@ -74,7 +77,7 @@ public class GameWorld {
     public GameWorld(CGame game, int screenWidth, int screenHeight) {
         Vector2 batPosition = new Vector2(screenWidth / 10, 520f / 854 * screenHeight);
         int batHeight = screenWidth / 15;
-        int batWidth = (game.loader.batRegion.getRegionWidth() * batHeight) / game.loader.batRegion.getRegionHeight();
+        int batWidth = (AssetLoader.batRegion.getRegionWidth() * batHeight) / AssetLoader.batRegion.getRegionHeight();
         bat = new Bat(batWidth, batHeight, batPosition);
         Ball ball1 = new Ball(screenWidth, screenHeight);
         balls.add(ball1);
@@ -88,37 +91,34 @@ public class GameWorld {
          */
         int replayWidth = screenWidth / 4;
         int replayHeight = screenWidth / 4;
-        playButton = new Button(game.loader, this, (screenWidth) / 2, screenHeight + replayHeight / 2,
+        playButton = new Button(this, (screenWidth) / 2, screenHeight + replayHeight / 2,
                 replayWidth, replayHeight,
-                game.loader.playRegionOn, game.loader.playRegionOff,
+                AssetLoader.playRegionOn, AssetLoader.playRegionOff,
                 0);
 
         /*
         This play button is used when game starts at the beginning
          */
         float playWidth = screenWidth / 3, playHeight = screenWidth / 3;
-        playReady = new Button(game.loader,
-                this, (screenWidth) / 2, (screenHeight) / 2,
+        playReady = new Button(this, (screenWidth) / 2, (screenHeight) / 2,
                 playWidth, playHeight,
-                game.loader.playRegionOn,
-                game.loader.playRegionOff,
+                AssetLoader.playRegionOn,
+                AssetLoader.playRegionOff,
                 0);
 
         //This button is used to show all the achievements of the user
         float achievementWidth = screenWidth / 5, achievementHeight = screenWidth / 5;
-        achievement = new Button(game.loader,
-                this, screenWidth / 4, screenHeight * 0.75f,
+        achievement = new Button(this, screenWidth / 4, screenHeight * 0.75f,
                 achievementWidth, achievementHeight,
-                game.loader.achievementPressedRegion,
-                game.loader.achievementRegion,
+                AssetLoader.achievementPressedRegion,
+                AssetLoader.achievementRegion,
                 1);
 
         float leaderWidth = screenWidth / 5, leaderHeight = screenWidth / 5;
-        leaderBoardButton = new Button(game.loader,
-                this, 3 * screenWidth / 4, screenHeight * 0.75f,
+        leaderBoardButton = new Button(this, 3 * screenWidth / 4, screenHeight * 0.75f,
                 leaderWidth, leaderHeight,
-                game.loader.leaderboardPressedRegion,
-                game.loader.leaderboardRegion,
+                AssetLoader.leaderboardPressedRegion,
+                AssetLoader.leaderboardRegion,
                 2);
 
         float cloudWidth = screenWidth / 3;
@@ -126,27 +126,29 @@ public class GameWorld {
         clouds.add(new Cloud(this, cloudWidth, cloudHeight,
                 new Vector2(screenWidth / 10, screenHeight / 20),//cloud's positions
                 new Vector2(screenWidth / 2000f, 0),//cloud's velocity
-                game.loader.cloudRegion));
+                AssetLoader.cloudRegion));
 
         cloudWidth /= 2;
         cloudHeight /= 2;
         clouds.add(new Cloud(this, cloudWidth, cloudHeight,
                 new Vector2(screenWidth - cloudWidth, cloudHeight / 2),
                 new Vector2(screenWidth / 1500f, 0),
-                game.loader.cloud1Region));
+                AssetLoader.cloud1Region));
 
         fan = new Fan(this,
                 screenWidth / 10, screenWidth / 10,
                 new Vector2(screenWidth / 6.8f, screenHeight - screenWidth * 0.86f),
-                game.loader.fanRegion);
+                AssetLoader.fanRegion);
 
         sun = new Sun(this,
                 new Vector2(screenWidth * 0.75f, screenHeight / 3),
-                game.loader.sunRegion);
+                AssetLoader.sunRegion);
 
-        board = new Board(
-                game.loader,
-                this,
+        moon = new Moon(this,
+                new Vector2(screenWidth * 0.75f, screenHeight / 3),
+                AssetLoader.moonRegion);
+
+        board = new Board(this,
                 screenWidth / 2, screenWidth / 2,
                 new Vector2(screenWidth / 2, screenHeight / 2)
         );
@@ -173,21 +175,23 @@ public class GameWorld {
     }
 
     public boolean isBeginnerComplete() {
-        return getGamesPlayed()==10;
+        return getGamesPlayed() == 10;
     }
 
     public boolean isBoredComplete() {
-        return getGamesPlayed()==100;
+        return getGamesPlayed() == 100;
     }
 
     public void update(float delta) {
         manager.update(delta);
 
-        if(isBeginnerComplete()) {
+        moon.update(delta);
+
+        if (isBeginnerComplete()) {
             game.playServices.unlockAchievementBeginner();
         }
 
-        if(isBoredComplete()) {
+        if (isBoredComplete()) {
             game.playServices.unlockAchievementBored();
         }
         /*
@@ -237,11 +241,11 @@ public class GameWorld {
     }
 
     public void incrementCountHeaven() {
-        countHeaven ++;
+        countHeaven++;
         flag = false;
-        if(countHeaven == 3) {
+        if (countHeaven == 3) {
             game.playServices.unlockAchievementIntoHeavens();
-        } else if(countHeaven == 4) {
+        } else if (countHeaven == 4) {
             game.playServices.unlockAchievementYouAreGod();
         }
     }
@@ -256,8 +260,8 @@ public class GameWorld {
         }
 
         //There is just one ball therefore balls.get(0) is used
-        if(ballAboveScreen(balls.get(0))) {
-            if(flag) {
+        if (ballAboveScreen(balls.get(0))) {
+            if (flag) {
                 incrementCountHeaven();
             }
         }
@@ -267,7 +271,7 @@ public class GameWorld {
             if (isColliding(bat, ball, delta) && ball.isInPlane()) {
                 playHitSound();
 
-                if(!flag) {
+                if (!flag) {
                     flag = true;
                 } else {
                     countHeaven = 0;
@@ -299,7 +303,7 @@ public class GameWorld {
     }
 
     public void increaseHitCount() {
-        hitCount ++;
+        hitCount++;
     }
 
     public void resetHitCount() {
@@ -307,7 +311,7 @@ public class GameWorld {
     }
 
     public void playHitSound() {
-        game.loader.hit.play();//Play the hit sound when the ball hits the bat body and the handle
+        AssetLoader.hit.play();//Play the hit sound when the ball hits the bat body and the handle
     }
 
     public void updateScore() {
@@ -435,14 +439,14 @@ public class GameWorld {
         Gdx.input.vibrate(300);
         gameState = GameState.OVER;
         incrementGamesPlayed();
-        if(score == 2) {
+        if (score == 2) {
             game.playServices.unlockAchievement2();
-        } else if(score == 100) {
+        } else if (score == 100) {
             game.playServices.unlockAchievementCentury();
-        } else if(score == 50) {
+        } else if (score == 50) {
             game.playServices.unlockAchievementHalfCentury();
         }
-        if(hitCount == 1) {
+        if (hitCount == 1) {
             game.playServices.unlockAchievementTrickyOne();
         }
         resetHitCount();
@@ -486,6 +490,10 @@ public class GameWorld {
 
     public CGame getGame() {
         return game;
+    }
+
+    public Moon getMoon() {
+        return moon;
     }
 
     public Button getLeaderBoardButton() {

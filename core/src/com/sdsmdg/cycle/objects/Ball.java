@@ -1,6 +1,8 @@
 package com.sdsmdg.cycle.objects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.sdsmdg.cycle.chelpers.AssetLoader;
 
 public class Ball {
 
@@ -47,6 +49,14 @@ public class Ball {
             rotation = 0;
         }
 
+    }
+    
+    public void onDraw(SpriteBatch batcher) {
+        batcher.draw(AssetLoader.ballRegion, position.x - radius, position.y - radius,
+                radius, radius,
+                radius * 2, radius * 2,
+                1, 1,
+                rotation);
     }
 
     public int getRadius() {

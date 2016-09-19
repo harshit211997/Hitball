@@ -1,6 +1,8 @@
 package com.sdsmdg.cycle.objects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.sdsmdg.cycle.chelpers.AssetLoader;
 
 public class Bat {
 
@@ -38,6 +40,16 @@ public class Bat {
         or if above its maximum rotating position,
         we rotate it in opposite direction
          */
+    }
+
+    public void onDraw(SpriteBatch batcher) {
+
+        batcher.draw(AssetLoader.batRegion, position.x, position.y,
+                originX - position.x, originY - position.y,
+                width, height,
+                1, 1,
+                rotation);
+
     }
 
     public void onTouchDown() {

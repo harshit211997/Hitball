@@ -12,6 +12,7 @@ public class Fan {
     private int rotation = 0;
     private Sprite sprite;
     private float width, height;
+    //w is omega, i.e. angular velocity of rotation of fan
     private int w;
 
     public Fan(GameWorld world, float width, float height, Vector2 position, Sprite sprite) {
@@ -29,7 +30,6 @@ public class Fan {
     }
 
     public void onDraw(SpriteBatch batcher) {
-        batcher.begin();
 
         batcher.draw(sprite,
                 position.x, position.y,
@@ -38,8 +38,6 @@ public class Fan {
                 1, 1,
                 rotation
                 );
-
-        batcher.end();
 
     }
 }

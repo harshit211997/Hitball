@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.gameworld.GameWorld;
@@ -22,9 +21,8 @@ public class Board {
     private int screenWidth, screenHeight;
     private BitmapFont font40, font120;
     private Sprite sprite;
-    AssetLoader loader;
 
-    public Board(AssetLoader loader, GameWorld world, float width, float height, Vector2 position) {
+    public Board(GameWorld world, float width, float height, Vector2 position) {
         this.height = height;
         this.position = position;
         this.width = width;
@@ -40,11 +38,10 @@ public class Board {
         float boardWidth = 0.8f * screenWidth;
         float boardHeight = 0.5f * screenWidth;
 
-        sprite = new Sprite(loader.scorecardRegion);
+        sprite = new Sprite(AssetLoader.scorecardRegion);
         sprite.setSize(boardWidth, boardHeight);
         sprite.setPosition((screenWidth - boardWidth) / 2, (screenHeight - boardHeight) / 2);
 
-        this.loader = loader;
     }
 
     public void generateFont() {
@@ -60,9 +57,7 @@ public class Board {
         generator.dispose();
     }
 
-    public void onDraw(SpriteBatch batcher, ShapeRenderer renderer) {
-
-        batcher.begin();
+    public void onDraw(SpriteBatch batcher) {
 
         sprite.draw(batcher);
 
@@ -81,7 +76,6 @@ public class Board {
                 position.x, position.y + height / 2 - (30 * screenWidth) / 480,
                 font40);
 
-        batcher.end();
     }
 
     private void drawText(String text, SpriteBatch batch, float x, float y, BitmapFont font) {

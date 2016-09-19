@@ -30,13 +30,9 @@ public class Cloud {
     }
 
     public void onDraw(SpriteBatch batcher) {
-        batcher.begin();
-
         batcher.draw(sprite,
                 position.x, position.y,
                 width, height);
-
-        batcher.end();
 
     }
 

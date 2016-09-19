@@ -18,10 +18,9 @@ public class Button {
     TextureRegion regionOn, regionOff, current;
     int id;//This determines which type of button is it
     float theta;
-    AssetLoader loader;
     Vector2 initialPos = new Vector2();
 
-    public Button(AssetLoader loader, GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
+    public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
         this.height = height;
         this.regionOn = regionOn;
         this.regionOff = regionOff;
@@ -33,8 +32,6 @@ public class Button {
         this.id = id;
 
         this.theta = 90 * (float)Math.random();
-
-        this.loader = loader;
 
         MAX_HEIGHT = height;//Initial height is the maximum height
         MAX_WIDTH = width;//Similarly, the width
@@ -55,9 +52,7 @@ public class Button {
     }
 
     public void onDraw(SpriteBatch batcher) {
-        batcher.begin();
         batcher.draw(current, position.x - width / 2, position.y - height / 2, width, height);
-        batcher.end();
     }
 
     public void onTouchDown() {
@@ -65,7 +60,7 @@ public class Button {
     }
 
     public void onTouchUp() {
-        loader.buttonClick.play();
+        AssetLoader.buttonClick.play();
         current = regionOff;
         //id == 0 means it is a play button
         if (id == 0) {

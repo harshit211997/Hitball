@@ -9,12 +9,12 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class AssetLoader {
 
-    public Sound hit, buttonClick;
-    public BitmapFont font40, font80, font120;
-    public Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, achievementPressed, leaderboard, leaderboardPressed, scorecard;
-    public Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, achievementPressedRegion, leaderboardRegion, scorecardRegion, leaderboardPressedRegion, volumeOnRegion, volumeOffRegion;
+    public static Sound hit, buttonClick;
+    public static BitmapFont font40, font80, font120;
+    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, achievementPressed, leaderboard, leaderboardPressed, scorecard, moonTexture;
+    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, achievementPressedRegion, leaderboardRegion, scorecardRegion, leaderboardPressedRegion, moonRegion;
 
-    public void load(int screenWidth) {
+    public static void load(int screenWidth) {
 
         bat = new Texture(Gdx.files.internal("bat.png"));
         bat.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -74,13 +74,16 @@ public class AssetLoader {
         achievementPressedRegion = new Sprite(achievementPressed);
         achievementPressedRegion.flip(false, true);
 
+        moonTexture = new Texture(Gdx.files.internal("moon.png"));
+        moonRegion = new Sprite(moonTexture);
+
         createFont(screenWidth);
 
         loadSounds();
 
     }
 
-    private void createFont(int screenWidth) {
+    private static void createFont(int screenWidth) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (40 * screenWidth) / 480;//Scaling it according to the screenWidth
@@ -96,12 +99,12 @@ public class AssetLoader {
         generator.dispose();
     }
 
-    private void loadSounds() {
+    private static void loadSounds() {
         hit = Gdx.audio.newSound(Gdx.files.internal("pop.mp3"));
         buttonClick = Gdx.audio.newSound(Gdx.files.internal("button_click.mp3"));
     }
 
-    public void dispose() {
+    public static void dispose() {
         // We must dispose of the texture when we are finished.
         bat.dispose();
         ball.dispose();
@@ -118,6 +121,7 @@ public class AssetLoader {
         leaderboard.dispose();
         leaderboardPressed.dispose();
         scorecard.dispose();
+        moonTexture.dispose();
 
         //dispose the audio files
         disposeAudio();
@@ -128,7 +132,7 @@ public class AssetLoader {
         font120.dispose();
     }
 
-    public void disposeAudio() {
+    public static void disposeAudio() {
         hit.dispose();
         buttonClick.dispose();
     }

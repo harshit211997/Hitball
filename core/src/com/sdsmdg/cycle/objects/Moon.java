@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.gameworld.GameWorld;
 
-public class Sun {
+public class Moon {
 
     private GameWorld world;
     private float radius;
@@ -14,7 +14,7 @@ public class Sun {
     private float rotation = 0;
     private float w;
 
-    public Sun(GameWorld world, Vector2 position, Sprite sprite) {
+    public Moon(GameWorld world, Vector2 position, Sprite sprite) {
         this.position = position;
         this.sprite = sprite;
         this.world = world;
@@ -36,8 +36,7 @@ public class Sun {
                 radius * 2, radius * 2,
                 1, 1,
                 rotation
-                );
+        );
 
     }
-
 }

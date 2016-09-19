@@ -1,7 +1,6 @@
 package com.sdsmdg.cycle.gameworld;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -9,13 +8,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
+import com.sdsmdg.cycle.objects.Background;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
-import com.sdsmdg.cycle.objects.Cloud;
-import com.sdsmdg.cycle.objects.Fan;
 
 import java.nio.IntBuffer;
-import java.util.List;
 
 public class GameRenderer {
 
@@ -27,23 +24,25 @@ public class GameRenderer {
     private SpriteBatch batcher;
 
     private Bat bat;
-    private Ball ball1;
+    private Ball ball;
 
     private int screenWidth, screenHeight;
 
-    AssetLoader loader;
     GlyphLayout glyphLayout;
 
-    public GameRenderer(GameWorld world, int screenWidth, int screenHeight, AssetLoader loader) {
+    private Background background;
+
+    public GameRenderer(GameWorld world, int screenWidth, int screenHeight) {
         myWorld = world;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        this.loader = loader;
+
+        background = new Background();
 
         glyphLayout = new GlyphLayout();
 
         bat = world.getBat();
-        ball1 = world.getBall(0);
+        ball = world.getBall(0);
 
         cam = new OrthographicCamera();
         cam.setToOrtho(true, screenWidth, screenHeight);
@@ -65,8 +64,8 @@ public class GameRenderer {
 
     private void initGameObjects() {
         //the parameter true ensures that text is displayed not flipped
-        font40 = loader.font40;
-        font80 = loader.font80;
+        font40 = AssetLoader.font40;
+        font80 = AssetLoader.font80;
     }
 
 
@@ -75,71 +74,52 @@ public class GameRenderer {
 
     public void render(float runTime) {
 
-        // Fill the entire screen with black, to prevent potential flickering.
-        Gdx.gl.glClearColor(51/255f, 204/255f, 1f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         batcher.begin();
 
-        //draw background
-        float backgroundWidth = screenWidth;
-        float backgroundHeight = backgroundWidth * 1081 / 1242;
-        batcher.draw(loader.backgroundRegion, 0, screenHeight - backgroundHeight,
-                backgroundWidth, backgroundHeight);
-
-        batcher.end();
-
-        //Draw sun
-        myWorld.getSun().onDraw(batcher);
-
-        //Draw clouds
-        List<Cloud> clouds = myWorld.getClouds();
-        for(int i=0;i<clouds.size();i++) {
-            clouds.get(i).onDraw(batcher);
-        }
-
-        Fan fan = myWorld.getFan();
-        fan.onDraw(batcher);
-
-        batcher.begin();
+        background.onDraw(myWorld, batcher);
 
         if (myWorld.isRunning()) {
 
             //Draw score while running
-            String text = String.valueOf(myWorld.getScore());
-            glyphLayout.setText(font80, text);
-            float w = glyphLayout.width;
-            float h = glyphLayout.height;
-            font80.draw(batcher, text, (screenWidth - w) / 2, (screenHeight / 4 - h / 2));
+            drawScore();
 
             //Draw bat
-            batcher.draw(loader.batRegion, bat.getPosition().x, bat.getPosition().y,
-                    bat.getOriginX() - bat.getPosition().x, bat.getOriginY() - bat.getPosition().y,
-                    bat.getWidth(), bat.getHeight(),
-                    1, 1,
-                    bat.getRotation());
+            bat.onDraw(batcher);
 
             //Draw ball
-            batcher.draw(loader.ballRegion, ball1.getPosition().x - ball1.getRadius(), ball1.getPosition().y - ball1.getRadius(),
-                    ball1.getRadius(), ball1.getRadius(),
-                    ball1.getRadius() * 2, ball1.getRadius() * 2,
-                    1, 1,
-                    ball1.getRotation());
+            ball.onDraw(batcher);
+
+        }
+
+        if (myWorld.isReady()) {
+
+            myWorld.getPlayReady().onDraw(batcher);
+
+            myWorld.getAchievementButton().onDraw(batcher);
+
+            myWorld.getLeaderBoardButton().onDraw(batcher);
+
+        } else if (myWorld.isOver()) {
+
+            myWorld.getBoard().onDraw(batcher);
+
+            myWorld.getPlayButton().onDraw(batcher);
+
+            myWorld.getAchievementButton().onDraw(batcher);
+
+            myWorld.getLeaderBoardButton().onDraw(batcher);
 
         }
 
         batcher.end();
 
-        if (myWorld.isReady()) {
-            myWorld.getPlayReady().onDraw(batcher);
-            myWorld.getAchievementButton().onDraw(batcher);
-            myWorld.getLeaderBoardButton().onDraw(batcher);
-        } else if (myWorld.isOver()) {
-            myWorld.getBoard().onDraw(batcher, shapeRenderer);
-            myWorld.getPlayButton().onDraw(batcher);
-            myWorld.getAchievementButton().onDraw(batcher);
-            myWorld.getLeaderBoardButton().onDraw(batcher);
-        }
+    }
 
+    public void drawScore() {
+        String text = String.valueOf(myWorld.getScore());
+        glyphLayout.setText(font80, text);
+        float w = glyphLayout.width;
+        float h = glyphLayout.height;
+        font80.draw(batcher, text, (screenWidth - w) / 2, (screenHeight / 4 - h / 2));
     }
 }
