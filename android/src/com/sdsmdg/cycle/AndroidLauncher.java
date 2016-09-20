@@ -15,7 +15,6 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.example.games.basegameutils.GameHelper;
 import com.sdsmdg.ball.R;
-import com.squareup.leakcanary.RefWatcher;
 
 public class AndroidLauncher extends AndroidApplication implements PlayServices {
 
@@ -231,8 +230,6 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = MainApplicationClass.getRefWatcher(getContext());
-        refWatcher.watch(this);
     }
 
 }

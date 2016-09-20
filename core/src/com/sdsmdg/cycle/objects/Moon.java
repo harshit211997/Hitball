@@ -25,7 +25,7 @@ public class Moon {
     public void update(float delta) {
         rotation -= w * delta;
         //This makes the sun also change its size while it rotates, Gives it a more cartoony look! :P
-        radius = world.getScreenWidth() / 8 + (float)Math.sin(4 * Math.toRadians(rotation)) * world.getScreenWidth() / 200;
+        radius = world.getScreenWidth() / 10 + (float)Math.sin(4 * Math.toRadians(rotation)) * world.getScreenWidth() / 200;
     }
 
     public void onDraw(SpriteBatch batcher) {

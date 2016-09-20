@@ -9,7 +9,6 @@ public class CGame extends Game{
 
     private final String TAG = CGame.class.getSimpleName();
     public PlayServices playServices;
-    public AssetLoader loader;
 
     public CGame(PlayServices playServices) {
         this.playServices = playServices;
@@ -18,14 +17,13 @@ public class CGame extends Game{
     @Override
     public void create() {
         Gdx.app.log(TAG, "created");
-        loader = new AssetLoader();
-        loader.load(Gdx.graphics.getWidth());
-        setScreen(new SplashScreen(this, loader));
+        AssetLoader.load(Gdx.graphics.getWidth());
+        setScreen(new SplashScreen(this));
     }
 
     @Override
     public void dispose() {
-        loader.dispose();
+        AssetLoader.dispose();
         super.dispose();
     }
 }

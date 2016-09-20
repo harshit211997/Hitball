@@ -7,14 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sdsmdg.cycle.CGame;
-import com.sdsmdg.cycle.TweenAccessors.SpriteAccessor;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
-
-import aurelienribon.tweenengine.BaseTween;
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-import aurelienribon.tweenengine.TweenEquations;
-import aurelienribon.tweenengine.TweenManager;
 
 public class SplashScreen implements Screen {
 
@@ -23,10 +16,10 @@ public class SplashScreen implements Screen {
     private CGame game;
     private SpriteBatch batcher;
     private float screenWidth, screenHeight;
-    private TweenManager manager;
-    private Sprite sprite;
+    private Sprite mdgLogo, sdsLogo;
+    private long time;
 
-    public SplashScreen(CGame game, AssetLoader loader) {
+    public SplashScreen(CGame game) {
 
         this.screenWidth = Gdx.graphics.getWidth();
         this.screenHeight = Gdx.graphics.getHeight();
@@ -42,33 +35,20 @@ public class SplashScreen implements Screen {
         if (!game.playServices.isSignedIn())
             game.playServices.signIn();
 
-        float logoWidth = screenWidth / 4;
-        float logoHeight = 146 * logoWidth / 94;
+        float logoWidth = screenWidth / 1.5f;
+        float logoHeight = 147 * logoWidth / 405;
 
-        sprite = loader.mdgLogoRegion;
-        sprite.setColor(1, 1, 1, 0f);
-        sprite.setPosition((screenWidth - logoWidth) / 2, (screenHeight - logoHeight) / 2);
-        sprite.setSize(logoWidth, logoHeight);
+        mdgLogo = AssetLoader.mdgLogoRegion;
+        mdgLogo.setPosition((screenWidth - logoWidth) / 2, (screenHeight - logoHeight) / 2);
+        mdgLogo.setSize(logoWidth, logoHeight);
 
-        setupTween();
+        logoWidth = screenWidth / 4;
+        logoHeight = logoWidth * 305 / 393f;
 
-    }
+        sdsLogo = AssetLoader.sdsLogoRegion;
+        sdsLogo.setPosition((screenWidth - logoWidth) / 2, screenHeight - 1.5f * logoHeight);
+        sdsLogo.setSize(logoWidth, logoHeight);
 
-    private void setupTween() {
-        Tween.registerAccessor(Sprite.class, new SpriteAccessor());
-        manager = new TweenManager();
-
-        TweenCallback cb = new TweenCallback() {
-            @Override
-            public void onEvent(int type, BaseTween<?> source) {
-                game.setScreen(new GameScreen(game));
-            }
-        };
-
-        Tween.to(sprite, SpriteAccessor.ALPHA, 1.5f).target(1)
-                .ease(TweenEquations.easeInOutQuad).repeatYoyo(1, 0.75f)
-                .setCallback(cb).setCallbackTriggers(TweenCallback.COMPLETE)
-                .start(manager);
     }
 
     @Override
@@ -77,16 +57,20 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
+        time = System.currentTimeMillis();
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        manager.update(delta);
         batcher.begin();
-        sprite.draw(batcher);
+        mdgLogo.draw(batcher);
+        sdsLogo.draw(batcher);
         batcher.end();
+        if(System.currentTimeMillis() >= time + 2000) {
+            game.setScreen(new GameScreen(game));
+        }
     }
 
     @Override

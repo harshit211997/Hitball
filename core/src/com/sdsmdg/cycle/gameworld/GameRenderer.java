@@ -93,6 +93,13 @@ public class GameRenderer {
 
         if (myWorld.isReady()) {
 
+            float logoWidth = screenWidth / 2.5f;
+            float logoHeight = screenWidth / 2.5f;
+            //Draw the logo on the home screen
+            batcher.draw(AssetLoader.hitballRegion,
+                    (screenWidth - logoWidth) / 2, screenHeight * 0.10f,
+                    logoWidth, logoHeight);
+
             myWorld.getPlayReady().onDraw(batcher);
 
             myWorld.getAchievementButton().onDraw(batcher);
