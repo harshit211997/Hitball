@@ -35,14 +35,14 @@ public class SplashScreen implements Screen {
         if (!game.playServices.isSignedIn())
             game.playServices.signIn();
 
-        float logoWidth = screenWidth / 3;
+        float logoWidth = screenWidth / 2;
         float logoHeight = logoWidth;
 
         hitballLogo = AssetLoader.hitballRegion;
-        hitballLogo.setPosition((screenWidth - logoWidth) / 2, (screenHeight - logoHeight) / 2);
+        hitballLogo.setPosition((screenWidth - logoWidth) / 2, screenHeight / 2 - logoHeight);
         hitballLogo.setSize(logoWidth, logoHeight);
 
-        logoWidth = screenWidth / 1.5f;
+        logoWidth = screenWidth / 2f;
         logoHeight = 147 * logoWidth / 405;
 
         mdgLogo = AssetLoader.mdgLogoRegion;
