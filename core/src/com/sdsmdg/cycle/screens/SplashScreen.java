@@ -16,7 +16,7 @@ public class SplashScreen implements Screen {
     private CGame game;
     private SpriteBatch batcher;
     private float screenWidth, screenHeight;
-    private Sprite mdgLogo, sdsLogo;
+    private Sprite mdgLogo, hitballLogo;
     private long time;
 
     public SplashScreen(CGame game) {
@@ -35,19 +35,19 @@ public class SplashScreen implements Screen {
         if (!game.playServices.isSignedIn())
             game.playServices.signIn();
 
-        float logoWidth = screenWidth / 1.5f;
-        float logoHeight = 147 * logoWidth / 405;
+        float logoWidth = screenWidth / 3;
+        float logoHeight = logoWidth;
+
+        hitballLogo = AssetLoader.hitballRegion;
+        hitballLogo.setPosition((screenWidth - logoWidth) / 2, (screenHeight - logoHeight) / 2);
+        hitballLogo.setSize(logoWidth, logoHeight);
+
+        logoWidth = screenWidth / 1.5f;
+        logoHeight = 147 * logoWidth / 405;
 
         mdgLogo = AssetLoader.mdgLogoRegion;
-        mdgLogo.setPosition((screenWidth - logoWidth) / 2, (screenHeight - logoHeight) / 2);
+        mdgLogo.setPosition((screenWidth - logoWidth) / 2, screenHeight - 1.5f * logoHeight);
         mdgLogo.setSize(logoWidth, logoHeight);
-
-        logoWidth = screenWidth / 4;
-        logoHeight = logoWidth * 305 / 393f;
-
-        sdsLogo = AssetLoader.sdsLogoRegion;
-        sdsLogo.setPosition((screenWidth - logoWidth) / 2, screenHeight - 1.5f * logoHeight);
-        sdsLogo.setSize(logoWidth, logoHeight);
 
     }
 
@@ -66,7 +66,7 @@ public class SplashScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batcher.begin();
         mdgLogo.draw(batcher);
-        sdsLogo.draw(batcher);
+        hitballLogo.draw(batcher);
         batcher.end();
         if(System.currentTimeMillis() >= time + 2000) {
             game.setScreen(new GameScreen(game));

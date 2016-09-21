@@ -11,8 +11,8 @@ public class AssetLoader {
 
     public static Sound hit, buttonClick;
     public static BitmapFont font40, font80, font120;
-    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, achievementPressed, leaderboard, leaderboardPressed, scorecard, moonTexture, sdsLogoTexture, hitballTexture;
-    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, achievementPressedRegion, leaderboardRegion, scorecardRegion, leaderboardPressedRegion, moonRegion, sdsLogoRegion, hitballRegion;
+    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, achievementPressed, leaderboard, leaderboardPressed, scorecard, moonTexture, hitballTexture;
+    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, achievementPressedRegion, leaderboardRegion, scorecardRegion, leaderboardPressedRegion, moonRegion, hitballRegion;
 
     public static void load(int screenWidth) {
 
@@ -42,11 +42,6 @@ public class AssetLoader {
         mdgLogo.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         mdgLogoRegion = new Sprite(mdgLogo);
         mdgLogoRegion.flip(false, true);
-
-        sdsLogoTexture = new Texture(Gdx.files.internal("sds_logo.png"));
-        sdsLogoTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        sdsLogoRegion = new Sprite(sdsLogoTexture);
-        sdsLogoRegion.flip(false, true);
 
         hitballTexture = new Texture(Gdx.files.internal("hitball_logo_unlined.png"));
         hitballTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -132,6 +127,7 @@ public class AssetLoader {
         leaderboardPressed.dispose();
         scorecard.dispose();
         moonTexture.dispose();
+        hitballTexture.dispose();
 
         //dispose the audio files
         disposeAudio();
