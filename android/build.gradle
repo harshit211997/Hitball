@@ -36,8 +36,8 @@ android {
         applicationId "com.sdsmdg.cycle"
         minSdkVersion 9
         targetSdkVersion 24
-        versionCode 3
-        versionName "1.01"
+        versionCode 4
+        versionName "1.02"
     }
     buildTypes {
         debug {
@@ -150,4 +150,5 @@ idea {
     }
 }
 dependencies {
+    compile "com.android.support:appcompat-v7:24.2.0"
 }

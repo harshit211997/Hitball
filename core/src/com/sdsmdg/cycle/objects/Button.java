@@ -1,6 +1,5 @@
 package com.sdsmdg.cycle.objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -31,7 +30,7 @@ public class Button {
         this.myWorld = world;
         this.id = id;
 
-        this.theta = 90 * (float)Math.random();
+        this.theta = 90 * (float) Math.random();
 
         MAX_HEIGHT = height;//Initial height is the maximum height
         MAX_WIDTH = width;//Similarly, the width
@@ -74,7 +73,11 @@ public class Button {
         //id == 2 means it is a leaderboard button
         else if (id == 2) {
             myWorld.getGame().playServices.showScore();
-            Gdx.app.log("Button", "showScore() called");
+        }
+
+        //id == 3 means it is an info button
+        else if (id == 3) {
+            myWorld.getGame().aboutUs.onClick();
         }
     }
 

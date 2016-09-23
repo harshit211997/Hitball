@@ -13,6 +13,8 @@ public interface PlayServices {
     public void unlockAchievementBored();
     public void unlockAchievementIntoHeavens();
     public void unlockAchievementYouAreGod();
+    public void unlockAchievementDecade();
+    public void unlockAchievementSilver();
     public void submitScore(int highScore);
     public void showAchievement();
     public void showScore();

@@ -18,6 +18,8 @@
             </intent-filter>
 
         </activity>
+        <activity android:name="com.sdsmdg.cycle.AboutUsActivity"
+            android:theme="@style/Theme.Transparent"/>
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/app_id" />

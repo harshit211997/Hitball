@@ -9,9 +9,11 @@ public class CGame extends Game{
 
     private final String TAG = CGame.class.getSimpleName();
     public PlayServices playServices;
+    public AboutUs aboutUs;
 
-    public CGame(PlayServices playServices) {
+    public CGame(PlayServices playServices, AboutUs aboutUs) {
         this.playServices = playServices;
+        this.aboutUs = aboutUs;
     }
 
     @Override

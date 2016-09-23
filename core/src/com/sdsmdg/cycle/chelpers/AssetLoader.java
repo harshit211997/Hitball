@@ -11,8 +11,8 @@ public class AssetLoader {
 
     public static Sound hit, buttonClick;
     public static BitmapFont font40, font80, font120;
-    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, achievementPressed, leaderboard, leaderboardPressed, scorecard, moonTexture, hitballTexture;
-    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, achievementPressedRegion, leaderboardRegion, scorecardRegion, leaderboardPressedRegion, moonRegion, hitballRegion;
+    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, achievementPressed, leaderboard, leaderboardPressed, scorecard, moonTexture, hitballTexture, aboutUsTexture, aboutUsSmallTexture;
+    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, achievementPressedRegion, leaderboardRegion, scorecardRegion, leaderboardPressedRegion, moonRegion, hitballRegion, aboutUsRegion, aboutUsSmallRegion;
 
     public static void load(int screenWidth) {
 
@@ -82,6 +82,14 @@ public class AssetLoader {
         moonTexture = new Texture(Gdx.files.internal("moon.png"));
         moonRegion = new Sprite(moonTexture);
 
+        aboutUsTexture = new Texture(Gdx.files.internal("about_us.png"));
+        aboutUsRegion = new Sprite(aboutUsTexture);
+        aboutUsRegion.flip(false, true);
+
+        aboutUsSmallTexture = new Texture(Gdx.files.internal("about_us_small.png"));
+        aboutUsSmallRegion = new Sprite(aboutUsSmallTexture);
+        aboutUsSmallRegion.flip(false, true);
+
         createFont(screenWidth);
 
         loadSounds();
@@ -128,6 +136,8 @@ public class AssetLoader {
         scorecard.dispose();
         moonTexture.dispose();
         hitballTexture.dispose();
+        aboutUsSmallTexture.dispose();
+        aboutUsTexture.dispose();
 
         //dispose the audio files
         disposeAudio();

@@ -40,7 +40,7 @@ public class GameWorld {
     private Sun sun;
     private Moon moon;
     private Board board;
-    private Button playReady, achievement, leaderBoardButton;
+    private Button playReady, achievement, leaderBoardButton, infoButton;
     int hitCount = 0;//This int counts the total no. of hits the bat(or ball) experiences(Including the hit on handle of bat)
 
     //This reference is just used to call the playServices methods to unlock Achievements
@@ -121,6 +121,13 @@ public class GameWorld {
                 AssetLoader.leaderboardRegion,
                 2);
 
+        float infoWidth = screenWidth / 8, infoHeight = screenWidth / 8;
+        infoButton = new Button(this, screenWidth - infoWidth / 1.5f, infoHeight / 1.5f,
+                infoWidth, infoHeight,
+                AssetLoader.aboutUsSmallRegion,
+                AssetLoader.aboutUsRegion,
+                3);
+
         float cloudWidth = screenWidth / 3;
         float cloudHeight = (cloudWidth * 121) / 232;
         clouds.add(new Cloud(this, cloudWidth, cloudHeight,
@@ -141,7 +148,7 @@ public class GameWorld {
                 AssetLoader.fanRegion);
 
         sun = new Sun(this,
-                new Vector2(screenWidth * 0.75f, screenHeight / 3),
+                new Vector2(screenWidth * 0.80f, screenHeight / 3),
                 AssetLoader.sunRegion);
 
         moon = new Moon(this,
@@ -445,6 +452,10 @@ public class GameWorld {
             game.playServices.unlockAchievementCentury();
         } else if (score == 50) {
             game.playServices.unlockAchievementHalfCentury();
+        } else if(score == 25) {
+            game.playServices.unlockAchievementSilver();
+        } else if(score == 10) {
+            game.playServices.unlockAchievementDecade();
         }
         if (hitCount == 1) {
             game.playServices.unlockAchievementTrickyOne();
@@ -498,5 +509,9 @@ public class GameWorld {
 
     public Button getLeaderBoardButton() {
         return leaderBoardButton;
+    }
+
+    public Button getInfoButton() {
+        return infoButton;
     }
 }

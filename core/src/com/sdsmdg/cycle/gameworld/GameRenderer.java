@@ -106,6 +106,8 @@ public class GameRenderer {
 
             myWorld.getLeaderBoardButton().onDraw(batcher);
 
+            myWorld.getInfoButton().onDraw(batcher);
+
         } else if (myWorld.isOver()) {
 
             myWorld.getBoard().onDraw(batcher);

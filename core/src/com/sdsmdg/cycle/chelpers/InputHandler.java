@@ -41,6 +41,9 @@ public class InputHandler implements InputProcessor {
             if(myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
                 myWorld.getLeaderBoardButton().onTouchDown();
             }
+            if(myWorld.getInfoButton().isTouched(screenX, screenY)) {
+                myWorld.getInfoButton().onTouchDown();
+            }
         } else if(myWorld.isOver()) {
             if(myWorld.getPlayButton().isTouched(screenX, screenY)) {
                 myWorld.getPlayButton().onTouchDown();
@@ -78,6 +81,9 @@ public class InputHandler implements InputProcessor {
             }
             if(myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
                 myWorld.getLeaderBoardButton().onTouchUp();
+            }
+            if(myWorld.getInfoButton().isTouched(screenX, screenY)) {
+                myWorld.getInfoButton().onTouchUp();
             }
         }
         return true;
@@ -118,6 +124,11 @@ public class InputHandler implements InputProcessor {
                 myWorld.getLeaderBoardButton().onRemoveTouch();
             }else {
                 myWorld.getLeaderBoardButton().onTouchDown();
+            }
+            if(!myWorld.getInfoButton().isTouched(screenX, screenY)) {
+                myWorld.getInfoButton().onRemoveTouch();
+            }else{
+                myWorld.getInfoButton().onTouchDown();
             }
         }
         return true;
