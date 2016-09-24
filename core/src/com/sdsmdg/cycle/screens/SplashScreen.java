@@ -2,12 +2,15 @@ package com.sdsmdg.cycle.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sdsmdg.cycle.CGame;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
+
+import aurelienribon.tweenengine.TweenManager;
 
 public class SplashScreen implements Screen {
 
@@ -18,11 +21,18 @@ public class SplashScreen implements Screen {
     private float screenWidth, screenHeight;
     private Sprite mdgLogo, hitballLogo;
     private long time;
+    private TweenManager manager;
+    private Color color;
 
     public SplashScreen(CGame game) {
 
+        color = new Color(1, 1, 1, 0);
+
+
         this.screenWidth = Gdx.graphics.getWidth();
         this.screenHeight = Gdx.graphics.getHeight();
+
+        manager = new TweenManager();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(true, screenWidth, screenHeight);
@@ -62,8 +72,9 @@ public class SplashScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        color.lerp(new Color(1, 1, 1, 0), 1f);
         batcher.begin();
         mdgLogo.draw(batcher);
         hitballLogo.draw(batcher);
