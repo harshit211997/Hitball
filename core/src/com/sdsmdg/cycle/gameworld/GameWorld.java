@@ -6,14 +6,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.CGame;
 import com.sdsmdg.cycle.TweenAccessors.VectorAccessor;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
+import com.sdsmdg.cycle.objects.Background;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Board;
 import com.sdsmdg.cycle.objects.Button;
-import com.sdsmdg.cycle.objects.Cloud;
-import com.sdsmdg.cycle.objects.Fan;
-import com.sdsmdg.cycle.objects.Moon;
-import com.sdsmdg.cycle.objects.Sun;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,18 +27,15 @@ public class GameWorld {
 
     private List<Ball> balls = new ArrayList<Ball>();
     private Bat bat;
-    private int screenWidth, screenHeight;
+    public static int screenWidth, screenHeight;
     GameState gameState;
     Button playButton;
     public static int score = 0;
     Preferences prefs;
-    private List<Cloud> clouds = new ArrayList<Cloud>();
-    private Fan fan;
-    private Sun sun;
-    private Moon moon;
     private Board board;
     private Button playReady, achievement, leaderBoardButton, infoButton;
     int hitCount = 0;//This int counts the total no. of hits the bat(or ball) experiences(Including the hit on handle of bat)
+    private Background background;
 
     //This reference is just used to call the playServices methods to unlock Achievements
     private CGame game;
@@ -128,37 +122,12 @@ public class GameWorld {
                 AssetLoader.aboutUsRegion,
                 3);
 
-        float cloudWidth = screenWidth / 3;
-        float cloudHeight = (cloudWidth * 121) / 232;
-        clouds.add(new Cloud(this, cloudWidth, cloudHeight,
-                new Vector2(screenWidth / 10, screenHeight / 20),//cloud's positions
-                new Vector2(screenWidth / 2000f, 0),//cloud's velocity
-                AssetLoader.cloudRegion));
-
-        cloudWidth /= 2;
-        cloudHeight /= 2;
-        clouds.add(new Cloud(this, cloudWidth, cloudHeight,
-                new Vector2(screenWidth - cloudWidth, cloudHeight / 2),
-                new Vector2(screenWidth / 1500f, 0),
-                AssetLoader.cloud1Region));
-
-        fan = new Fan(this,
-                screenWidth / 10, screenWidth / 10,
-                new Vector2(screenWidth / 6.8f, screenHeight - screenWidth * 0.86f),
-                AssetLoader.fanRegion);
-
-        sun = new Sun(this,
-                new Vector2(screenWidth * 0.80f, screenHeight / 3),
-                AssetLoader.sunRegion);
-
-        moon = new Moon(this,
-                new Vector2(screenWidth * 0.75f, screenHeight / 3),
-                AssetLoader.moonRegion);
-
         board = new Board(this,
                 screenWidth / 2, screenWidth / 2,
                 new Vector2(screenWidth / 2, screenHeight / 2)
         );
+
+        background = new Background();
 
         prefs = Gdx.app.getPreferences("Highscore");
 
@@ -192,8 +161,6 @@ public class GameWorld {
     public void update(float delta) {
         manager.update(delta);
 
-        moon.update(delta);
-
         if (isBeginnerComplete()) {
             game.playServices.unlockAchievementBeginner();
         }
@@ -204,13 +171,7 @@ public class GameWorld {
         /*
         These are the objects that need to be updated in every state of the game
          */
-        sun.update(delta);
-
-        for (int i = 0; i < clouds.size(); i++) {
-            clouds.get(i).update(delta);
-        }
-
-        fan.update(delta);
+        background.update(delta);
 
         /*
         While some other objects need to be updated at a certain state of the game
@@ -485,18 +446,6 @@ public class GameWorld {
         return screenHeight;
     }
 
-    public List<Cloud> getClouds() {
-        return clouds;
-    }
-
-    public Fan getFan() {
-        return fan;
-    }
-
-    public Sun getSun() {
-        return sun;
-    }
-
     public Board getBoard() {
         return board;
     }
@@ -513,10 +462,6 @@ public class GameWorld {
         return game;
     }
 
-    public Moon getMoon() {
-        return moon;
-    }
-
     public Button getLeaderBoardButton() {
         return leaderBoardButton;
     }
@@ -525,4 +470,7 @@ public class GameWorld {
         return infoButton;
     }
 
+    public Background getBackground() {
+        return background;
+    }
 }

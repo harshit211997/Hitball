@@ -3,12 +3,20 @@ package com.sdsmdg.cycle.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.gameworld.GameWorld;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Background {
 
     BackgroundState state;
+    private List<Cloud> clouds = new ArrayList<Cloud>();
+    private Fan fan;
+    private Sun sun;
+    private Moon moon;
 
     public Background() {
         float rand = (float)Math.random();
@@ -17,6 +25,44 @@ public class Background {
         } else {
             state = BackgroundState.DAY;
         }
+        float screenWidth = GameWorld.screenWidth;
+        float screenHeight = GameWorld.screenHeight;
+
+        float cloudWidth = screenWidth / 3;
+        float cloudHeight = (cloudWidth * 121) / 232;
+        clouds.add(new Cloud(cloudWidth, cloudHeight,
+                new Vector2(screenWidth / 10, screenHeight / 20),//cloud's positions
+                new Vector2(screenWidth / 2000f, 0),//cloud's velocity
+                AssetLoader.cloudRegion));
+
+        cloudWidth /= 2;
+        cloudHeight /= 2;
+        clouds.add(new Cloud(cloudWidth, cloudHeight,
+                new Vector2(screenWidth - cloudWidth, cloudHeight / 2),
+                new Vector2(screenWidth / 1500f, 0),
+                AssetLoader.cloud1Region));
+
+        fan = new Fan(screenWidth / 10, screenWidth / 10,
+                new Vector2(screenWidth / 6.8f, screenHeight - screenWidth * 0.86f),
+                AssetLoader.fanRegion);
+
+        sun = new Sun(new Vector2(screenWidth * 0.80f, screenHeight / 3),
+                AssetLoader.sunRegion);
+
+        moon = new Moon(new Vector2(screenWidth * 0.75f, screenHeight / 3),
+                AssetLoader.moonRegion);
+
+    }
+
+    public void update(float delta) {
+        moon.update(delta);
+        sun.update(delta);
+
+        for (int i = 0; i < clouds.size(); i++) {
+            clouds.get(i).update(delta);
+        }
+
+        fan.update(delta);
     }
 
     private enum BackgroundState {
@@ -41,17 +87,17 @@ public class Background {
 
         //Draw sun
         if(state == BackgroundState.DAY)
-            world.getSun().onDraw(batcher);
+            sun.onDraw(batcher);
         else
-            world.getMoon().onDraw(batcher);
+            moon.onDraw(batcher);
 
         //Draw clouds
-        for(int i=0;i<world.getClouds().size();i++) {
-            world.getClouds().get(i).onDraw(batcher);
+        for(int i=0;i<clouds.size();i++) {
+            clouds.get(i).onDraw(batcher);
         }
 
         //Draw the moving part of windmill
-        world.getFan().onDraw(batcher);
+        fan.onDraw(batcher);
     }
 
 }

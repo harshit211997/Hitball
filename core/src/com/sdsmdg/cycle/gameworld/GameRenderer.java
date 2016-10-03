@@ -30,14 +30,10 @@ public class GameRenderer {
 
     GlyphLayout glyphLayout;
 
-    private Background background;
-
     public GameRenderer(GameWorld world, int screenWidth, int screenHeight) {
         myWorld = world;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-
-        background = new Background();
 
         glyphLayout = new GlyphLayout();
 
@@ -76,7 +72,7 @@ public class GameRenderer {
 
         batcher.begin();
 
-        background.onDraw(myWorld, batcher);
+        myWorld.getBackground().onDraw(myWorld, batcher);
 
         if (myWorld.isRunning()) {
 
