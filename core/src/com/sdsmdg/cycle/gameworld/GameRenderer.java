@@ -118,6 +118,9 @@ public class GameRenderer {
 
             myWorld.getLeaderBoardButton().onDraw(batcher);
 
+            if(!myWorld.getTextView().isHidden())
+                myWorld.getTextView().render(batcher);//is shown only when the user beats the highscore
+
         }
 
         batcher.end();
