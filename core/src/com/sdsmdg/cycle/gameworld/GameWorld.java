@@ -12,7 +12,6 @@ import com.sdsmdg.cycle.objects.Board;
 import com.sdsmdg.cycle.objects.Button;
 import com.sdsmdg.cycle.objects.Cloud;
 import com.sdsmdg.cycle.objects.Fan;
-import com.sdsmdg.cycle.objects.JumpingTextView;
 import com.sdsmdg.cycle.objects.Moon;
 import com.sdsmdg.cycle.objects.Sun;
 
@@ -48,9 +47,6 @@ public class GameWorld {
     private CGame game;
 
     TweenManager manager;//manages position of play button
-
-    //For showing new best! on score screen
-    JumpingTextView textView;
 
     /*
     This flag plays a very interesting role in the achievement "Into the Heavens",
@@ -164,8 +160,6 @@ public class GameWorld {
                 new Vector2(screenWidth / 2, screenHeight / 2)
         );
 
-        textView = new JumpingTextView(new Vector2(screenWidth / 2, screenHeight * 0.51f), "new best!");
-
         prefs = Gdx.app.getPreferences("Highscore");
 
         this.game = game;
@@ -247,8 +241,7 @@ public class GameWorld {
         playButton.update(delta);
         achievement.update(delta);
         leaderBoardButton.update(delta);
-        if(!textView.isHidden())
-            textView.update(delta);
+        board.update(delta);
     }
 
     public boolean ballAboveScreen(Ball ball) {
@@ -331,9 +324,6 @@ public class GameWorld {
 
     public void updateScore() {
         score++;
-        if (score > getHighScore()) {
-            setHighScore(score);
-        }
     }
 
     public void setBallOut(Ball ball) {
@@ -429,14 +419,25 @@ public class GameWorld {
         }
         score = 0;
         gameState = GameState.RUNNING;
+        board.onGameRunning();
     }
 
     public void setGameStateOver() {
+
+        boolean flag = false;
+
+        if (score > getHighScore()) {
+            setHighScore(score);
+            flag = true;
+        }
+
+        board.onGameOver(flag);
+
         //To animate play button at game over screen
         Tween.registerAccessor(Vector2.class, new VectorAccessor());
 
         Tween.to(playButton.getPosition(), VectorAccessor.Y, 0.3f).target(screenHeight * 0.8f)
-                .ease(TweenEquations.easeInOutExpo)
+                .ease(TweenEquations.easeOutQuad)
                 .start(manager);
 
         //To animate achievement button
@@ -455,11 +456,6 @@ public class GameWorld {
         Gdx.input.vibrate(300);
         gameState = GameState.OVER;
         incrementGamesPlayed();
-        if(score == getHighScore()) {
-            textView.show();
-        } else {
-            textView.hide();
-        }
         if (score == 2) {
             game.playServices.unlockAchievement2();
         } else if (score == 100) {
@@ -529,7 +525,4 @@ public class GameWorld {
         return infoButton;
     }
 
-    public JumpingTextView getTextView() {
-        return textView;
-    }
 }
