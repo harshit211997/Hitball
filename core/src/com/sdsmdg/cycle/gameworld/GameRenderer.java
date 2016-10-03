@@ -110,7 +110,7 @@ public class GameRenderer {
 
         } else if (myWorld.isOver()) {
 
-            myWorld.getBoard().onDraw(batcher);
+            myWorld.getBoard().onDraw(batcher, shapeRenderer);
 
             myWorld.getPlayButton().onDraw(batcher);
 

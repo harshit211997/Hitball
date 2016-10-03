@@ -1,13 +1,13 @@
 package com.sdsmdg.cycle.objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.gameworld.GameWorld;
 
 public class Board {
@@ -20,7 +20,6 @@ public class Board {
     private GameWorld myWorld;
     private int screenWidth, screenHeight;
     private BitmapFont font40, font120;
-    private Sprite sprite;
 
     public Board(GameWorld world, float width, float height, Vector2 position) {
         this.height = height;
@@ -34,13 +33,6 @@ public class Board {
         glyphLayout = new GlyphLayout();
 
         generateFont();
-
-        float boardWidth = 0.8f * screenWidth;
-        float boardHeight = 0.5f * screenWidth;
-
-        sprite = new Sprite(AssetLoader.scorecardRegion);
-        sprite.setSize(boardWidth, boardHeight);
-        sprite.setPosition((screenWidth - boardWidth) / 2, (screenHeight - boardHeight) / 2);
 
     }
 
@@ -57,9 +49,9 @@ public class Board {
         generator.dispose();
     }
 
-    public void onDraw(SpriteBatch batcher) {
+    public void onDraw(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
 
-        sprite.draw(batcher);
+        drawBackground(batcher, shapeRenderer);
 
         drawText(String.valueOf(myWorld.getScore()),
                 batcher,
@@ -76,6 +68,21 @@ public class Board {
                 position.x, position.y + height / 2 - (30 * screenWidth) / 480,
                 font40);
 
+    }
+
+    //draws translucent background
+    private void drawBackground(SpriteBatch batcher, ShapeRenderer shapeRenderer) {
+        float boardWidth = screenWidth;
+        float boardHeight = 0.5f * screenWidth;
+
+        batcher.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);//This line is added so that the alpha of the board background might work
+        shapeRenderer.setColor(0, 0, 0, 0.5f);
+        shapeRenderer.rect(screenWidth / 2 - boardWidth / 2, screenHeight / 2 - boardHeight / 2,
+                boardWidth, boardHeight);
+        shapeRenderer.end();
+        batcher.begin();
     }
 
     private void drawText(String text, SpriteBatch batch, float x, float y, BitmapFont font) {
