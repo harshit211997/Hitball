@@ -16,8 +16,10 @@ Tap the screen to rotate the bat and hit the ball.
 -Save your achievements in the game
 
 ## ScreenShot
-<img src="https://raw.githubusercontent.com/harshit211997/Hitball/master/screenshots/Screenshot_1.png" width=240 height=420>
-<img src="https://raw.githubusercontent.com/harshit211997/Hitball/master/screenshots/Screenshot_3.png" width=240 height=420>
-<img src="https://raw.githubusercontent.com/harshit211997/Hitball/master/screenshots/Screenshot_4.png" width=240 height=420>
+<img src="https://github.com/harshit211997/Hitball/blob/master/screenshots/Screenshot_20161004-194231.png" width=240 height=420>
+<img src="https://github.com/harshit211997/Hitball/blob/master/screenshots/Screenshot_20160918-225735.png" width=240 height=420>
+<img src="https://github.com/harshit211997/Hitball/blob/master/screenshots/Screenshot_20161004-183716.png" width=240 height=420>
+<img src="https://github.com/harshit211997/Hitball/blob/master/screenshots/Screenshot_20161004-194301.png" width=240 height=420>
+<img src="https://github.com/harshit211997/Hitball/blob/master/screenshots/Screenshot_20161004-194352.png" width=240 height=420>
 
 
