@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
-import com.sdsmdg.cycle.objects.Background;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 
@@ -72,7 +71,7 @@ public class GameRenderer {
 
         batcher.begin();
 
-        myWorld.getBackground().onDraw(myWorld, batcher);
+        myWorld.getBackground().onDraw(myWorld, shapeRenderer, batcher);
 
         if (myWorld.isRunning()) {
 

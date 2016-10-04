@@ -75,8 +75,8 @@ public class GameWorld {
         bat = new Bat(batWidth, batHeight, batPosition);
         Ball ball1 = new Ball(screenWidth, screenHeight);
         balls.add(ball1);
-        this.screenHeight = screenHeight;
-        this.screenWidth = screenWidth;
+        GameWorld.screenHeight = screenHeight;
+        GameWorld.screenWidth = screenWidth;
         gameState = GameState.READY;
         manager = new TweenManager();
 
@@ -473,4 +473,5 @@ public class GameWorld {
     public Background getBackground() {
         return background;
     }
+
 }

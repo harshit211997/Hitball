@@ -3,6 +3,7 @@ package com.sdsmdg.cycle.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
 import com.sdsmdg.cycle.gameworld.GameWorld;
@@ -17,6 +18,8 @@ public class Background {
     private Fan fan;
     private Sun sun;
     private Moon moon;
+    private List<Star> stars = new ArrayList<Star>();
+    private final int NO_STARS = 50;
 
     public Background() {
         float rand = (float)Math.random();
@@ -52,6 +55,10 @@ public class Background {
         moon = new Moon(new Vector2(screenWidth * 0.75f, screenHeight / 3),
                 AssetLoader.moonRegion);
 
+        for (int i = 1; i < NO_STARS; i++) {
+            stars.add(new Star());
+        }
+
     }
 
     public void update(float delta) {
@@ -62,6 +69,10 @@ public class Background {
             clouds.get(i).update(delta);
         }
 
+        for (int i = 0; i < stars.size(); i++) {
+            stars.get(i).update(delta);
+        }
+
         fan.update(delta);
     }
 
@@ -69,7 +80,7 @@ public class Background {
         DAY, NIGHT
     }
 
-    public void onDraw(GameWorld world, SpriteBatch batcher) {
+    public void onDraw(GameWorld world, ShapeRenderer shapeRenderer, SpriteBatch batcher) {
 
         // Fill the entire screen with blue, to prevent potential flickering.
         if(state == BackgroundState.DAY) {
@@ -78,6 +89,12 @@ public class Background {
             Gdx.gl.glClearColor(0f, 0f, 0f, 1f);//Black
         }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if(state == BackgroundState.NIGHT) {
+            for (int i = 0; i < stars.size(); i++) {
+                stars.get(i).onDraw(batcher, shapeRenderer);
+            }
+        }
 
         //draw background
         float backgroundWidth = world.getScreenWidth();
@@ -88,12 +105,15 @@ public class Background {
         //Draw sun
         if(state == BackgroundState.DAY)
             sun.onDraw(batcher);
-        else
+        else {
             moon.onDraw(batcher);
+        }
 
         //Draw clouds
-        for(int i=0;i<clouds.size();i++) {
-            clouds.get(i).onDraw(batcher);
+        if(state == BackgroundState.DAY ) {
+            for (int i = 0; i < clouds.size(); i++) {
+                clouds.get(i).onDraw(batcher);
+            }
         }
 
         //Draw the moving part of windmill
