@@ -11,20 +11,18 @@ public class Cloud {
     private Sprite sprite;
     private Vector2 velocity;
     private float width, height;
-    private GameWorld world;
 
-    public Cloud(GameWorld world, float width, float height, Vector2 position, Vector2 velocity, Sprite sprite) {
+    public Cloud(float width, float height, Vector2 position, Vector2 velocity, Sprite sprite) {
         this.height = height;
         this.position = position;
         this.sprite = sprite;
         this.velocity = velocity;
         this.width = width;
-        this.world = world;
     }
 
     public void update(float delta) {
         position.x += velocity.x + delta;
-        if(position.x > world.getScreenWidth()) {
+        if(position.x > GameWorld.screenWidth) {
             position.x = -width;
         }
     }

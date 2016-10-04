@@ -7,17 +7,15 @@ import com.sdsmdg.cycle.gameworld.GameWorld;
 
 public class Moon {
 
-    private GameWorld world;
     private float radius;
     private Vector2 position;
     private Sprite sprite;
     private float rotation = 0;
     private float w;
 
-    public Moon(GameWorld world, Vector2 position, Sprite sprite) {
+    public Moon(Vector2 position, Sprite sprite) {
         this.position = position;
         this.sprite = sprite;
-        this.world = world;
 
         w = 12;
     }
@@ -25,7 +23,7 @@ public class Moon {
     public void update(float delta) {
         rotation -= w * delta;
         //This makes the sun also change its size while it rotates, Gives it a more cartoony look! :P
-        radius = world.getScreenWidth() / 10 + (float)Math.sin(4 * Math.toRadians(rotation)) * world.getScreenWidth() / 200;
+        radius = GameWorld.screenWidth / 10 + (float)Math.sin(4 * Math.toRadians(rotation)) * GameWorld.screenWidth / 200;
     }
 
     public void onDraw(SpriteBatch batcher) {

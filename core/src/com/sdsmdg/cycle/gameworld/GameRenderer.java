@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.sdsmdg.cycle.chelpers.AssetLoader;
-import com.sdsmdg.cycle.objects.Background;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 
@@ -30,14 +29,10 @@ public class GameRenderer {
 
     GlyphLayout glyphLayout;
 
-    private Background background;
-
     public GameRenderer(GameWorld world, int screenWidth, int screenHeight) {
         myWorld = world;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-
-        background = new Background();
 
         glyphLayout = new GlyphLayout();
 
@@ -76,7 +71,7 @@ public class GameRenderer {
 
         batcher.begin();
 
-        background.onDraw(myWorld, batcher);
+        myWorld.getBackground().onDraw(myWorld, shapeRenderer, batcher);
 
         if (myWorld.isRunning()) {
 
@@ -110,14 +105,13 @@ public class GameRenderer {
 
         } else if (myWorld.isOver()) {
 
-            myWorld.getBoard().onDraw(batcher);
+            myWorld.getBoard().onDraw(batcher, shapeRenderer);
 
             myWorld.getPlayButton().onDraw(batcher);
 
             myWorld.getAchievementButton().onDraw(batcher);
 
             myWorld.getLeaderBoardButton().onDraw(batcher);
-
         }
 
         batcher.end();

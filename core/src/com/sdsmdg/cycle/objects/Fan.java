@@ -3,11 +3,9 @@ package com.sdsmdg.cycle.objects;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.sdsmdg.cycle.gameworld.GameWorld;
 
 public class Fan {
 
-    private GameWorld world;
     private Vector2 position;
     private int rotation = 0;
     private Sprite sprite;
@@ -15,10 +13,9 @@ public class Fan {
     //w is omega, i.e. angular velocity of rotation of fan
     private int w;
 
-    public Fan(GameWorld world, float width, float height, Vector2 position, Sprite sprite) {
+    public Fan(float width, float height, Vector2 position, Sprite sprite) {
         this.position = position;
         this.sprite = sprite;
-        this.world = world;
         this.width = width;
         this.height = height;
 
