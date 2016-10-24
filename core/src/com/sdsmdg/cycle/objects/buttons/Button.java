@@ -1,4 +1,4 @@
-package com.sdsmdg.cycle.objects;
+package com.sdsmdg.cycle.objects.buttons;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,6 +18,14 @@ public class Button {
     int id;//This determines which type of button is it
     float theta;
     Vector2 initialPos = new Vector2();
+    OnClickListener listener;
+
+    /*
+    This keeps track of whether the button was initially touchedDown
+    as it should not call onClick if the user touches some part of screen
+    but raises his finger above the button
+    */
+    boolean alreadyTouchedDown = false;
 
     public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
         this.height = height;
@@ -39,6 +47,10 @@ public class Button {
         initialPos.set(x, y);
     }
 
+    public void setOnClickListener(OnClickListener listener) {
+        this.listener = listener;
+    }
+
     public boolean isTouched(int x, int y) {
         rectangle.set(position.x - width / 2, position.y - height / 2, width, height);
         return rectangle.contains(x, y);
@@ -56,29 +68,24 @@ public class Button {
 
     public void onTouchDown() {
         current = regionOn;
+        alreadyTouchedDown = true;
+    }
+
+    public void onTouchDragged() {
+        if(alreadyTouchedDown) {
+            current = regionOn;
+        }
     }
 
     public void onTouchUp() {
-        AssetLoader.buttonClick.play();
-        current = regionOff;
-        //id == 0 means it is a play button
-        if (id == 0) {
-            myWorld.setGameStateRunning();
-        }
-        //id == 1 means it is an achievement button
-        else if (id == 1) {
-            myWorld.getGame().playServices.showAchievement();
+
+        if(alreadyTouchedDown) {
+            listener.onClick();
+            AssetLoader.buttonClick.play();
+            current = regionOff;
         }
 
-        //id == 2 means it is a leaderboard button
-        else if (id == 2) {
-            myWorld.getGame().playServices.showScore();
-        }
-
-        //id == 3 means it is an info button
-        else if (id == 3) {
-            myWorld.getGame().aboutUs.onClick();
-        }
+        alreadyTouchedDown = false;
     }
 
     /*
@@ -92,6 +99,10 @@ public class Button {
 
     public float getHeight() {
         return height;
+    }
+
+    public boolean isAlreadyTouchedDown() {
+        return alreadyTouchedDown;
     }
 
     public TextureRegion getRegion() {
@@ -116,5 +127,9 @@ public class Button {
 
     public void setPosition(float x, float y) {
         this.position.set(x, y);
+    }
+
+    public interface OnClickListener {
+        public void onClick();
     }
 }

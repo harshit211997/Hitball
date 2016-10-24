@@ -10,7 +10,7 @@ import com.sdsmdg.cycle.objects.Background;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Board;
-import com.sdsmdg.cycle.objects.Button;
+import com.sdsmdg.cycle.objects.buttons.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +29,10 @@ public class GameWorld {
     private Bat bat;
     public static int screenWidth, screenHeight;
     GameState gameState;
-    Button playButton;
     public static int score = 0;
     Preferences prefs;
     private Board board;
-    private Button playReady, achievement, leaderBoardButton, infoButton;
+    private Button playButton, playReady, achievement, leaderBoardButton, infoButton;
     int hitCount = 0;//This int counts the total no. of hits the bat(or ball) experiences(Including the hit on handle of bat)
     private Background background;
 
@@ -69,6 +68,7 @@ public class GameWorld {
     }
 
     public GameWorld(CGame game, int screenWidth, int screenHeight) {
+
         Vector2 batPosition = new Vector2(screenWidth / 10, 520f / 854 * screenHeight);
         int batHeight = screenWidth / 15;
         int batWidth = (AssetLoader.batRegion.getRegionWidth() * batHeight) / AssetLoader.batRegion.getRegionHeight();
@@ -90,6 +90,13 @@ public class GameWorld {
                 AssetLoader.playRegionOn, AssetLoader.playRegionOff,
                 0);
 
+        playButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick() {
+                setGameStateRunning();
+            }
+        });
+
         /*
         This play button is used when game starts at the beginning
          */
@@ -100,6 +107,13 @@ public class GameWorld {
                 AssetLoader.playRegionOff,
                 0);
 
+        playReady.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick() {
+                setGameStateRunning();
+            }
+        });
+
         //This button is used to show all the achievements of the user
         float achievementWidth = screenWidth / 5, achievementHeight = screenWidth / 5;
         achievement = new Button(this, screenWidth / 4, screenHeight * 0.75f,
@@ -108,6 +122,13 @@ public class GameWorld {
                 AssetLoader.achievementRegion,
                 1);
 
+        achievement.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick() {
+                getGame().playServices.showAchievement();
+            }
+        });
+
         float leaderWidth = screenWidth / 5, leaderHeight = screenWidth / 5;
         leaderBoardButton = new Button(this, 3 * screenWidth / 4, screenHeight * 0.75f,
                 leaderWidth, leaderHeight,
@@ -115,12 +136,28 @@ public class GameWorld {
                 AssetLoader.leaderboardRegion,
                 2);
 
+        leaderBoardButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick() {
+                getGame().playServices.showScore();
+            }
+        });
+
         float infoWidth = screenWidth / 8, infoHeight = screenWidth / 8;
         infoButton = new Button(this, screenWidth - infoWidth / 1.5f, infoHeight / 1.5f,
                 infoWidth, infoHeight,
                 AssetLoader.aboutUsSmallRegion,
                 AssetLoader.aboutUsRegion,
                 3);
+
+        infoButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick() {
+                getGame().aboutUs.onClick();
+            }
+        });
+
+        float volumeWidth = screenWidth / 8, volumeHeight = screenWidth / 8;
 
         board = new Board(this,
                 screenWidth / 2, screenWidth / 2,
@@ -473,5 +510,6 @@ public class GameWorld {
     public Background getBackground() {
         return background;
     }
+
 
 }

@@ -55,6 +55,7 @@ public class InputHandler implements InputProcessor {
                 myWorld.getLeaderBoardButton().onTouchDown();
             }
         }
+
         return true;
     }
 
@@ -95,40 +96,40 @@ public class InputHandler implements InputProcessor {
             if(!myWorld.getPlayButton().isTouched(screenX, screenY)) {
                 myWorld.getPlayButton().onRemoveTouch();
             }else {
-                myWorld.getPlayButton().onTouchDown();
+                myWorld.getPlayButton().onTouchDragged();
             }
             if(!myWorld.getAchievementButton().isTouched(screenX, screenY)) {
                 myWorld.getAchievementButton().onRemoveTouch();
             }
             else {
-                myWorld.getAchievementButton().onTouchDown();
+                myWorld.getAchievementButton().onTouchDragged();
             }
             if(!myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
                 myWorld.getLeaderBoardButton().onRemoveTouch();
             }
             else {
-                myWorld.getLeaderBoardButton().onTouchDown();
+                myWorld.getLeaderBoardButton().onTouchDragged();
             }
         } else if(myWorld.isReady()) {
             if(!myWorld.getPlayReady().isTouched(screenX, screenY)) {
                 myWorld.getPlayReady().onRemoveTouch();
             }else {
-                myWorld.getPlayReady().onTouchDown();
+                myWorld.getPlayReady().onTouchDragged();
             }
             if(!myWorld.getAchievementButton().isTouched(screenX, screenY)) {
                 myWorld.getAchievementButton().onRemoveTouch();
             }else{
-                myWorld.getAchievementButton().onTouchDown();
+                myWorld.getAchievementButton().onTouchDragged();
             }
             if(!myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
                 myWorld.getLeaderBoardButton().onRemoveTouch();
             }else {
-                myWorld.getLeaderBoardButton().onTouchDown();
+                myWorld.getLeaderBoardButton().onTouchDragged();
             }
             if(!myWorld.getInfoButton().isTouched(screenX, screenY)) {
                 myWorld.getInfoButton().onRemoveTouch();
             }else{
-                myWorld.getInfoButton().onTouchDown();
+                myWorld.getInfoButton().onTouchDragged();
             }
         }
         return true;
