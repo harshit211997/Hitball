@@ -112,6 +112,8 @@ public class GameRenderer {
             myWorld.getAchievementButton().onDraw(batcher);
 
             myWorld.getLeaderBoardButton().onDraw(batcher);
+
+            myWorld.getVolumeButton().onDraw(batcher);
         }
 
         batcher.end();

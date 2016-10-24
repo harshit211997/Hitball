@@ -54,6 +54,9 @@ public class InputHandler implements InputProcessor {
             if(myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
                 myWorld.getLeaderBoardButton().onTouchDown();
             }
+            if(myWorld.getVolumeButton().isTouched(screenX, screenY)) {
+                myWorld.getVolumeButton().onTouchDown();
+            }
         }
 
         return true;
@@ -73,6 +76,9 @@ public class InputHandler implements InputProcessor {
             if(myWorld.getLeaderBoardButton().isTouched(screenX, screenY)) {
                 myWorld.getLeaderBoardButton().onTouchUp();
             }
+            if(myWorld.getVolumeButton().isTouched(screenX, screenY)) {
+                myWorld.getVolumeButton().onTouchUp();
+            }
         } else if(myWorld.isReady()) {
             if(myWorld.getPlayReady().isTouched(screenX, screenY)) {
                 myWorld.getPlayReady().onTouchUp();
@@ -87,6 +93,7 @@ public class InputHandler implements InputProcessor {
                 myWorld.getInfoButton().onTouchUp();
             }
         }
+        resetAlreadyTouchedState();
         return true;
     }
 
@@ -109,6 +116,11 @@ public class InputHandler implements InputProcessor {
             }
             else {
                 myWorld.getLeaderBoardButton().onTouchDragged();
+            }
+            if(!myWorld.getVolumeButton().isTouched(screenX, screenY)) {
+                myWorld.getVolumeButton().onRemoveTouch();
+            }else {
+                myWorld.getVolumeButton().onTouchDragged();
             }
         } else if(myWorld.isReady()) {
             if(!myWorld.getPlayReady().isTouched(screenX, screenY)) {
@@ -133,6 +145,15 @@ public class InputHandler implements InputProcessor {
             }
         }
         return true;
+    }
+
+    private void resetAlreadyTouchedState() {
+        myWorld.getLeaderBoardButton().resetAlreadyTouchedState();
+        myWorld.getVolumeButton().resetAlreadyTouchedState();
+        myWorld.getAchievementButton().resetAlreadyTouchedState();
+        myWorld.getInfoButton().resetAlreadyTouchedState();
+        myWorld.getPlayButton().resetAlreadyTouchedState();
+        myWorld.getPlayReady().resetAlreadyTouchedState();
     }
 
     @Override

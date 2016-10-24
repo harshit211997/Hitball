@@ -15,7 +15,6 @@ public class Button {
     Rectangle rectangle;
     GameWorld myWorld;
     TextureRegion regionOn, regionOff, current;
-    int id;//This determines which type of button is it
     float theta;
     Vector2 initialPos = new Vector2();
     OnClickListener listener;
@@ -27,7 +26,7 @@ public class Button {
     */
     boolean alreadyTouchedDown = false;
 
-    public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff, int id) {
+    public Button(GameWorld world, float x, float y, float width, float height, TextureRegion regionOn, TextureRegion regionOff) {
         this.height = height;
         this.regionOn = regionOn;
         this.regionOff = regionOff;
@@ -36,7 +35,6 @@ public class Button {
         this.position.y = y;
         this.rectangle = new Rectangle(position.x - width / 2, position.y - height / 2, width, height);
         this.myWorld = world;
-        this.id = id;
 
         this.theta = 90 * (float) Math.random();
 
@@ -81,7 +79,10 @@ public class Button {
 
         if(alreadyTouchedDown) {
             listener.onClick();
-            AssetLoader.buttonClick.play();
+
+            if (myWorld.isVolumeOn()) {
+                AssetLoader.buttonClick.play();
+            }
             current = regionOff;
         }
 
@@ -95,6 +96,10 @@ public class Button {
     */
     public void onRemoveTouch() {
         current = regionOff;
+    }
+
+    public void resetAlreadyTouchedState() {
+        alreadyTouchedDown = false;
     }
 
     public float getHeight() {

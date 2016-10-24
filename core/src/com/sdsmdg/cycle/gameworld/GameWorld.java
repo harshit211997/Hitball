@@ -11,6 +11,7 @@ import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Board;
 import com.sdsmdg.cycle.objects.buttons.Button;
+import com.sdsmdg.cycle.objects.buttons.StateButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class GameWorld {
     Preferences prefs;
     private Board board;
     private Button playButton, playReady, achievement, leaderBoardButton, infoButton;
+    private StateButton.ButtonState volumeState;
+    private StateButton volumeButton;
     int hitCount = 0;//This int counts the total no. of hits the bat(or ball) experiences(Including the hit on handle of bat)
     private Background background;
 
@@ -69,6 +72,7 @@ public class GameWorld {
 
     public GameWorld(CGame game, int screenWidth, int screenHeight) {
 
+        prefs = Gdx.app.getPreferences("Highscore");
         Vector2 batPosition = new Vector2(screenWidth / 10, 520f / 854 * screenHeight);
         int batHeight = screenWidth / 15;
         int batWidth = (AssetLoader.batRegion.getRegionWidth() * batHeight) / AssetLoader.batRegion.getRegionHeight();
@@ -87,8 +91,7 @@ public class GameWorld {
         int replayHeight = screenWidth / 4;
         playButton = new Button(this, (screenWidth) / 2, screenHeight + replayHeight / 2,
                 replayWidth, replayHeight,
-                AssetLoader.playRegionOn, AssetLoader.playRegionOff,
-                0);
+                AssetLoader.playRegionOn, AssetLoader.playRegionOff);
 
         playButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -104,8 +107,7 @@ public class GameWorld {
         playReady = new Button(this, (screenWidth) / 2, (screenHeight) / 2,
                 playWidth, playHeight,
                 AssetLoader.playRegionOn,
-                AssetLoader.playRegionOff,
-                0);
+                AssetLoader.playRegionOff);
 
         playReady.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -119,8 +121,7 @@ public class GameWorld {
         achievement = new Button(this, screenWidth / 4, screenHeight * 0.75f,
                 achievementWidth, achievementHeight,
                 AssetLoader.achievementPressedRegion,
-                AssetLoader.achievementRegion,
-                1);
+                AssetLoader.achievementRegion);
 
         achievement.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -133,8 +134,7 @@ public class GameWorld {
         leaderBoardButton = new Button(this, 3 * screenWidth / 4, screenHeight * 0.75f,
                 leaderWidth, leaderHeight,
                 AssetLoader.leaderboardPressedRegion,
-                AssetLoader.leaderboardRegion,
-                2);
+                AssetLoader.leaderboardRegion);
 
         leaderBoardButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -147,8 +147,7 @@ public class GameWorld {
         infoButton = new Button(this, screenWidth - infoWidth / 1.5f, infoHeight / 1.5f,
                 infoWidth, infoHeight,
                 AssetLoader.aboutUsSmallRegion,
-                AssetLoader.aboutUsRegion,
-                3);
+                AssetLoader.aboutUsRegion);
 
         infoButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -159,6 +158,28 @@ public class GameWorld {
 
         float volumeWidth = screenWidth / 8, volumeHeight = screenWidth / 8;
 
+        if(isVolumeOn()) {
+            volumeState = StateButton.ButtonState.ON;
+        } else {
+            volumeState = StateButton.ButtonState.OFF;
+        }
+
+        volumeButton = new StateButton(this, screenWidth - volumeWidth / 1.5f, volumeHeight / 1f,
+                volumeWidth, volumeHeight,
+                AssetLoader.volumeOnRegion,
+                AssetLoader.volumeOffRegion,
+                volumeState);
+
+        volumeButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick() {
+                changeVolumeState();//For preferences
+                if(isVolumeOn()) {
+                    AssetLoader.buttonClick.play();
+                }
+            }
+        });
+
         board = new Board(this,
                 screenWidth / 2, screenWidth / 2,
                 new Vector2(screenWidth / 2, screenHeight / 2)
@@ -166,14 +187,28 @@ public class GameWorld {
 
         background = new Background();
 
-        prefs = Gdx.app.getPreferences("Highscore");
-
         this.game = game;
     }
 
     public void setHighScore(int score) {
         game.playServices.submitScore(score);
         prefs.putInteger("highscore", score);
+        prefs.flush();
+    }
+
+    public boolean isVolumeOn() {
+        if(prefs.getBoolean("volume")) {
+            return true;
+        }
+        return false;
+    }
+
+    public void changeVolumeState() {
+        if(prefs.getBoolean("volume")) {
+            prefs.putBoolean("volume", false);
+        } else {
+            prefs.putBoolean("volume", true);
+        }
         prefs.flush();
     }
 
@@ -317,7 +352,10 @@ public class GameWorld {
     }
 
     public void playHitSound() {
-        AssetLoader.hit.play();//Play the hit sound when the ball hits the bat body and the handle
+        if(isVolumeOn()) {
+            //Play the hit sound when the ball hits the bat body and the handle
+            AssetLoader.hit.play();
+        }
     }
 
     public void updateScore() {
@@ -451,7 +489,11 @@ public class GameWorld {
                 .start(manager);
 
         bat.onTouchUp();
-        Gdx.input.vibrate(300);
+
+        if(isVolumeOn()) {
+            Gdx.input.vibrate(300);
+        }
+
         gameState = GameState.OVER;
         incrementGamesPlayed();
         if (score == 2) {
@@ -511,5 +553,7 @@ public class GameWorld {
         return background;
     }
 
-
+    public StateButton getVolumeButton() {
+        return volumeButton;
+    }
 }
