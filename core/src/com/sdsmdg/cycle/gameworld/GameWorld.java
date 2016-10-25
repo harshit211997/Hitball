@@ -2,6 +2,7 @@ package com.sdsmdg.cycle.gameworld;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.sdsmdg.cycle.CGame;
 import com.sdsmdg.cycle.TweenAccessors.VectorAccessor;
@@ -10,6 +11,7 @@ import com.sdsmdg.cycle.objects.Background;
 import com.sdsmdg.cycle.objects.Ball;
 import com.sdsmdg.cycle.objects.Bat;
 import com.sdsmdg.cycle.objects.Board;
+import com.sdsmdg.cycle.objects.StarController;
 import com.sdsmdg.cycle.objects.buttons.Button;
 import com.sdsmdg.cycle.objects.buttons.StateButton;
 
@@ -31,6 +33,7 @@ public class GameWorld {
     public static int screenWidth, screenHeight;
     GameState gameState;
     public static int score = 0;
+    public static int starCount = 0;
     Preferences prefs;
     private Board board;
     private Button playButton, playReady, achievement, leaderBoardButton, infoButton;
@@ -38,6 +41,7 @@ public class GameWorld {
     private StateButton volumeButton;
     int hitCount = 0;//This int counts the total no. of hits the bat(or ball) experiences(Including the hit on handle of bat)
     private Background background;
+    private StarController starController;
 
     //This reference is just used to call the playServices methods to unlock Achievements
     private CGame game;
@@ -71,6 +75,11 @@ public class GameWorld {
     }
 
     public GameWorld(CGame game, int screenWidth, int screenHeight) {
+
+        Sprite star = AssetLoader.starRegion;
+        star.setPosition(screenWidth / 3, screenHeight / 2 - screenWidth / 1.8f);
+        star.setSize(screenWidth / 10, screenWidth / 10);
+        starController = new StarController(this, star);
 
         prefs = Gdx.app.getPreferences("Highscore");
         Vector2 batPosition = new Vector2(screenWidth / 10, 520f / 854 * screenHeight);
@@ -187,6 +196,8 @@ public class GameWorld {
 
         background = new Background();
 
+        starCount = prefs.getInteger("star_count");
+
         this.game = game;
     }
 
@@ -293,6 +304,8 @@ public class GameWorld {
 
     public void updateRunning(float delta) {
 
+        starController.update(delta);
+
         bat.update(delta);
 
         //Update all balls positions on screen
@@ -309,6 +322,9 @@ public class GameWorld {
 
         for (int i = 0; i < balls.size(); i++) {
             Ball ball = balls.get(i);
+            if ( starController.isTaken(ball)) {
+                increaseStarCount();
+            }
             if (isColliding(bat, ball, delta) && ball.isInPlane()) {
                 playHitSound();
 
@@ -345,6 +361,9 @@ public class GameWorld {
 
     public void increaseHitCount() {
         hitCount++;
+        if(hitCount % 10 == 0) {
+            starController.deployStar();
+        }
     }
 
     public void resetHitCount() {
@@ -360,6 +379,10 @@ public class GameWorld {
 
     public void updateScore() {
         score++;
+    }
+
+    public void increaseStarCount() {
+        starCount ++;
     }
 
     public void setBallOut(Ball ball) {
@@ -460,6 +483,11 @@ public class GameWorld {
 
     public void setGameStateOver() {
 
+        starController.removeStar();
+
+        prefs.putInteger("star_count", starCount);
+        Gdx.app.log("star_count", starCount + "");
+
         boolean flag = false;
 
         if (score > getHighScore()) {
@@ -555,5 +583,13 @@ public class GameWorld {
 
     public StateButton getVolumeButton() {
         return volumeButton;
+    }
+
+    public StarController getStarController() {
+        return starController;
+    }
+
+    public static int getStarCount() {
+        return starCount;
     }
 }

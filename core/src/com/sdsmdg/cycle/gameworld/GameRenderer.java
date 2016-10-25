@@ -18,7 +18,7 @@ public class GameRenderer {
     private GameWorld myWorld;
     private OrthographicCamera cam;
     private ShapeRenderer shapeRenderer;
-    private BitmapFont font40, font80;
+    private BitmapFont font20, font40, font80;
 
     private SpriteBatch batcher;
 
@@ -61,6 +61,7 @@ public class GameRenderer {
         //the parameter true ensures that text is displayed not flipped
         font40 = AssetLoader.font40;
         font80 = AssetLoader.font80;
+        font20 = AssetLoader.font20;
     }
 
 
@@ -83,6 +84,10 @@ public class GameRenderer {
 
             //Draw ball
             ball.onDraw(batcher);
+
+            myWorld.getStarController().onDraw(batcher);
+
+            drawStarCount();
 
         }
 
@@ -126,5 +131,13 @@ public class GameRenderer {
         float w = glyphLayout.width;
         float h = glyphLayout.height;
         font80.draw(batcher, text, (screenWidth - w) / 2, (screenHeight / 4 - h / 2));
+    }
+
+    public void drawStarCount() {
+        String text = String.valueOf(GameWorld.getStarCount());
+        glyphLayout.setText(font20, text);
+        float w = glyphLayout.width;
+        float h = glyphLayout.height;
+        font20.draw(batcher, text, (screenWidth - 2 * w), 2 * h);
     }
 }

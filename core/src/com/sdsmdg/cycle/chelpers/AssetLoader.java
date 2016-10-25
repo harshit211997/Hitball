@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 public class AssetLoader {
 
     public static Sound hit, buttonClick;
-    public static BitmapFont font40, font80, font120;
-    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, achievementPressed, leaderboard, leaderboardPressed, scorecard, moonTexture, hitballTexture, aboutUsTexture, aboutUsSmallTexture, volumeOnTexture, volumeOffTexture;
-    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, achievementPressedRegion, leaderboardRegion, scorecardRegion, leaderboardPressedRegion, moonRegion, hitballRegion, aboutUsRegion, aboutUsSmallRegion, volumeOnRegion, volumeOffRegion;
+    public static BitmapFont font20, font40, font80, font120;
+    public static Texture bat, ball, playOn, playOff, cloud, cloud1, sun, background, mdgLogo, fan, achievement, achievementPressed, leaderboard, leaderboardPressed, scorecard, moonTexture, hitballTexture, aboutUsTexture, aboutUsSmallTexture, volumeOnTexture, volumeOffTexture, starTexture;
+    public static Sprite batRegion, ballRegion, playRegionOn, playRegionOff, cloudRegion, cloud1Region, sunRegion, backgroundRegion, mdgLogoRegion, fanRegion, achievementRegion, achievementPressedRegion, leaderboardRegion, scorecardRegion, leaderboardPressedRegion, moonRegion, hitballRegion, aboutUsRegion, aboutUsSmallRegion, volumeOnRegion, volumeOffRegion, starRegion;
 
     public static void load(int screenWidth) {
 
@@ -96,6 +96,10 @@ public class AssetLoader {
         volumeOffTexture = new Texture(Gdx.files.internal("speaker_off.png"));
         volumeOffRegion = new Sprite(volumeOffTexture);
 
+        starTexture = new Texture(Gdx.files.internal("star.png"));
+        starRegion = new Sprite(starTexture);
+        starRegion.flip(false, true);
+
         createFont(screenWidth);
 
         loadSounds();
@@ -105,9 +109,12 @@ public class AssetLoader {
     private static void createFont(int screenWidth) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (40 * screenWidth) / 480;//Scaling it according to the screenWidth
+        parameter.size = (20 * screenWidth) / 480;//Scaling it according to the screenWidth
         parameter.flip = true;
-        font40 = generator.generateFont(parameter);
+        font20 = generator.generateFont(parameter);
+
+        parameter.size = (40 * screenWidth) / 480;
+        font20 = generator.generateFont(parameter);
 
         parameter.size = (80 * screenWidth) / 480;//Scaling it according to the screenWidth
         font80 = generator.generateFont(parameter);
@@ -146,6 +153,7 @@ public class AssetLoader {
         aboutUsTexture.dispose();
         volumeOnTexture.dispose();
         volumeOffTexture.dispose();
+        starTexture.dispose();
 
         //dispose the audio files
         disposeAudio();
