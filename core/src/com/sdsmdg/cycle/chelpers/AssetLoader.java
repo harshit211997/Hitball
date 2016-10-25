@@ -120,7 +120,7 @@ public class AssetLoader {
 
     private static void loadSounds() {
         hit = Gdx.audio.newSound(Gdx.files.internal("pop.mp3"));
-        buttonClick = Gdx.audio.newSound(Gdx.files.internal("button_click.mp3"));
+        buttonClick = Gdx.audio.newSound(Gdx.files.internal("button_click.wav"));
     }
 
     public static void dispose() {
