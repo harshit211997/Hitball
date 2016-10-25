@@ -4,14 +4,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.sdsmdg.cycle.gameworld.GameWorld;
 
-public class Star {
+public class NightStar {
 
     float x, y;
     float initialRadius;
     float radius;
     float rotation = 0;
 
-    public Star() {
+    public NightStar() {
         y = (float) Math.random() * GameWorld.screenHeight / 2;
         x = (float) Math.random() * GameWorld.screenWidth;
         initialRadius = radius = 1 + (float) Math.random() * 2;

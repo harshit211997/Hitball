@@ -18,7 +18,7 @@ public class Background {
     private Fan fan;
     private Sun sun;
     private Moon moon;
-    private List<Star> stars = new ArrayList<Star>();
+    private List<NightStar> nightStars = new ArrayList<NightStar>();
     private final int NO_STARS = 50;
 
     public Background() {
@@ -56,7 +56,7 @@ public class Background {
                 AssetLoader.moonRegion);
 
         for (int i = 1; i < NO_STARS; i++) {
-            stars.add(new Star());
+            nightStars.add(new NightStar());
         }
 
     }
@@ -69,8 +69,8 @@ public class Background {
             clouds.get(i).update(delta);
         }
 
-        for (int i = 0; i < stars.size(); i++) {
-            stars.get(i).update(delta);
+        for (int i = 0; i < nightStars.size(); i++) {
+            nightStars.get(i).update(delta);
         }
 
         fan.update(delta);
@@ -91,8 +91,8 @@ public class Background {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(state == BackgroundState.NIGHT) {
-            for (int i = 0; i < stars.size(); i++) {
-                stars.get(i).onDraw(batcher, shapeRenderer);
+            for (int i = 0; i < nightStars.size(); i++) {
+                nightStars.get(i).onDraw(batcher, shapeRenderer);
             }
         }
 
