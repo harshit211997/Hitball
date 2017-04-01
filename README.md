@@ -14,11 +14,11 @@ Tap the screen to rotate the bat and hit the ball.
 ## Features:-
 -Simple tap to play controls.
 
--Compete with your friends’ score with g+ profile
+-Compete with your friends on google plus.
 
--Save your achievements in the game
+-Save your achievements in the game.
 
-## ScreenShot
+## Preview
 <img src="https://github.com/harshit211997/Hitball/blob/master/screenshots/Screenshot_20161004-194231.png" width=240 height=420> <img src="https://github.com/harshit211997/Hitball/blob/master/screenshots/Screenshot_20160918-225735.png" width=240 height=420>
 <img src="https://github.com/harshit211997/Hitball/blob/master/screenshots/Screenshot_20161004-183716.png" width=240 height=420>
 <img src="https://github.com/harshit211997/Hitball/blob/master/screenshots/Screenshot_20161004-194301.png" width=240 height=420> 
@@ -27,10 +27,12 @@ Tap the screen to rotate the bat and hit the ball.
 ## Contributing
 
 Please fork this repository and contribute back using
-[pull requests](https://github.com/harshit211997/tic-tac-toe/pulls).
+[pull requests](https://github.com/harshit211997/Hitball/pulls).
 
 Any contributions, large or small, major features, bug fixes, are welcomed and appreciated
 but will be thoroughly reviewed.
+
+Use your creativity to take this game to the next level.
 
 ## License
 
